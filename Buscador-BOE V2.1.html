@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador BOE Inteligente</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333; }
+        
+        .container { max-width: 1000px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        h1 { color: #003366; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        
+        /* Buscador */
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; background: #eef2f5; padding: 15px; border-radius: 5px; border: 1px solid #ccd; }
+        input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border: 1px solid #999; border-radius: 4px; }
+        
+        button.primary-btn {
+            background-color: #0056b3; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 4px;
+        }
+        button.primary-btn:hover { background-color: #004494; }
+
+        /* Pestañas */
+        .tabs { display: flex; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none; margin-right: 5px; border-radius: 5px 5px 0 0; }
+        .tab.active { background: #fff; font-weight: bold; border-bottom: 2px solid #fff; position: relative; top: 1px; color: #0056b3; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Tarjetas de Resultado */
+        .result-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fafafa; border-left: 5px solid #0056b3; }
+        .result-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #000; }
+        .result-id { font-family: monospace; color: #666; font-size: 0.9em; background: #ddd; padding: 2px 5px; border-radius: 3px; display: inline-block; }
+        
+        .result-actions { margin-top: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .anchor-info { font-style: italic; color: #555; font-size: 0.9em; }
+
+        /* BOTONES DE ACCIÓN */
+        .boe-link {
+            display: inline-block; background-color: #d9534f; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; border: 1px solid #c9302c;
+        }
+        .boe-link:hover { background-color: #c9302c; }
+
+        .app-link {
+            display: inline-block; background-color: #0275d8; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; border: 1px solid #025aa5;
+        }
+        .app-link:hover { background-color: #025aa5; }
+
+        /* VISOR DE TEXTO (MODAL) */
+        #viewerOverlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;
+        }
+        #viewerContent {
+            background: white; margin: 20px auto; padding: 40px; width: 90%; max-width: 900px; border-radius: 8px; position: relative; min-height: 80vh;
+        }
+        .closeViewer { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; color: #999; }
+        .closeViewer:hover { color: #333; }
+        
+        /* Estilos del texto legal dentro del visor */
+        .legal-text { line-height: 1.6; text-align: justify; white-space: pre-wrap; font-family: 'Georgia', serif; }
+        .legal-text h2 { color: #0056b3; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        .highlight-target { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 10px 0; font-weight: bold; }
+        
+        .loading-text { text-align: center; padding: 20px; color: #666; }
+
+        /* Formularios y listas */
+        .form-row { margin-bottom: 10px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #999; border-radius: 3px; }
+        .btn-small { padding: 5px 10px; cursor: pointer; margin-right: 5px; border-radius: 3px; border: 1px solid #999; background: #eee; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔍 Buscador BOE</h1>
+    
+    <div class="search-box">
+        <input type="text" id="mainInput" placeholder="Ej: CE art 15, LPRL cap II...">
+        <button class="primary-btn" onclick="performSearch()">BUSCAR</button>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('results')">Resultados</div>
+        <div class="tab" onclick="switchTab('manage')">Gestionar Normas</div>
+        <div class="tab" onclick="switchTab('history')">Historial</div>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="tab-results" class="tab-content active">
+        <div id="resultsList"></div>
+    </div>
+
+    <!-- GESTIONAR -->
+    <div id="tab-manage" class="tab-content">
+        <h3>Añadir / Editar Norma</h3>
+        <div class="form-row">
+            <label>Alias:</label>
+            <input type="text" id="editAlias" placeholder="Ej: CE, LPRL">
+        </div>
+        <div class="form-row">
+            <label>Título:</label>
+            <input type="text" id="editTitle" placeholder="Ej: Constitución Española">
+        </div>
+        <div class="form-row">
+            <label>ID BOE:</label>
+            <input type="text" id="editId" placeholder="Ej: BOE-A-1978-31229">
+        </div>
+        <div style="margin: 15px 0;">
+            <button class="primary-btn" onclick="saveNorm()">GUARDAR</button>
+            <button class="btn-small" onclick="clearForm()">LIMPIAR</button>
+        </div>
+        <h3>Lista (<span id="normCount">0</span>)</h3>
+        <div id="localNormsList"></div>
+        <div style="margin-top: 20px;">
+            <button class="btn-small" onclick="exportData()">Exportar JSON</button>
+            <button class="btn-small" onclick="document.getElementById('fileInput').click()">Importar JSON</button>
+            <input type="file" id="fileInput" style="display:none" onchange="importData(this)">
+        </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div id="tab-history" class="tab-content">
+        <button class="btn-small" onclick="clearHistory()" style="float:right;">Borrar Historial</button>
+        <div style="clear:both;"></div>
+        <ul id="historyList" style="list-style:none; padding:0;"></ul>
+    </div>
+</div>
+
+<!-- VISOR MODAL -->
+<div id="viewerOverlay" onclick="closeViewer(event)">
+    <div id="viewerContent">
+        <span class="closeViewer" onclick="closeViewerDirect()">&times;</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 id="viewerTitle" style="margin:0;">Texto</h2>
+            <button onclick="copyViewerText()" class="primary-btn" style="padding: 8px 15px;">📋 Copiar texto</button>
+        </div>
+        <div id="viewerBody" class="legal-text"></div>
+    </div>
+</div>
+
+<script>
+    // --- DATOS ---
+    const initialData = [
+        { alias: "CE", title: "Constitución Española", id: "BOE-A-1978-31229" },
+        { alias: "LPRL", title: "Ley 31/1995, de Prevención de Riesgos Laborales", id: "BOE-A-1995-24292" },
+        { alias: "LEC", title: "Ley 1/2000, de Enjuiciamiento Civil", id: "BOE-A-2000-215" },
+        { alias: "LOPJ", title: "Ley Orgánica 6/1985, del Poder Judicial", id: "BOE-A-1985-12666" },
+        { alias: "Ley Economía Sostenible", title: "Ley 2/2011, de Economía Sostenible", id: "BOE-A-2011-4839" },
+        { alias: "PGC", title: "Plan General de Contabilidad", id: "BOE-A-2007-17430" },
+        { alias: "Código Civil", title: "Código Civil", id: "BOE-A-1889-4763" },
+        { alias: "Código de Comercio", title: "Código de Comercio", id: "BOE-A-1885-3146" },
+        { alias: "LSSI", title: "Ley 34/2002, de Servicios de la Sociedad de la Información", id: "BOE-A-2002-13758" },
+        { alias: "Comercio Minorista", title: "Ley 7/1996, de Ordenación del Comercio Minorista", id: "BOE-A-1996-1539" },
+        { alias: "Ley Sociedades Capital", title: "Texto Refundido Ley Sociedades Capital", id: "BOE-A-2010-10544" },
+        { alias: "Ley Cooperativas", title: "Ley 27/1999, de Cooperativas", id: "BOE-A-1999-13888" },
+        { alias: "Reglamento RM", title: "Reglamento del Registro Mercantil", id: "BOE-A-1996-20930" },
+        { alias: "Ley Crea y Crece", title: "Ley 18/2022, de creación y crecimiento de empresas", id: "BOE-A-2022-16096" },
+        { alias: "Ley Sociedades Laborales", title: "Ley 44/2015, de Sociedades Laborales", id: "" },
+        { alias: "LGSS", title: "Ley General de la Seguridad Social", id: "BOE-A-2015-11724" },
+        { alias: "Ley Empleo", title: "Ley de Empleo", id: "BOE-A-2015-11723" },
+        { alias: "Estatuto Trabajadores", title: "Estatuto de los Trabajadores", id: "BOE-A-2015-11722" },
+        { alias: "RETA", title: "Estatuto del Trabajo Autónomo", id: "BOE-A-2007-13148" },
+        { alias: "ETT", title: "Ley de Empresas de Trabajo Temporal", id: "BOE-A-1994-12601" },
+        { alias: "Ley Impuesto Sociedades", title: "Ley del Impuesto sobre Sociedades", id: "BOE-A-2014-12328" },
+        { alias: "Reglamento IRPF", title: "Reglamento del IRPF", id: "BOE-A-2007-6785" },
+        { alias: "LIRPF", title: "Ley del IRPF", id: "BOE-A-2006-21542" },
+        { alias: "Reglamento IVA", title: "Reglamento del IVA", id: "BOE-A-1992-28740" },
+        { alias: "LIVA", title: "Ley del IVA", id: "BOE-A-1992-28738" },
+        { alias: "Ley General Tributaria", title: "Ley General Tributaria", id: "BOE-A-2003-23432" },
+        { alias: "Facturación", title: "Reglamento de Facturación", id: "BOE-A-2012-14669" },
+        { alias: "LCSP", title: "Ley de Contratos del Sector Público", id: "BOE-A-2017-12903" },
+        { alias: "Ley Fomento Financiación", title: "Ley de Fomento de la Financiación Empresarial", id: "BOE-A-2015-4579" },
+        { alias: "Ley Emprendedores", title: "Ley de Apoyo a los Emprendedores", id: "BOE-A-2013-10054" },
+        { alias: "Ley Startups", title: "Ley de Fomento del Ecosistema de Empresas Emergentes", id: "BOE-A-2022-24139" },
+        { alias: "RGPD", title: "Reglamento (UE) 2016/679", id: "" },
+        { alias: "LOPDGDD", title: "Ley Orgánica de Protección de Datos", id: "BOE-A-2018-16673" },
+        { alias: "Ley Igualdad Trato", title: "Ley integral para la igualdad de trato", id: "BOE-A-2022-11950" },
+        { alias: "RD Igualdad Retributiva", title: "RD de igualdad retributiva", id: "BOE-A-2020-12215" },
+        { alias: "RD Planes Igualdad", title: "RD de planes de igualdad", id: "BOE-A-2020-12214" }
+    ];
+
+    let localNorms = JSON.parse(localStorage.getItem('boe_localNorms')) || initialData;
+    let searchHistory = JSON.parse(localStorage.getItem('boe_history')) || [];
+    let editingIndex = -1;
+
+    // --- LÓGICA DE PARSING ---
+
+    function getAnchor(text) {
+        const t = text.toLowerCase();
+        const mArt = t.match(/art[íi]culo?\s*(\d+)|art\s*(\d+)|a\.?\s*(\d+)/);
+        if (mArt) return { id: "#a" + (mArt[1] || mArt[2] || mArt[3]), text: "Artículo " + (mArt[1] || mArt[2] || mArt[3]) };
+        const mCap = t.match(/cap[íi]tulo?\s*([ivxlcdm]+|\d+)|c\.?\s*([ivxlcdm]+|\d+)/);
+        if (mCap) return { id: "#c" + (mCap[1] || mCap[2]).toLowerCase(), text: "Capítulo " + (mCap[1] || mCap[2]) };
+        const mTit = t.match(/t[íi]tulo?\s*([ivxlcdm]+|\d+)|t\.?\s*([ivxlcdm]+|\d+)/);
+        if (mTit) return { id: "#t" + (mTit[1] || mTit[2]).toLowerCase(), text: "Título " + (mTit[1] || mTit[2]) };
+        const mSec = t.match(/secci[óo]n?\s*(\d+)|s\.?\s*(\d+)/);
+        if (mSec) return { id: "#s" + (mSec[1] || mSec[2]), text: "Sección " + (mSec[1] || mSec[2]) };
+        return { id: "", text: "Inicio de la norma" };
+    }
+
+    function cleanText(text) {
+        let t = text.toLowerCase();
+        const refs = ['art', 'articulo', 'cap', 'capitulo', 'tit', 'titulo', 'sec', 'seccion', 'disposicion', 'adicional', 'transitoria', 'final', 'derogatoria'];
+        refs.forEach(r => { t = t.replace(new RegExp(r + '.*', 'gi'), ''); });
+        return t.trim();
+    }
+
+    function findAlias(text) {
+        const t = text.trim();
+        let match = localNorms.find(n => n.alias.toLowerCase() === t.toLowerCase());
+        if (match) return match.alias;
+        const candidates = localNorms.map(n => ({ a: n.alias, l: n.alias.length })).filter(x => t.toLowerCase().includes(x.a.toLowerCase()));
+        if (candidates.length > 0) { candidates.sort((a,b) => b.l - a.l); return candidates[0].a; }
+        return t;
+    }
+
+    // --- ACCIONES PRINCIPALES ---
+
+    function performSearch() {
+        const raw = document.getElementById('mainInput').value.trim();
+        if (!raw) return;
+        const anchorObj = getAnchor(raw); 
+        const cleanQ = cleanText(raw);
+        const alias = findAlias(raw);
+        
+        addToHistory(raw);
+        document.getElementById('resultsList').innerHTML = '';
+        switchTab('results');
+
+        const results = localNorms.filter(n => {
+            const matchAlias = n.alias.toLowerCase() === alias.toLowerCase();
+            const matchTitle = n.title.toLowerCase().includes(cleanQ.toLowerCase());
+            const matchPartial = n.alias.toLowerCase().includes(cleanQ.toLowerCase());
+            return matchAlias || matchTitle || matchPartial;
+        });
+
+        if (results.length > 0) {
+            renderList(results, anchorObj);
+        } else {
+            document.getElementById('resultsList').innerHTML = '<p>No se encontraron resultados.</p>';
+        }
+    }
+
+    function renderList(items, anchorObj) {
+        const container = document.getElementById('resultsList');
+        items.forEach(item => {
+            if(!item.id) return;
+            const url = `https://www.boe.es/buscar/act.php?id=${item.id}${anchorObj.id}`;
+            
+            const div = document.createElement('div');
+            div.className = 'result-card';
+            div.innerHTML = `
+                <div class="result-title">${item.title}</div>
+                <div class="result-id">${item.id}</div>
+                <div class="anchor-info">Referencia: <strong>${anchorObj.text}</strong></div>
+                <div class="result-actions">
+                    <a href="${url}" target="_blank" class="boe-link">ABRIR EN BOE</a>
+                    <button class="app-link" onclick="openInAppViewer('${item.id}', '${url}', '${anchorObj.id}', '${anchorObj.text.replace(/'/g, "\\'")}')">VER TEXTO AQUÍ</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // --- VISOR INTEGRADO (CON PROXY Y EXTRACCIÓN DE HTML) ---
+
+    async function openInAppViewer(id, fallbackUrl, anchorId, anchorText) {
+        const overlay = document.getElementById('viewerOverlay');
+        const body = document.getElementById('viewerBody');
+        const title = document.getElementById('viewerTitle');
+        
+        overlay.style.display = 'block';
+        body.innerHTML = '<div class="loading-text">Cargando texto desde BOE...</div>';
+        title.innerText = "Cargando...";
+
+        const url = `https://www.boe.es/buscar/act.php?id=${id}`;
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`;
+
+        try {
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+            const html = await response.text();
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Intentar obtener el contenedor principal del texto consolidado
+            let content = doc.querySelector('#textocons, .texto_consolidado, .texto, #contenido, .contenido');
+            if (!content) {
+                // Fallback: usar el body entero (poco probable que ocurra)
+                content = doc.body;
+            }
+            
+            // Clonar para no modificar el documento original
+            const contentClone = content.cloneNode(true);
+            
+            // Eliminar scripts, estilos, iframes, etc.
+            const unwanted = contentClone.querySelectorAll('script, style, iframe, link, meta, noscript');
+            unwanted.forEach(el => el.remove());
+            
+            // Insertar el HTML en el visor
+            body.innerHTML = contentClone.innerHTML;
+            title.innerText = "Texto consolidado del BOE";
+            
+            // Resaltar el ancla si existe (ej: "#a15" → elemento con id "a15")
+            if (anchorId && anchorId !== "") {
+                const targetId = anchorId.substring(1); // quita el '#'
+                setTimeout(() => {
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        target.classList.add('highlight-target');
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 200);
+            }
+            
+        } catch (error) {
+            console.error("Error al cargar vía proxy:", error);
+            body.innerHTML = `
+                <div style="text-align:center; padding:20px;">
+                    <h3>No se pudo cargar el texto desde el BOE</h3>
+                    <p>Error: ${error.message}</p>
+                    <p>Puede intentar abrir la página oficial:</p>
+                    <button onclick="window.open('${fallbackUrl}', '_blank')" class="primary-btn">Abrir en BOE</button>
+                </div>
+            `;
+            title.innerText = "Error de carga";
+        }
+    }
+
+    function copyViewerText() {
+        const body = document.getElementById('viewerBody');
+        const text = body.innerText;
+        if (!text) {
+            alert('No hay texto para copiar.');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Texto copiado al portapapeles.');
+        }).catch(() => {
+            alert('Error al copiar. Puede seleccionar y copiar manualmente.');
+        });
+    }
+
+    function closeViewer(e) {
+        if (e.target.id === 'viewerOverlay') document.getElementById('viewerOverlay').style.display = 'none';
+    }
+    function closeViewerDirect() {
+        document.getElementById('viewerOverlay').style.display = 'none';
+    }
+
+    // --- GESTIÓN (CRUD) ---
+    function saveNorm() {
+        const alias = document.getElementById('editAlias').value.trim();
+        const title = document.getElementById('editTitle').value.trim();
+        const id = document.getElementById('editId').value.trim();
+        if (!alias || !id) { alert("Alias e ID obligatorios"); return; }
+        const obj = { alias, title, id };
+        if (editingIndex >= 0) { localNorms[editingIndex] = obj; editingIndex = -1; } else { localNorms.push(obj); }
+        persist();
+        clearForm();
+        renderManageList();
+    }
+    function deleteNorm(index) {
+        if(confirm("¿Borrar?")) { localNorms.splice(index, 1); persist(); renderManageList(); }
+    }
+    function editNorm(index) {
+        const n = localNorms[index];
+        document.getElementById('editAlias').value = n.alias;
+        document.getElementById('editTitle').value = n.title;
+        document.getElementById('editId').value = n.id;
+        editingIndex = index;
+    }
+    function clearForm() {
+        document.getElementById('editAlias').value = ''; document.getElementById('editTitle').value = ''; document.getElementById('editId').value = ''; editingIndex = -1;
+    }
+    function persist() { localStorage.setItem('boe_localNorms', JSON.stringify(localNorms)); }
+    function renderManageList() {
+        const list = document.getElementById('localNormsList');
+        document.getElementById('normCount').innerText = localNorms.length;
+        list.innerHTML = '';
+        localNorms.forEach((n, idx) => {
+            list.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px;"><strong>${n.alias}</strong>: ${n.title} <br><small>${n.id}</small> <button class="btn-small" onclick="editNorm(${idx})">Editar</button> <button class="btn-small" style="color:red" onclick="deleteNorm(${idx})">Borrar</button></div>`;
+        });
+    }
+    function exportData() {
+        const blob = new Blob([JSON.stringify(localNorms, null, 2)], { type: "application/json" });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "normas.json"; a.click();
+    }
+    function importData(input) {
+        const file = input.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try { localNorms = JSON.parse(e.target.result); persist(); renderManageList(); alert("Importado"); } catch(err) { alert("Error JSON"); }
+        };
+        reader.readAsText(file);
+    }
+    function addToHistory(q) {
+        if (searchHistory.length > 0 && searchHistory[0].q === q) return;
+        searchHistory.unshift({ q, d: new Date().toLocaleDateString() });
+        if (searchHistory.length > 20) searchHistory.pop();
+        localStorage.setItem('boe_history', JSON.stringify(searchHistory));
+        renderHistory();
+    }
+    function renderHistory() {
+        const list = document.getElementById('historyList'); list.innerHTML = '';
+        searchHistory.forEach(h => {
+            list.innerHTML += `<li style="padding:8px; border-bottom:1px solid #eee; cursor:pointer;" onclick="document.getElementById('mainInput').value='${h.q.replace(/'/g, "\\'")}'; performSearch();">${h.q} <small>(${h.d})</small></li>`;
+        });
+    }
+    function clearHistory() {
+        if(confirm("Borrar historial?")) { searchHistory = []; localStorage.setItem('boe_history', JSON.stringify([])); renderHistory(); }
+    }
+    function switchTab(name) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        if(name === 'results') document.querySelectorAll('.tab')[0].classList.add('active');
+        if(name === 'manage') document.querySelectorAll('.tab')[1].classList.add('active');
+        if(name === 'history') document.querySelectorAll('.tab')[2].classList.add('active');
+        document.getElementById('tab-'+name).classList.add('active');
+    }
+
+    window.onload = function() {
+        renderManageList();
+        renderHistory();
+        document.getElementById('mainInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') performSearch();
+        });
+    };
+</script>
+
+</body>
+</html>
