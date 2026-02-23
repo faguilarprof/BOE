@@ -1,421 +1,1500 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador BOE Inteligente</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333; }
-        
-        .container { max-width: 1000px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
-        h1 { color: #003366; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        
-        /* Buscador */
-        .search-box { display: flex; gap: 10px; margin-bottom: 20px; background: #eef2f5; padding: 15px; border-radius: 5px; border: 1px solid #ccd; }
-        input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border: 1px solid #999; border-radius: 4px; }
-        
-        button.primary-btn {
-            background-color: #0056b3; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 4px;
-        }
-        button.primary-btn:hover { background-color: #004494; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscador BOE · Visor Jurídico</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1a2744;
+    --blue:   #2457a0;
+    --accent: #c0392b;
+    --gold:   #b8860b;
+    --bg:     #f5f4f0;
+    --card:   #ffffff;
+    --border: #d8d4cc;
+    --text:   #1e1e1e;
+    --muted:  #6b6560;
+    --highlight: #fff3cd;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Pestañas */
-        .tabs { display: flex; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
-        .tab { padding: 10px 20px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none; margin-right: 5px; border-radius: 5px 5px 0 0; }
-        .tab.active { background: #fff; font-weight: bold; border-bottom: 2px solid #fff; position: relative; top: 1px; color: #0056b3; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+  body { font-family: 'Lexend', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        /* Tarjetas de Resultado */
-        .result-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fafafa; border-left: 5px solid #0056b3; }
-        .result-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #000; }
-        .result-id { font-family: monospace; color: #666; font-size: 0.9em; background: #ddd; padding: 2px 5px; border-radius: 3px; display: inline-block; }
-        
-        .result-actions { margin-top: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .anchor-info { font-style: italic; color: #555; font-size: 0.9em; }
+  /* ── HEADER ─────────────────────────────── */
+  .app-header {
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #e4e8f0;
+    box-shadow: 0 1px 12px rgba(36,87,160,.07);
+  }
+  .app-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue) 0%, #4a90d9 50%, var(--blue) 100%);
+  }
+  .header-inner {
+    position: relative;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 22px 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-brand { display: flex; align-items: center; gap: 14px; }
+  .header-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #e8f0fb 0%, #d0e2f7 100%);
+    border: 1px solid #c2d6f2;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35rem;
+    box-shadow: 0 2px 8px rgba(36,87,160,.1);
+    flex-shrink: 0;
+  }
+  .app-header .logo {
+    font-family: 'Lexend', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    color: var(--navy);
+  }
+  .app-header .logo span { color: var(--blue); font-weight: 400; }
+  .app-header .subtitle {
+    font-size: .72rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .header-pills { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
+  .header-pill {
+    font-size: .71rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid #dce6f5;
+    color: var(--blue);
+    letter-spacing: .03em;
+    background: #f0f5fd;
+    white-space: nowrap;
+  }
 
-        /* BOTONES DE ACCIÓN */
-        .boe-link {
-            display: inline-block; background-color: #d9534f; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; border: 1px solid #c9302c;
-        }
-        .boe-link:hover { background-color: #c9302c; }
+  /* ── CONTAINER ──────────────────────────── */
+  .container { max-width: 940px; margin: 28px auto; padding: 0 20px 60px; }
 
-        .app-link {
-            display: inline-block; background-color: #0275d8; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; border: 1px solid #025aa5;
-        }
-        .app-link:hover { background-color: #025aa5; }
+  /* ── SEARCH BAR ─────────────────────────── */
+  .search-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    margin-bottom: 22px;
+  }
+  .search-wrap input {
+    flex: 1;
+    font-family: 'Lexend', sans-serif;
+    font-size: 1rem;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border .2s;
+  }
+  .search-wrap input:focus { outline: none; border-color: var(--blue); background: #fff; }
+  .search-wrap input::placeholder { color: var(--muted); }
 
-        /* VISOR DE TEXTO (MODAL) */
-        #viewerOverlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;
-        }
-        #viewerContent {
-            background: white; margin: 20px auto; padding: 40px; width: 90%; max-width: 900px; border-radius: 8px; position: relative; min-height: 80vh;
-        }
-        .closeViewer { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; color: #999; }
-        .closeViewer:hover { color: #333; }
-        
-        /* Estilos del texto legal dentro del visor */
-        .legal-text { line-height: 1.6; text-align: justify; white-space: pre-wrap; font-family: 'Georgia', serif; }
-        .legal-text h2 { color: #0056b3; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
-        .highlight-target { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 10px 0; font-weight: bold; }
-        
-        .loading-text { text-align: center; padding: 20px; color: #666; }
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 10px 26px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: .03em;
+    transition: background .18s;
+  }
+  .btn-primary:hover { background: var(--navy); }
+  .btn-primary:active { transform: scale(.98); }
 
-        /* Formularios y listas */
-        .form-row { margin-bottom: 10px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input[type="text"], input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #999; border-radius: 3px; }
-        .btn-small { padding: 5px 10px; cursor: pointer; margin-right: 5px; border-radius: 3px; border: 1px solid #999; background: #eee; }
-        .hidden { display: none; }
-    </style>
+  /* ── TABS ───────────────────────────────── */
+  .tabs-bar { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 24px; gap: 4px; }
+  .tab-btn {
+    padding: 9px 18px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    transition: color .15s, border-color .15s;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── RESULT CARDS ───────────────────────── */
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--blue);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    transition: box-shadow .18s;
+  }
+  .result-card:hover { box-shadow: 0 4px 16px rgba(36,87,160,.12); }
+  .result-card .r-title { font-family: 'Lexend', sans-serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+  .result-card .r-id { font-family: monospace; font-size: .82rem; color: var(--muted); background: var(--bg); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; }
+  .result-card .r-ref { font-size: .88rem; color: var(--blue); margin: 8px 0; }
+  .result-card .r-ref strong { color: var(--navy); }
+  .result-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+  .btn-boe  { background: var(--accent); color: #fff; border: none; padding: 9px 18px; border-radius: 4px; font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; transition: background .18s; }
+  .btn-boe:hover  { background: #a93226; }
+  .btn-view { background: var(--blue); color: #fff; border: none; padding: 9px 18px; border-radius: 4px; font-weight: 600; font-size: .88rem; cursor: pointer; transition: background .18s; }
+  .btn-view:hover { background: var(--navy); }
+  .btn-externo { background: var(--gold); color: #fff; border: none; padding: 9px 18px; border-radius: 4px; font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; transition: background .18s; }
+
+  /* ── MANAGE ─────────────────────────────── */
+  .manage-form { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 22px; }
+  .manage-form h3 { font-family: 'Lexend', sans-serif; color: var(--navy); margin-bottom: 14px; }
+  .form-row { margin-bottom: 12px; }
+  .form-row label { display: block; font-weight: 600; font-size: .88rem; margin-bottom: 4px; color: var(--navy); }
+  .form-row input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: .95rem; font-family: 'Lexend', sans-serif; background: var(--bg); color: var(--text); }
+  .form-row input:focus { outline: none; border-color: var(--blue); background: #fff; }
+  .form-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .btn-sm { padding: 6px 14px; font-size: .85rem; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; background: var(--bg); color: var(--text); transition: background .15s; }
+  .btn-sm:hover { background: #e8e4dc; }
+  .btn-sm.danger { color: var(--accent); border-color: var(--accent); }
+
+  .norm-list-item { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: .9rem; flex-wrap: wrap; }
+  .norm-alias { font-weight: 600; color: var(--blue); min-width: 120px; }
+  .norm-title-text { flex: 1; color: var(--text); }
+  .norm-id-badge { font-family: monospace; font-size: .78rem; color: var(--muted); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; }
+  .badge-warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+
+  /* ── HISTORY ─────────────────────────────── */
+  #historyList { list-style: none; }
+  #historyList li { padding: 8px 10px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
+  #historyList li:hover { background: var(--bg); }
+  #historyList li .hist-date { font-size: .78rem; color: var(--muted); }
+
+  /* ── HELP ────────────────────────────────── */
+  .help-section { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 18px; }
+  .help-section h3 { font-family: 'Lexend', sans-serif; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; font-size: 1.1rem; }
+  .help-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  .help-table th, .help-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .help-table th { background: var(--bg); font-weight: 600; color: var(--navy); }
+  .help-table td:first-child { font-family: monospace; color: var(--blue); white-space: nowrap; }
+  .help-callout { background: #eef4ff; border: 1px solid #b8d0f7; border-radius: 5px; padding: 12px 16px; font-size: .9rem; color: var(--navy); margin-top: 12px; }
+  .help-callout strong { display: block; margin-bottom: 4px; }
+
+  /* ── MODAL VIEWER ────────────────────────── */
+  #viewerOverlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(10,12,20,.82);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  #viewerBox {
+    background: var(--card);
+    margin: 28px auto;
+    padding: 0;
+    width: 92%;
+    max-width: 860px;
+    border-radius: 8px;
+    box-shadow: 0 16px 60px rgba(0,0,0,.4);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 60vh;
+  }
+  .viewer-topbar {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .viewer-topbar h2 { font-family: 'Lexend', sans-serif; font-size: 1.05rem; font-weight: 600; flex: 1; line-height: 1.4; }
+  .viewer-topbar .vt-actions { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+  .btn-cite {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-cite:hover { background: #d35400; }
+  .btn-copy {
+    background: rgba(255,255,255,.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.3);
+    padding: 7px 14px;
+    border-radius: 4px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-copy:hover { background: rgba(255,255,255,.25); }
+  .btn-close-viewer {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.7);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+  }
+  .btn-close-viewer:hover { color: #fff; }
+  .viewer-hint {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 20px;
+    font-size: .82rem;
+    color: var(--muted);
+  }
+  #viewerBody {
+    font-family: 'Lexend', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text);
+    padding: 28px 36px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 72vh;
+  }
+  #viewerBody h4 { font-family: 'Lexend', sans-serif; font-size: 1rem; color: var(--navy); margin: 22px 0 8px; }
+  #viewerBody p  { margin-bottom: .9em; text-align: justify; }
+  #viewerBody ::selection { background: rgba(192,57,43,.18); }
+  .loading-msg { text-align: center; padding: 40px; color: var(--muted); font-style: italic; }
+  .viewer-error { text-align: center; padding: 30px; }
+  .viewer-error h3 { color: var(--accent); margin-bottom: 10px; }
+
+  /* scrollbar */
+  #viewerBody::-webkit-scrollbar { width: 6px; }
+  #viewerBody::-webkit-scrollbar-track { background: var(--bg); }
+  #viewerBody::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── MODAL FRAGMENTS PANEL ───────────────── */
+  #viewerFragsPanel {
+    display: none;
+    background: #f0f5fd;
+    border-bottom: 1px solid #c2d6f2;
+    padding: 10px 20px 12px;
+  }
+  #viewerFragsPanel.has-frags { display: block; }
+
+  .vfp-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .vfp-title {
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+    letter-spacing: .02em;
+  }
+  .vfp-badge {
+    background: var(--blue);
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 1px 8px;
+  }
+  .btn-vfp-copy {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    padding: 5px 13px;
+    border-radius: 4px;
+    font-size: .80rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .btn-vfp-copy:hover { background: #111d36; }
+  .btn-vfp-clear {
+    background: none;
+    border: 1px solid #b0c4e8;
+    color: var(--blue);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: .78rem;
+    cursor: pointer;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .btn-vfp-clear:hover { background: rgba(36,87,160,.08); }
+
+  #viewerFragsList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 130px;
+    overflow-y: auto;
+  }
+  #viewerFragsList::-webkit-scrollbar { width: 4px; }
+  #viewerFragsList::-webkit-scrollbar-thumb { background: #b8d0f7; border-radius: 2px; }
+
+  .vfl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    background: #fff;
+    border: 1px solid #c2d6f2;
+    border-left: 3px solid var(--blue);
+    border-radius: 3px;
+    padding: 5px 9px;
+    font-size: .82rem;
+    line-height: 1.45;
+  }
+  .vfl-num { font-weight: 700; color: var(--blue); min-width: 18px; font-size: .78rem; flex-shrink: 0; }
+  .vfl-text { flex: 1; font-style: italic; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vfl-del {
+    background: none; border: none; color: #aaa;
+    cursor: pointer; font-size: 1rem; line-height: 1; padding: 0 2px;
+    flex-shrink: 0; transition: color .12s;
+  }
+  .vfl-del:hover { color: var(--accent); }
+
+  /* status toast */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1e1e1e;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-size: .9rem;
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
+    pointer-events: none;
+    z-index: 2000;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .no-results { color: var(--muted); font-style: italic; padding: 16px 0; }
+
+  /* ── EXTRACTOR ───────────────────────────── */
+  .extractor-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+  .extractor-source {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .extractor-source h3 { font-family:'Lexend',sans-serif; color:var(--navy); margin-bottom:10px; font-size:1rem; }
+  .extractor-source p.hint { font-size:.82rem; color:var(--muted); margin-bottom:10px; }
+
+  #extractorText {
+    width: 100%;
+    min-height: 200px;
+    max-height: 340px;
+    font-family: 'Lexend', sans-serif;
+    font-size: .93rem;
+    line-height: 1.75;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--bg);
+    color: var(--text);
+    resize: vertical;
+    overflow-y: auto;
+  }
+  #extractorText:focus { outline: none; border-color: var(--blue); background: #fff; }
+  #extractorText ::selection { background: rgba(192,57,43,.22); }
+
+  .extractor-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-add-frag {
+    background: #2980b9;
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: .88rem;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-add-frag:hover { background: #1a6a9a; }
+
+  .extractor-fragments {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .extractor-fragments h3 { font-family:'Lexend',sans-serif; color:var(--navy); margin-bottom:12px; font-size:1rem; display:flex; align-items:center; justify-content:space-between; }
+  .frag-count { font-size:.8rem; color:var(--muted); font-weight:400; }
+
+  #fragList { list-style: none; display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .frag-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f9f7f4;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+    padding: 9px 12px;
+    font-size: .9rem;
+    line-height: 1.5;
+  }
+  .frag-item .frag-num { font-weight:700; color:var(--blue); min-width:22px; font-size:.85rem; }
+  .frag-item .frag-text { flex:1; font-style:italic; color:var(--text); }
+  .frag-item .frag-del {
+    background: none; border: none; color: var(--accent);
+    cursor: pointer; font-size:1.1rem; line-height:1; padding:0 2px;
+    flex-shrink:0;
+  }
+  .frag-item .frag-del:hover { color: #7b241c; }
+  .frag-empty { color:var(--muted); font-style:italic; font-size:.9rem; padding:6px 0; }
+
+  .extractor-result {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .extractor-result h3 { font-family:'Lexend',sans-serif; color:var(--navy); margin-bottom:12px; font-size:1rem; }
+
+  .result-title-row { display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+  .result-title-row label { font-size:.88rem; font-weight:600; color:var(--navy); white-space:nowrap; }
+  .result-title-row input {
+    flex:1; min-width:200px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Lexend', sans-serif;
+    font-size: .93rem;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .result-title-row input:focus { outline:none; border-color:var(--blue); background:#fff; }
+
+  #citaPreview {
+    background: #fafafa;
+    border: 1px dashed var(--border);
+    border-radius: 5px;
+    padding: 14px 16px;
+    font-size: .93rem;
+    line-height: 1.7;
+    color: var(--text);
+    font-style: italic;
+    min-height: 52px;
+    margin-bottom: 14px;
+    word-break: break-word;
+  }
+  #citaPreview em { font-style: italic; }
+  #citaPreview .cita-separator { color: var(--muted); font-style: normal; font-weight: 700; margin: 0 2px; }
+  #citaPreview .cita-title { font-style: normal; color: var(--navy); font-weight: 500; }
+
+  .btn-copy-cita {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: .88rem;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-copy-cita:hover { background: #111d36; }
+  .btn-clear-frags {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-clear-frags:hover { background: #fdf0ee; }
+</style>
 </head>
 <body>
 
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-icon">⚖️</div>
+      <div>
+        <div class="logo">Buscador <span>BOE</span></div>
+        <div class="subtitle">Visor jurídico · Citas y extractos de normas</div>
+      </div>
+    </div>
+    <div class="header-pills">
+      <span class="header-pill">36 normas</span>
+      <span class="header-pill">Texto consolidado</span>
+      <span class="header-pill">Citas académicas</span>
+    </div>
+  </div>
+</header>
+
 <div class="container">
-    <h1>🔍 Buscador BOE</h1>
-    
-    <div class="search-box">
-        <input type="text" id="mainInput" placeholder="Ej: CE art 15, LPRL cap II...">
-        <button class="primary-btn" onclick="performSearch()">BUSCAR</button>
+  <div class="search-wrap">
+    <input type="text" id="mainInput" placeholder="Ej: CE art 15  ·  LPRL cap II  ·  ET art 15-20  ·  Código Civil tit IV">
+    <button class="btn-primary" onclick="performSearch()">BUSCAR</button>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('results')">Resultados</button>
+    <button class="tab-btn" onclick="switchTab('manage')">Normas</button>
+    <button class="tab-btn" onclick="switchTab('history')">Historial</button>
+    <button class="tab-btn" onclick="switchTab('help')">❓ Manual</button>
+    <button class="tab-btn" onclick="switchTab('extractor')">✂️ Extractor</button>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div id="pane-results" class="tab-pane active">
+    <div id="resultsList"></div>
+  </div>
+
+  <!-- GESTIONAR NORMAS -->
+  <div id="pane-manage" class="tab-pane">
+    <div class="manage-form">
+      <h3>Añadir / Editar norma</h3>
+      <div class="form-row"><label>Alias de búsqueda</label><input type="text" id="editAlias" placeholder="Ej: CE, LPRL, ET"></div>
+      <div class="form-row"><label>Título completo</label><input type="text" id="editTitle" placeholder="Ej: Constitución Española"></div>
+      <div class="form-row"><label>ID BOE</label><input type="text" id="editId" placeholder="Ej: BOE-A-1978-31229 (dejar vacío si es norma UE)"></div>
+      <div class="form-row"><label>URL externa (opcional, para normas UE sin ID BOE)</label><input type="text" id="editUrl" placeholder="Ej: https://eur-lex.europa.eu/..."></div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveNorm()">GUARDAR</button>
+        <button class="btn-sm" onclick="clearForm()">Limpiar</button>
+        <button class="btn-sm" onclick="exportData()">Exportar JSON</button>
+        <button class="btn-sm" onclick="document.getElementById('fileInput').click()">Importar JSON</button>
+        <input type="file" id="fileInput" style="display:none" onchange="importData(this)" accept=".json">
+      </div>
+    </div>
+    <h3 style="font-family:'Lexend',sans-serif; color:var(--navy); margin-bottom:12px;">Normas registradas (<span id="normCount">0</span>)</h3>
+    <div id="localNormsList"></div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div id="pane-history" class="tab-pane">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="font-family:'Lexend',sans-serif; color:var(--navy);">Búsquedas recientes</h3>
+      <button class="btn-sm danger" onclick="clearHistory()">Borrar historial</button>
+    </div>
+    <ul id="historyList"></ul>
+  </div>
+
+  <!-- MANUAL DE USO -->
+  <div id="pane-help" class="tab-pane">
+    <div class="help-section">
+      <h3>📖 Cómo buscar</h3>
+      <table class="help-table">
+        <thead><tr><th>Ejemplo de búsqueda</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td>CE art 15</td><td>Muestra el artículo 15 de la Constitución Española</td></tr>
+          <tr><td>LPRL art 15-20</td><td>Muestra los artículos 15 al 20 de la LPRL (rango)</td></tr>
+          <tr><td>LPRL art 15 al 20</td><td>Equivalente: rango con «al»</td></tr>
+          <tr><td>ET cap II</td><td>Capítulo II del Estatuto de los Trabajadores</td></tr>
+          <tr><td>Código Civil tit IV</td><td>Título IV del Código Civil</td></tr>
+          <tr><td>LEC sec 2</td><td>Sección 2 de la LEC</td></tr>
+          <tr><td>CE</td><td>Muestra la norma sin referencia interna (inicio)</td></tr>
+        </tbody>
+      </table>
+      <div class="help-callout">
+        <strong>💡 Abreviaciones reconocidas</strong>
+        art / art. / artículo · cap / cap. / capítulo · tit / tit. / título · sec / sec. / sección<br>
+        Los números romanos funcionan en capítulos y títulos: cap III, tit VI
+      </div>
     </div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('results')">Resultados</div>
-        <div class="tab" onclick="switchTab('manage')">Gestionar Normas</div>
-        <div class="tab" onclick="switchTab('history')">Historial</div>
+    <div class="help-section">
+      <h3>💬 Cómo citar y entrecomillar</h3>
+      <ol style="padding-left:20px; line-height:2; font-size:.95rem;">
+        <li>Abre el texto con <strong>«Ver texto aquí»</strong></li>
+        <li>Selecciona con el ratón el fragmento exacto que quieres citar</li>
+        <li>Pulsa <strong>💬 Entrecomillar</strong> — se copia al portapapeles como:<br>
+          <em style="font-size:.88rem;">&quot;El empresario deberá garantizar…&quot; (art. 14 LPRL).</em>
+        </li>
+        <li>Si visualizas un rango de artículos, el sistema detecta automáticamente a qué artículo pertenece el texto seleccionado</li>
+        <li>Con <strong>📋 Copiar texto</strong> obtienes el fragmento completo sin formato de cita</li>
+      </ol>
+      <div class="help-callout">
+        <strong>⚠️ Importante sobre el visor</strong>
+        El texto se carga desde el BOE mediante un proxy público. Si la carga falla, usa el botón <em>ABRIR EN BOE</em> para ir a la web oficial. El contenido mostrado corresponde al texto vigente consolidado publicado en el BOE.
+      </div>
     </div>
 
-    <!-- RESULTADOS -->
-    <div id="tab-results" class="tab-content active">
-        <div id="resultsList"></div>
+    <div class="help-section">
+      <h3>🔧 Gestionar normas</h3>
+      <p style="font-size:.93rem; line-height:1.7;">En la pestaña <strong>Normas</strong> puedes añadir, editar o eliminar normas. Para normas de derecho de la UE que no tienen ID BOE (como el RGPD), introduce la URL externa y la aplicación abrirá esa URL en una nueva pestaña. Puedes exportar e importar tu lista completa en formato JSON.</p>
+    </div>
+  </div>
+  <!-- EXTRACTOR DE CITAS -->
+  <div id="pane-extractor" class="tab-pane">
+    <div class="extractor-wrap">
+
+      <!-- Zona de texto fuente -->
+      <div class="extractor-source">
+        <h3>📄 Texto fuente</h3>
+        <p class="hint">Pega aquí el texto del que quieres extraer fragmentos. Selecciona con el ratón cada trozo que quieras citar y pulsa <strong>Añadir fragmento</strong>.</p>
+        <textarea id="extractorText" placeholder="Pega aquí el artículo, norma o texto jurídico…"></textarea>
+        <div class="extractor-toolbar">
+          <button class="btn-add-frag" onclick="addFragment()">➕ Añadir fragmento seleccionado</button>
+          <span style="font-size:.82rem; color:var(--muted);">Selecciona texto en el área de arriba y pulsa el botón</span>
+        </div>
+      </div>
+
+      <!-- Lista de fragmentos -->
+      <div class="extractor-fragments">
+        <h3>
+          Fragmentos seleccionados
+          <span class="frag-count" id="fragCountLabel">0 fragmentos</span>
+        </h3>
+        <ul id="fragList">
+          <li class="frag-empty" id="fragEmpty">Aún no has añadido ningún fragmento.</li>
+        </ul>
+        <button class="btn-clear-frags" onclick="clearFragments()">🗑 Borrar todos</button>
+      </div>
+
+      <!-- Resultado y copia -->
+      <div class="extractor-result">
+        <h3>📋 Cita resultante</h3>
+        <div class="result-title-row">
+          <label for="citaTitulo">Título del texto:</label>
+          <input type="text" id="citaTitulo" placeholder="Ej: RDL 2/2015 — Estatuto de los Trabajadores" oninput="renderCitaPreview()">
+        </div>
+        <div id="citaPreview"><span style="color:var(--muted); font-style:normal; font-size:.88rem;">La cita aparecerá aquí cuando añadas fragmentos…</span></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-copy-cita" onclick="copyCita()">📋 Copiar cita al portapapeles</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<div id="viewerOverlay" onclick="overlayClick(event)">
+  <div id="viewerBox">
+    <div class="viewer-topbar">
+      <h2 id="viewerTitle">Cargando…</h2>
+      <div class="vt-actions">
+        <button class="btn-cite" onclick="addViewerFragment()" title="Añade el texto seleccionado como fragmento de cita">➕ Añadir fragmento</button>
+        <button class="btn-copy" onclick="copyAllText()" title="Copia todo el texto visible">📋 Copiar todo</button>
+        <button class="btn-close-viewer" onclick="closeViewer()" title="Cerrar">&times;</button>
+      </div>
+    </div>
+    <div class="viewer-hint">Selecciona texto y pulsa <strong>➕ Añadir fragmento</strong> tantas veces como quieras · Luego pulsa <strong>📋 Copiar cita</strong> en el panel inferior.</div>
+
+    <!-- Panel acumulador de fragmentos (visible sólo cuando hay ≥1 fragmento) -->
+    <div id="viewerFragsPanel">
+      <div class="vfp-header">
+        <span class="vfp-title">✂️ Fragmentos seleccionados</span>
+        <span class="vfp-badge" id="viewerFragsBadge">0</span>
+        <button class="btn-vfp-copy" onclick="copyViewerCita()">📋 Copiar cita</button>
+        <button class="btn-vfp-clear" onclick="clearViewerFragments()">🗑 Limpiar</button>
+      </div>
+      <ul id="viewerFragsList"></ul>
     </div>
 
-    <!-- GESTIONAR -->
-    <div id="tab-manage" class="tab-content">
-        <h3>Añadir / Editar Norma</h3>
-        <div class="form-row">
-            <label>Alias:</label>
-            <input type="text" id="editAlias" placeholder="Ej: CE, LPRL">
-        </div>
-        <div class="form-row">
-            <label>Título:</label>
-            <input type="text" id="editTitle" placeholder="Ej: Constitución Española">
-        </div>
-        <div class="form-row">
-            <label>ID BOE:</label>
-            <input type="text" id="editId" placeholder="Ej: BOE-A-1978-31229">
-        </div>
-        <div style="margin: 15px 0;">
-            <button class="primary-btn" onclick="saveNorm()">GUARDAR</button>
-            <button class="btn-small" onclick="clearForm()">LIMPIAR</button>
-        </div>
-        <h3>Lista (<span id="normCount">0</span>)</h3>
-        <div id="localNormsList"></div>
-        <div style="margin-top: 20px;">
-            <button class="btn-small" onclick="exportData()">Exportar JSON</button>
-            <button class="btn-small" onclick="document.getElementById('fileInput').click()">Importar JSON</button>
-            <input type="file" id="fileInput" style="display:none" onchange="importData(this)">
-        </div>
-    </div>
-
-    <!-- HISTORIAL -->
-    <div id="tab-history" class="tab-content">
-        <button class="btn-small" onclick="clearHistory()" style="float:right;">Borrar Historial</button>
-        <div style="clear:both;"></div>
-        <ul id="historyList" style="list-style:none; padding:0;"></ul>
-    </div>
+    <div id="viewerBody"></div>
+  </div>
 </div>
 
-<!-- VISOR MODAL -->
-<div id="viewerOverlay" onclick="closeViewer(event)">
-    <div id="viewerContent">
-        <span class="closeViewer" onclick="closeViewerDirect()">&times;</span>
-        <h2 id="viewerTitle" style="margin-top:0;">Texto</h2>
-        <div id="viewerBody" class="legal-text"></div>
-    </div>
-</div>
+<div id="toast"></div>
 
 <script>
-    // --- DATOS ---
-    const initialData = [
-        { alias: "CE", title: "Constitución Española", id: "BOE-A-1978-31229" },
-        { alias: "LPRL", title: "Ley 31/1995, de Prevención de Riesgos Laborales", id: "BOE-A-1995-24292" },
-        { alias: "LEC", title: "Ley 1/2000, de Enjuiciamiento Civil", id: "BOE-A-2000-215" },
-        { alias: "LOPJ", title: "Ley Orgánica 6/1985, del Poder Judicial", id: "BOE-A-1985-12666" },
-        { alias: "Ley Economía Sostenible", title: "Ley 2/2011, de Economía Sostenible", id: "BOE-A-2011-4839" },
-        { alias: "PGC", title: "Plan General de Contabilidad", id: "BOE-A-2007-17430" },
-        { alias: "Código Civil", title: "Código Civil", id: "BOE-A-1889-4763" },
-        { alias: "Código de Comercio", title: "Código de Comercio", id: "BOE-A-1885-3146" },
-        { alias: "LSSI", title: "Ley 34/2002, de Servicios de la Sociedad de la Información", id: "BOE-A-2002-13758" },
-        { alias: "Comercio Minorista", title: "Ley 7/1996, de Ordenación del Comercio Minorista", id: "BOE-A-1996-1539" },
-        { alias: "Ley Sociedades Capital", title: "Texto Refundido Ley Sociedades Capital", id: "BOE-A-2010-10544" },
-        { alias: "Ley Cooperativas", title: "Ley 27/1999, de Cooperativas", id: "BOE-A-1999-13888" },
-        { alias: "Reglamento RM", title: "Reglamento del Registro Mercantil", id: "BOE-A-1996-20930" },
-        { alias: "Ley Crea y Crece", title: "Ley 18/2022, de creación y crecimiento de empresas", id: "BOE-A-2022-16096" },
-        { alias: "Ley Sociedades Laborales", title: "Ley 44/2015, de Sociedades Laborales", id: "" },
-        { alias: "LGSS", title: "Ley General de la Seguridad Social", id: "BOE-A-2015-11724" },
-        { alias: "Ley Empleo", title: "Ley de Empleo", id: "BOE-A-2015-11723" },
-        { alias: "Estatuto Trabajadores", title: "Estatuto de los Trabajadores", id: "BOE-A-2015-11722" },
-        { alias: "RETA", title: "Estatuto del Trabajo Autónomo", id: "BOE-A-2007-13148" },
-        { alias: "ETT", title: "Ley de Empresas de Trabajo Temporal", id: "BOE-A-1994-12601" },
-        { alias: "Ley Impuesto Sociedades", title: "Ley del Impuesto sobre Sociedades", id: "BOE-A-2014-12328" },
-        { alias: "Reglamento IRPF", title: "Reglamento del IRPF", id: "BOE-A-2007-6785" },
-        { alias: "LIRPF", title: "Ley del IRPF", id: "BOE-A-2006-21542" },
-        { alias: "Reglamento IVA", title: "Reglamento del IVA", id: "BOE-A-1992-28740" },
-        { alias: "LIVA", title: "Ley del IVA", id: "BOE-A-1992-28738" },
-        { alias: "Ley General Tributaria", title: "Ley General Tributaria", id: "BOE-A-2003-23432" },
-        { alias: "Facturación", title: "Reglamento de Facturación", id: "BOE-A-2012-14669" },
-        { alias: "LCSP", title: "Ley de Contratos del Sector Público", id: "BOE-A-2017-12903" },
-        { alias: "Ley Fomento Financiación", title: "Ley de Fomento de la Financiación Empresarial", id: "BOE-A-2015-4579" },
-        { alias: "Ley Emprendedores", title: "Ley de Apoyo a los Emprendedores", id: "BOE-A-2013-10054" },
-        { alias: "Ley Startups", title: "Ley de Fomento del Ecosistema de Empresas Emergentes", id: "BOE-A-2022-24139" },
-        { alias: "RGPD", title: "Reglamento (UE) 2016/679", id: "" },
-        { alias: "LOPDGDD", title: "Ley Orgánica de Protección de Datos", id: "BOE-A-2018-16673" },
-        { alias: "Ley Igualdad Trato", title: "Ley integral para la igualdad de trato", id: "BOE-A-2022-11950" },
-        { alias: "RD Igualdad Retributiva", title: "RD de igualdad retributiva", id: "BOE-A-2020-12215" },
-        { alias: "RD Planes Igualdad", title: "RD de planes de igualdad", id: "BOE-A-2020-12214" }
-    ];
+// ═══════════════════════════════════════════════════════════
+//  DATOS INICIALES  (IDs BOE corregidos y verificados)
+// ═══════════════════════════════════════════════════════════
+const INITIAL_NORMS = [
+  { alias:"CE",                    title:"Constitución Española",                                    id:"BOE-A-1978-31229",  url:"" },
+  { alias:"LPRL",                  title:"Ley 31/1995, de Prevención de Riesgos Laborales",          id:"BOE-A-1995-24292",  url:"" },
+  { alias:"LEC",                   title:"Ley 1/2000, de Enjuiciamiento Civil",                      id:"BOE-A-2000-323",    url:"" },
+  { alias:"LOPJ",                  title:"Ley Orgánica 6/1985, del Poder Judicial",                  id:"BOE-A-1985-12666",  url:"" },
+  { alias:"Ley Economía Sostenible", title:"Ley 2/2011, de Economía Sostenible",                     id:"BOE-A-2011-4839",   url:"" },
+  { alias:"PGC",                   title:"Plan General de Contabilidad",                             id:"BOE-A-2007-17430",  url:"" },
+  { alias:"Código Civil",          title:"Real Decreto de 24 de julio de 1889, Código Civil",        id:"BOE-A-1889-4763",   url:"" },
+  { alias:"Código de Comercio",    title:"Real Decreto de 22 de agosto de 1885, Código de Comercio", id:"BOE-A-1885-3146",   url:"" },
+  { alias:"LSSI",                  title:"Ley 34/2002, de Servicios de la Sociedad de la Información", id:"BOE-A-2002-13758", url:"" },
+  { alias:"Comercio Minorista",    title:"Ley 7/1996, de Ordenación del Comercio Minorista",         id:"BOE-A-1996-1539",   url:"" },
+  { alias:"Ley Sociedades Capital", title:"RDL 1/2010 — Texto Refundido Ley de Sociedades de Capital", id:"BOE-A-2010-10544", url:"" },
+  { alias:"Ley Cooperativas",      title:"Ley 27/1999, de Cooperativas",                             id:"BOE-A-1999-13888",  url:"" },
+  { alias:"Reglamento RM",         title:"Reglamento del Registro Mercantil",                        id:"BOE-A-1996-20930",  url:"" },
+  { alias:"Ley Crea y Crece",      title:"Ley 18/2022, de creación y crecimiento de empresas",       id:"BOE-A-2022-16096",  url:"" },
+  { alias:"Ley Sociedades Laborales", title:"Ley 44/2015, de Sociedades Laborales y Participadas",  id:"BOE-A-2015-11071",  url:"" },
+  { alias:"LGSS",                  title:"RDL 8/2015 — Ley General de la Seguridad Social",         id:"BOE-A-2015-11724",  url:"" },
+  { alias:"Ley Empleo",            title:"Ley 3/2023, de Empleo",                                    id:"BOE-A-2023-5365",   url:"" },
+  { alias:"ET",                    title:"RDL 2/2015 — Estatuto de los Trabajadores",               id:"BOE-A-2015-11430",  url:"" },
+  { alias:"RETA",                  title:"Ley 20/2007 — Estatuto del Trabajo Autónomo",             id:"BOE-A-2007-13148",  url:"" },
+  { alias:"ETT",                   title:"Ley 14/1994, de Empresas de Trabajo Temporal",             id:"BOE-A-1994-12601",  url:"" },
+  { alias:"Ley Impuesto Sociedades", title:"Ley 27/2014, del Impuesto sobre Sociedades",            id:"BOE-A-2014-12328",  url:"" },
+  { alias:"Reglamento IRPF",       title:"Real Decreto 439/2007 — Reglamento del IRPF",             id:"BOE-A-2007-6785",   url:"" },
+  { alias:"LIRPF",                 title:"Ley 35/2006, del IRPF",                                    id:"BOE-A-2006-21542",  url:"" },
+  { alias:"Reglamento IVA",        title:"Real Decreto 1624/1992 — Reglamento del IVA",             id:"BOE-A-1992-28740",  url:"" },
+  { alias:"LIVA",                  title:"Ley 37/1992, del IVA",                                     id:"BOE-A-1992-28738",  url:"" },
+  { alias:"LGT",                   title:"Ley 58/2003, General Tributaria",                          id:"BOE-A-2003-23432",  url:"" },
+  { alias:"Facturación",           title:"Real Decreto 1619/2012 — Reglamento de Facturación",      id:"BOE-A-2012-14669",  url:"" },
+  { alias:"LCSP",                  title:"Ley 9/2017, de Contratos del Sector Público",              id:"BOE-A-2017-12903",  url:"" },
+  { alias:"Ley Fomento Financiación", title:"Ley 5/2015, de Fomento de la Financiación Empresarial", id:"BOE-A-2015-4579",  url:"" },
+  { alias:"Ley Emprendedores",     title:"Ley 14/2013, de Apoyo a los Emprendedores",               id:"BOE-A-2013-10054",  url:"" },
+  { alias:"Ley Startups",          title:"Ley 28/2022, Fomento del Ecosistema de Empresas Emergentes", id:"BOE-A-2022-24139", url:"" },
+  { alias:"RGPD",                  title:"Reglamento (UE) 2016/679 — Protección de datos (RGPD)",  id:"",                  url:"https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX%3A32016R0679" },
+  { alias:"LOPDGDD",               title:"LO 3/2018, de Protección de Datos Personales",            id:"BOE-A-2018-16673",  url:"" },
+  { alias:"Ley Igualdad Trato",    title:"Ley 15/2022, integral para la igualdad de trato",         id:"BOE-A-2022-11950",  url:"" },
+  { alias:"RD Igualdad Retributiva", title:"RD 902/2020, de igualdad retributiva",                  id:"BOE-A-2020-12215",  url:"" },
+  { alias:"RD Planes Igualdad",    title:"RD 901/2020, de planes de igualdad",                      id:"BOE-A-2020-12214",  url:"" }
+];
 
-    let localNorms = JSON.parse(localStorage.getItem('boe_localNorms')) || initialData;
-    let searchHistory = JSON.parse(localStorage.getItem('boe_history')) || [];
-    let editingIndex = -1;
+// ═══════════════════════════════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════════════════════════════
+let localNorms = JSON.parse(localStorage.getItem('boe_norms_v4')) || null;
+if (!localNorms) { localNorms = INITIAL_NORMS; persist(); }
 
-    // --- LÓGICA DE PARSING ---
+let searchHistory = JSON.parse(localStorage.getItem('boe_history_v4')) || [];
+let editingIndex  = -1;
+let currentCtx    = { anchorText: '', alias: '', normId: '', normTitle: '', isRange: false, startNum: 0, endNum: 0 };
 
-    function getAnchor(text) {
-        const t = text.toLowerCase();
-        const mArt = t.match(/art[íi]culo?\s*(\d+)|art\s*(\d+)|a\.?\s*(\d+)/);
-        if (mArt) return { id: "#a" + (mArt[1] || mArt[2] || mArt[3]), text: "Artículo " + (mArt[1] || mArt[2] || mArt[3]) };
-        const mCap = t.match(/cap[íi]tulo?\s*([ivxlcdm]+|\d+)|c\.?\s*([ivxlcdm]+|\d+)/);
-        if (mCap) return { id: "#c" + (mCap[1] || mCap[2]).toLowerCase(), text: "Capítulo " + (mCap[1] || mCap[2]) };
-        const mTit = t.match(/t[íi]tulo?\s*([ivxlcdm]+|\d+)|t\.?\s*([ivxlcdm]+|\d+)/);
-        if (mTit) return { id: "#t" + (mTit[1] || mTit[2]).toLowerCase(), text: "Título " + (mTit[1] || mTit[2]) };
-        const mSec = t.match(/secci[óo]n?\s*(\d+)|s\.?\s*(\d+)/);
-        if (mSec) return { id: "#s" + (mSec[1] || mSec[2]), text: "Sección " + (mSec[1] || mSec[2]) };
-        return { id: "", text: "Inicio de la norma" };
+// ═══════════════════════════════════════════════════════════
+//  PARSING DE BÚSQUEDA
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Analiza el texto de búsqueda y extrae la referencia estructural
+ * Retorna { anchorId, anchorIdEnd, label, type }
+ */
+function parseQuery(raw) {
+  const t = raw.toLowerCase().trim();
+
+  // 1. Rango de artículos: "art 15-20" / "art 15 al 20" / "arts. 15 a 20"
+  const mRange = t.match(/arts?\.?\s+(\d+)\s*(?:-|al|a)\s*(\d+)/);
+  if (mRange) {
+    return { anchorId: '#a'+mRange[1], anchorIdEnd: '#a'+mRange[2], label: `Arts. ${mRange[1]} al ${mRange[2]}`, type:'a', startNum: +mRange[1], endNum: +mRange[2] };
+  }
+
+  // 2. Artículo único: "art 15" / "artículo 15" / "art. 15"
+  const mArt = t.match(/art[íi]?c?u?l?o?\.?\s+(\d+)/);
+  if (mArt) {
+    return { anchorId: '#a'+mArt[1], anchorIdEnd: null, label: 'Art. '+mArt[1], type:'a', startNum: +mArt[1], endNum: +mArt[1] };
+  }
+
+  // 3. Capítulo: "cap II" / "capítulo 3"
+  const mCap = t.match(/cap[íi]?t?u?l?o?\.?\s+([ivxlcdm]+|\d+)/i);
+  if (mCap) {
+    const ref = mCap[1].toLowerCase();
+    return { anchorId: '#c'+ref, anchorIdEnd: null, label: 'Cap. '+mCap[1].toUpperCase(), type:'c', startNum:0, endNum:0 };
+  }
+
+  // 4. Título: "tit IV" / "título 2"
+  const mTit = t.match(/t[íi]?t?u?l?o?\.?\s+([ivxlcdm]+|\d+)/i);
+  if (mTit) {
+    const ref = mTit[1].toLowerCase();
+    return { anchorId: '#t'+ref, anchorIdEnd: null, label: 'Tít. '+mTit[1].toUpperCase(), type:'t', startNum:0, endNum:0 };
+  }
+
+  // 5. Sección: "sec 2" / "sección 3"
+  const mSec = t.match(/sec(?:c?i?[oó]?n?)?\.?\s+(\d+)/i);
+  if (mSec) {
+    return { anchorId: '#s'+mSec[1], anchorIdEnd: null, label: 'Secc. '+mSec[1], type:'s', startNum:0, endNum:0 };
+  }
+
+  return { anchorId: '', anchorIdEnd: null, label: 'Inicio de la norma', type:'root', startNum:0, endNum:0 };
+}
+
+/**
+ * Extrae el alias/nombre de la norma del texto de búsqueda
+ */
+function extractAlias(raw) {
+  const t = raw.trim();
+  // Intenta match exacto (case-insensitive)
+  let m = localNorms.find(n => n.alias.toLowerCase() === t.toLowerCase());
+  if (m) return m.alias;
+  // Match parcial: busca alias que aparezca en el texto de búsqueda
+  const candidates = localNorms
+    .filter(n => n.alias && t.toLowerCase().includes(n.alias.toLowerCase()))
+    .sort((a,b) => b.alias.length - a.alias.length);
+  if (candidates.length > 0) return candidates[0].alias;
+  // Match por título
+  const byTitle = localNorms
+    .filter(n => n.title && n.title.toLowerCase().includes(t.toLowerCase()))
+    .sort((a,b) => a.title.length - b.title.length);
+  if (byTitle.length > 0) return byTitle[0].alias;
+  return t;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BÚSQUEDA PRINCIPAL
+// ═══════════════════════════════════════════════════════════
+function performSearch() {
+  const raw = document.getElementById('mainInput').value.trim();
+  if (!raw) return;
+
+  const parsed = parseQuery(raw);
+  const alias  = extractAlias(raw);
+
+  addToHistory(raw);
+  switchTab('results');
+
+  const results = localNorms.filter(n => {
+    const ai = n.alias.toLowerCase();
+    const ti = (n.title || '').toLowerCase();
+    const q  = alias.toLowerCase();
+    return ai === q || ai.includes(q) || ti.includes(q) || q.includes(ai);
+  });
+
+  const container = document.getElementById('resultsList');
+  container.innerHTML = '';
+
+  if (results.length === 0) {
+    container.innerHTML = '<p class="no-results">No se encontraron normas para «'+escHTML(raw)+'».</p>';
+    return;
+  }
+
+  results.forEach(norm => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    const boeUrl = norm.id ? `https://www.boe.es/buscar/act.php?id=${norm.id}${parsed.anchorId}` : '';
+    const extUrl = norm.url || '';
+
+    let actionsHTML = '';
+    if (norm.id) {
+      actionsHTML += `<a class="btn-boe" href="${boeUrl}" target="_blank" rel="noopener">↗ Abrir en BOE</a>`;
+      actionsHTML += `<button class="btn-view" onclick="openViewer('${norm.id}','${encodeAnchor(parsed.anchorId)}','${encodeAnchor(parsed.anchorIdEnd)}','${encodeAnchor(parsed.label)}','${escAttr(norm.alias)}','${escAttr(norm.title)}')">📄 Ver texto aquí</button>`;
+    }
+    if (extUrl) {
+      actionsHTML += `<a class="btn-externo" href="${extUrl}" target="_blank" rel="noopener">↗ Abrir fuente externa</a>`;
+    }
+    if (!norm.id && !extUrl) {
+      actionsHTML += `<span style="color:var(--muted); font-size:.85rem; font-style:italic;">Sin ID BOE — añade URL en "Normas"</span>`;
     }
 
-    function cleanText(text) {
-        let t = text.toLowerCase();
-        const refs = ['art', 'articulo', 'cap', 'capitulo', 'tit', 'titulo', 'sec', 'seccion', 'disposicion', 'adicional', 'transitoria', 'final', 'derogatoria'];
-        refs.forEach(r => { t = t.replace(new RegExp(r + '.*', 'gi'), ''); });
-        return t.trim();
+    card.innerHTML = `
+      <div class="r-title">${escHTML(norm.title)}</div>
+      <span class="r-id">${norm.id || '(sin ID BOE)'}</span>
+      <div class="r-ref">Referencia buscada: <strong>${escHTML(parsed.label)}</strong></div>
+      <div class="result-actions">${actionsHTML}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function encodeAnchor(v) { return v ? encodeURIComponent(v) : ''; }
+
+// ═══════════════════════════════════════════════════════════
+//  EXTRACCIÓN DE CONTENIDO BOE
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Determina si un elemento DOM es un "ancla" de nivel de artículo/capítulo/título/sección
+ */
+function isAnchorEl(el) {
+  if (!el) return false;
+  const id = (el.id || el.getAttribute('name') || '').toLowerCase();
+  // Patrones BOE: a15, cii, ti, s2, etc.
+  return /^a\d+$/.test(id) || /^c([ivxlcdm]+|\d+)$/.test(id) || /^t([ivxlcdm]+|\d+)$/.test(id) || /^s\d+$/.test(id);
+}
+
+/**
+ * Extrae el fragmento de contenido del documento BOE
+ */
+function extractFragment(doc, startAnchorId, endAnchorId) {
+  const clean = id => (id||'').replace('#','').toLowerCase();
+  const sid = clean(startAnchorId);
+  const eid = clean(endAnchorId);
+
+  // Encontrar elemento de inicio (por id o name)
+  let startEl = (sid ? doc.getElementById(sid) : null) || (sid ? doc.querySelector(`[name="${sid}"]`) : null);
+
+  // Si no lo encontramos directamente, intenta variantes (algunos BOE usan mayúsculas en romanos)
+  if (!startEl && sid) {
+    startEl = doc.getElementById(sid.toUpperCase()) || doc.querySelector(`[name="${sid.toUpperCase()}"]`);
+  }
+  if (!startEl) return null;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'boe-fragment';
+
+  if (!eid) {
+    // ── Elemento único ──
+    // Si el elemento es un div con contenido rico, usar tal cual
+    if (startEl.tagName === 'DIV' && startEl.querySelectorAll('p,h4,h3,h2').length > 0) {
+      wrap.appendChild(startEl.cloneNode(true));
+    } else {
+      // Elemento + hermanos siguientes hasta próxima ancla
+      wrap.appendChild(startEl.cloneNode(true));
+      let sib = startEl.nextElementSibling;
+      let safety = 0;
+      while (sib && !isAnchorEl(sib) && safety < 200) {
+        wrap.appendChild(sib.cloneNode(true));
+        sib = sib.nextElementSibling;
+        safety++;
+      }
+    }
+  } else {
+    // ── Rango ──
+    let endEl = doc.getElementById(eid) || doc.querySelector(`[name="${eid}"]`) || doc.getElementById(eid.toUpperCase());
+
+    // Recorremos desde startEl hasta endEl (inclusive) + contenido de endEl
+    let cur = startEl;
+    let safety = 0;
+    let passedEnd = false;
+
+    while (cur && safety < 500) {
+      safety++;
+      const curId = (cur.id || cur.getAttribute('name') || '').toLowerCase();
+
+      if (passedEnd) {
+        // Después del endEl: recoger sólo hasta próxima ancla (contenido del último art del rango)
+        if (isAnchorEl(cur)) break;
+        wrap.appendChild(cur.cloneNode(true));
+      } else {
+        wrap.appendChild(cur.cloneNode(true));
+        if (curId === eid) { passedEnd = true; }
+      }
+      cur = cur.nextElementSibling;
+    }
+  }
+
+  return wrap;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PROXIES Y CARGA DEL BOE
+// ═══════════════════════════════════════════════════════════
+const PROXIES = [
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`
+];
+
+async function fetchWithProxy(url) {
+  let lastError;
+  for (const proxyFn of PROXIES) {
+    try {
+      const resp = await fetch(proxyFn(url), { signal: AbortSignal.timeout(12000) });
+      if (resp.ok) {
+        const text = await resp.text();
+        if (text.length > 500) return text; // sanity check
+      }
+    } catch(e) { lastError = e; }
+  }
+  throw new Error('No se pudo cargar mediante ningún proxy. ' + (lastError?.message||''));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VISOR MODAL
+// ═══════════════════════════════════════════════════════════
+async function openViewer(normId, anchorIdEnc, anchorIdEndEnc, labelEnc, alias, normTitle) {
+  const anchorId    = anchorIdEnc    ? decodeURIComponent(anchorIdEnc)    : '';
+  const anchorIdEnd = anchorIdEndEnc ? decodeURIComponent(anchorIdEndEnc) : '';
+  const label       = labelEnc       ? decodeURIComponent(labelEnc)       : 'Inicio';
+
+  const isRange = !!(anchorIdEnd && anchorIdEnd !== anchorId);
+  const startNum = parseInt((anchorId||'').replace('#a','')) || 0;
+  const endNum   = parseInt((anchorIdEnd||'').replace('#a','')) || startNum;
+
+  currentCtx = { anchorText: label, alias, normId, normTitle, isRange, startNum, endNum, anchorId };
+
+  const overlay = document.getElementById('viewerOverlay');
+  const body    = document.getElementById('viewerBody');
+  const titleEl = document.getElementById('viewerTitle');
+
+  overlay.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  titleEl.textContent = `${label} · ${alias} · ${normTitle}`;
+  body.innerHTML = '<div class="loading-msg">⏳ Cargando texto desde el BOE…</div>';
+
+  // Limpiar fragmentos del visor al abrir un nuevo documento
+  clearViewerFragments();
+
+  if (!anchorId) {
+    body.innerHTML = '<div class="viewer-error"><p style="color:var(--muted)">No se especificó referencia interna. Usa el botón «Abrir en BOE» para acceder a la norma completa.</p></div>';
+    return;
+  }
+
+  const boeUrl = `https://www.boe.es/buscar/act.php?id=${normId}`;
+
+  try {
+    const html = await fetchWithProxy(boeUrl);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Limpiar basura del HTML remoto
+    doc.querySelectorAll('script,style,iframe,link,meta,noscript,nav,header,footer,.nav,.footer,.header').forEach(e => e.remove());
+
+    const fragment = extractFragment(doc, anchorId, anchorIdEnd || null);
+
+    if (!fragment || fragment.innerHTML.trim() === '') {
+      body.innerHTML = `
+        <div class="viewer-error">
+          <h3>Elemento no encontrado</h3>
+          <p>No se encontró el identificador <code>${anchorId}</code> en este documento.</p>
+          <p style="margin-top:10px;color:var(--muted);font-size:.9rem;">El BOE puede usar un esquema de anclas diferente para esta norma. Prueba a <a href="${boeUrl}${anchorId}" target="_blank">abrirla directamente</a>.</p>
+        </div>`;
+      return;
     }
 
-    function findAlias(text) {
-        const t = text.trim();
-        let match = localNorms.find(n => n.alias.toLowerCase() === t.toLowerCase());
-        if (match) return match.alias;
-        const candidates = localNorms.map(n => ({ a: n.alias, l: n.alias.length })).filter(x => t.toLowerCase().includes(x.a.toLowerCase()));
-        if (candidates.length > 0) { candidates.sort((a,b) => b.l - a.l); return candidates[0].a; }
-        return t;
-    }
+    // Limpiar enlaces y atributos problemáticos
+    fragment.querySelectorAll('a').forEach(a => { a.removeAttribute('href'); a.style.color='inherit'; });
+    fragment.querySelectorAll('[style]').forEach(e => {
+      // Mantener sólo estilos inofensivos
+      e.removeAttribute('style');
+    });
+    fragment.querySelectorAll('img').forEach(i => i.remove());
 
-    // --- ACCIONES PRINCIPALES ---
+    body.innerHTML = '';
+    body.appendChild(fragment);
 
-    function performSearch() {
-        const raw = document.getElementById('mainInput').value.trim();
-        if (!raw) return;
-        const anchorObj = getAnchor(raw); 
-        const cleanQ = cleanText(raw);
-        const alias = findAlias(raw);
-        
-        addToHistory(raw);
-        document.getElementById('resultsList').innerHTML = '';
-        switchTab('results');
+    // Hacer scroll al inicio del fragmento
+    body.scrollTop = 0;
 
-        const results = localNorms.filter(n => {
-            const matchAlias = n.alias.toLowerCase() === alias.toLowerCase();
-            const matchTitle = n.title.toLowerCase().includes(cleanQ.toLowerCase());
-            const matchPartial = n.alias.toLowerCase().includes(cleanQ.toLowerCase());
-            return matchAlias || matchTitle || matchPartial;
-        });
+  } catch (err) {
+    body.innerHTML = `
+      <div class="viewer-error">
+        <h3>Error al cargar el texto</h3>
+        <p>${escHTML(err.message)}</p>
+        <p style="margin-top:14px;">
+          <a class="btn-boe" href="${boeUrl}${anchorId}" target="_blank" rel="noopener" style="display:inline-block;">↗ Abrir en el BOE</a>
+        </p>
+      </div>`;
+  }
+}
 
-        if (results.length > 0) {
-            renderList(results, anchorObj);
-        } else {
-            document.getElementById('resultsList').innerHTML = '<p>No se encontraron resultados.</p>';
-        }
-    }
+function closeViewer() {
+  document.getElementById('viewerOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function overlayClick(e) { if (e.target.id === 'viewerOverlay') closeViewer(); }
 
-    function renderList(items, anchorObj) {
-        const container = document.getElementById('resultsList');
-        items.forEach(item => {
-            if(!item.id) return;
-            const url = `https://www.boe.es/buscar/act.php?id=${item.id}${anchorObj.id}`;
-            
-            const div = document.createElement('div');
-            div.className = 'result-card';
-            div.innerHTML = `
-                <div class="result-title">${item.title}</div>
-                <div class="result-id">${item.id}</div>
-                <div class="anchor-info">Referencia: <strong>${anchorObj.text}</strong></div>
-                <div class="result-actions">
-                    <a href="${url}" target="_blank" class="boe-link">ABRIR EN BOE</a>
-                    <button class="app-link" onclick="openInAppViewer('${item.id}', '${url}', '${anchorObj.text.replace(/'/g, "\\'")}')">VER TEXTO AQUÍ</button>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-    }
+// ═══════════════════════════════════════════════════════════
+//  CITA / ENTRECOMILLAR
+// ═══════════════════════════════════════════════════════════
 
-    // --- VISOR INTEGRADO (CON FALLBACK INTELIGENTE) ---
+/**
+ * Intenta detectar el número de artículo al que pertenece el texto seleccionado
+ * recorriendo el DOM hacia atrás desde el inicio de la selección.
+ */
+function detectArticleNumber() {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return null;
+  const range = sel.getRangeAt(0);
 
-    async function openInAppViewer(id, fallbackUrl, searchText) {
-        const overlay = document.getElementById('viewerOverlay');
-        const body = document.getElementById('viewerBody');
-        const title = document.getElementById('viewerTitle');
-        
-        overlay.style.display = 'block';
-        body.innerHTML = '<div class="loading-text">Intentando cargar texto local...</div>';
-        title.innerText = "Cargando...";
+  // Obtener todos los nodos de texto del fragmento en orden
+  const body = document.getElementById('viewerBody');
+  const walker = document.createTreeWalker(body, NodeFilter.SHOW_ELEMENT);
 
-        try {
-            // Intento 1: Cargar via API
-            const response = await fetch(`https://datosabiertos.boe.es/datosabiertos/api/legislacion-consolidada/id/${id}/texto.json`);
-            if (!response.ok) throw new Error('Error API');
-            
-            const data = await response.json();
-            let textContent = data.resultado || data.texto || JSON.stringify(data);
-            
-            textContent = textContent.replace(/<[^>]*>/g, '\n'); 
-            textContent = textContent.replace(/\n\s*\n/g, '\n');
-            textContent = textContent.replace(/\s+/g, ' ');
+  let lastArticleNum = null;
+  const startNode = range.startContainer;
 
-            let htmlContent = textContent
-                .replace(/(Artículo \d+[ºª]?\.)/g, '<br><br><strong>$1</strong>')
-                .replace(/\n/g, '<br>');
+  // Buscamos el nodo que contiene el inicio de la selección
+  // y recogemos el último "Artículo N" que hayamos pasado
+  let node = walker.nextNode();
+  let found = false;
 
-            let found = false;
-            if (searchText.includes("Artículo")) {
-                const artNum = searchText.match(/\d+/);
-                if (artNum) {
-                    const regex = new RegExp(`Art[íi]culo\\s+${artNum[0]}`, 'i');
-                    if (regex.test(htmlContent)) {
-                        htmlContent = htmlContent.replace(regex, `<span id="targetAnchor" class="highlight-target">$&</span>`);
-                        found = true;
-                    }
-                }
-            }
+  while (node && !found) {
+    // ¿Contiene este nodo el inicio de la selección?
+    if (node.contains(startNode)) found = true;
 
-            body.innerHTML = htmlContent;
-            title.innerText = "Visor de Texto";
+    const txt = node.textContent || '';
+    const m = txt.match(/Art[íi]culo\s+(\d+)/i);
+    if (m) lastArticleNum = m[1];
 
-            if (found) {
-                setTimeout(() => {
-                    const el = document.getElementById('targetAnchor');
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            }
+    if (!found) node = walker.nextNode();
+  }
 
-        } catch (error) {
-            // INTENTO 2: FALLBACK (Si falla el fetch por CORS)
-            console.log("Fallo de carga local, abriendo BOE...", error);
-            
-            body.innerHTML = `
-                <div style="text-align:center; padding:20px;">
-                    <h3>No se pudo cargar el texto aquí</h3>
-                    <p>El navegador ha bloqueado la descarga por seguridad (CORS).</p>
-                    <p>Redirigiendo a la web oficial del BOE...</p>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                closeViewerDirect();
-                window.open(fallbackUrl, '_blank');
-            }, 1500); // Espera 1.5 seg para que lea el mensaje y abre el BOE
-        }
-    }
+  return lastArticleNum;
+}
 
-    function closeViewer(e) {
-        if (e.target.id === 'viewerOverlay') document.getElementById('viewerOverlay').style.display = 'none';
-    }
-    function closeViewerDirect() {
-        document.getElementById('viewerOverlay').style.display = 'none';
-    }
+// ═══════════════════════════════════════════════════════════
+//  CITA MULTI-FRAGMENTO EN EL MODAL
+// ═══════════════════════════════════════════════════════════
+let viewerFragments = [];  // { text, artNum }
 
-    // --- GESTIÓN (CRUD) ---
-    function saveNorm() {
-        const alias = document.getElementById('editAlias').value.trim();
-        const title = document.getElementById('editTitle').value.trim();
-        const id = document.getElementById('editId').value.trim();
-        if (!alias || !id) { alert("Alias e ID obligatorios"); return; }
-        const obj = { alias, title, id };
-        if (editingIndex >= 0) { localNorms[editingIndex] = obj; editingIndex = -1; } else { localNorms.push(obj); }
-        persist();
-        clearForm();
-        renderManageList();
-    }
-    function deleteNorm(index) {
-        if(confirm("¿Borrar?")) { localNorms.splice(index, 1); persist(); renderManageList(); }
-    }
-    function editNorm(index) {
-        const n = localNorms[index];
-        document.getElementById('editAlias').value = n.alias;
-        document.getElementById('editTitle').value = n.title;
-        document.getElementById('editId').value = n.id;
-        editingIndex = index;
-    }
-    function clearForm() {
-        document.getElementById('editAlias').value = ''; document.getElementById('editTitle').value = ''; document.getElementById('editId').value = ''; editingIndex = -1;
-    }
-    function persist() { localStorage.setItem('boe_localNorms', JSON.stringify(localNorms)); }
-    function renderManageList() {
-        const list = document.getElementById('localNormsList');
-        document.getElementById('normCount').innerText = localNorms.length;
-        list.innerHTML = '';
-        localNorms.forEach((n, idx) => {
-            list.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px;"><strong>${n.alias}</strong>: ${n.title} <br><small>${n.id}</small> <button class="btn-small" onclick="editNorm(${idx})">Editar</button> <button class="btn-small" style="color:red" onclick="deleteNorm(${idx})">Borrar</button></div>`;
-        });
-    }
-    function exportData() {
-        const blob = new Blob([JSON.stringify(localNorms, null, 2)], { type: "application/json" });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "normas.json"; a.click();
-    }
-    function importData(input) {
-        const file = input.files[0]; if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try { localNorms = JSON.parse(e.target.result); persist(); renderManageList(); alert("Importado"); } catch(err) { alert("Error JSON"); }
-        };
-        reader.readAsText(file);
-    }
-    function addToHistory(q) {
-        if (searchHistory.length > 0 && searchHistory[0].q === q) return;
-        searchHistory.unshift({ q, d: new Date().toLocaleDateString() });
-        if (searchHistory.length > 20) searchHistory.pop();
-        localStorage.setItem('boe_history', JSON.stringify(searchHistory));
-        renderHistory();
-    }
-    function renderHistory() {
-        const list = document.getElementById('historyList'); list.innerHTML = '';
-        searchHistory.forEach(h => {
-            list.innerHTML += `<li style="padding:8px; border-bottom:1px solid #eee; cursor:pointer;" onclick="document.getElementById('mainInput').value='${h.q.replace(/'/g, "\\'")}'; performSearch();">${h.q} <small>(${h.d})</small></li>`;
-        });
-    }
-    function clearHistory() {
-        if(confirm("Borrar historial?")) { searchHistory = []; localStorage.setItem('boe_history', JSON.stringify([])); renderHistory(); }
-    }
-    function switchTab(name) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        if(name === 'results') document.querySelectorAll('.tab')[0].classList.add('active');
-        if(name === 'manage') document.querySelectorAll('.tab')[1].classList.add('active');
-        if(name === 'history') document.querySelectorAll('.tab')[2].classList.add('active');
-        document.getElementById('tab-'+name).classList.add('active');
-    }
+function addViewerFragment() {
+  const sel = window.getSelection();
+  if (!sel || sel.toString().trim() === '') {
+    showToast('⚠️ Selecciona primero el texto que quieres añadir');
+    return;
+  }
 
-    window.onload = function() {
-        renderManageList();
-        renderHistory();
-        document.getElementById('mainInput').addEventListener('keypress', function(e) {
-            if(e.key === 'Enter') performSearch();
-        });
-    };
+  const raw    = sel.toString().replace(/[\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+  const artNum = detectArticleNumber();
+
+  viewerFragments.push({ text: raw, artNum });
+  renderViewerFrags();
+  sel.removeAllRanges();   // Quitar la selección visual tras añadir
+  showToast(`✔ Fragmento ${viewerFragments.length} añadido`);
+}
+
+function removeViewerFragment(idx) {
+  viewerFragments.splice(idx, 1);
+  renderViewerFrags();
+}
+
+function clearViewerFragments() {
+  viewerFragments = [];
+  renderViewerFrags();
+}
+
+function renderViewerFrags() {
+  const panel  = document.getElementById('viewerFragsPanel');
+  const badge  = document.getElementById('viewerFragsBadge');
+  const list   = document.getElementById('viewerFragsList');
+
+  badge.textContent = viewerFragments.length;
+  list.innerHTML    = '';
+
+  if (viewerFragments.length === 0) {
+    panel.classList.remove('has-frags');
+    return;
+  }
+
+  panel.classList.add('has-frags');
+  viewerFragments.forEach((f, i) => {
+    const li = document.createElement('li');
+    li.className = 'vfl-item';
+    li.innerHTML = `
+      <span class="vfl-num">${i+1}.</span>
+      <span class="vfl-text" title="${escHTML(f.text)}">"${escHTML(f.text)}"</span>
+      <button class="vfl-del" title="Eliminar" onclick="removeViewerFragment(${i})">✕</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+async function copyViewerCita() {
+  if (viewerFragments.length === 0) {
+    showToast('⚠️ Añade al menos un fragmento');
+    return;
+  }
+
+  // Determinar referencia (artículo + alias) a partir del primer fragmento con artNum
+  const firstWithArt = viewerFragments.find(f => f.artNum);
+  const artNum = firstWithArt?.artNum
+    || (currentCtx.isRange ? `${currentCtx.startNum}-${currentCtx.endNum}` : currentCtx.startNum || 'X');
+  const citation = `(art. ${artNum} ${currentCtx.alias.toUpperCase()})`;
+
+  const parts   = viewerFragments.map(f => `"${f.text}"`);
+  const plain   = parts.join('...') + ' ' + citation;
+  const htmlStr = viewerFragments.map(f => `"<em>${escHTML(f.text)}</em>"`).join('<span>...</span>')
+                + ` <span>${escHTML(citation)}</span>`;
+
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html':  new Blob([htmlStr], { type:'text/html' }),
+      'text/plain': new Blob([plain],   { type:'text/plain' })
+    })]);
+  } catch {
+    try { await navigator.clipboard.writeText(plain); }
+    catch { showToast('❌ No se pudo copiar al portapapeles'); return; }
+  }
+
+  showToast(`✔ Cita copiada ${citation}`);
+}
+
+async function copyAllText() {
+  const body = document.getElementById('viewerBody');
+  const text = body.innerText || '';
+  if (!text.trim()) { showToast('Sin texto para copiar'); return; }
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('✔ Texto copiado al portapapeles');
+  } catch { showToast('❌ Error al copiar'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GESTIÓN DE NORMAS (CRUD)
+// ═══════════════════════════════════════════════════════════
+function saveNorm() {
+  const alias = document.getElementById('editAlias').value.trim();
+  const title = document.getElementById('editTitle').value.trim();
+  const id    = document.getElementById('editId').value.trim();
+  const url   = document.getElementById('editUrl').value.trim();
+  if (!alias) { alert('El alias es obligatorio.'); return; }
+  const obj = { alias, title, id, url };
+  if (editingIndex >= 0) { localNorms[editingIndex] = obj; editingIndex = -1; }
+  else { localNorms.push(obj); }
+  persist();
+  clearForm();
+  renderManageList();
+}
+function deleteNorm(i) {
+  if (confirm(`¿Borrar "${localNorms[i].alias}"?`)) { localNorms.splice(i,1); persist(); renderManageList(); }
+}
+function editNorm(i) {
+  const n = localNorms[i];
+  document.getElementById('editAlias').value = n.alias || '';
+  document.getElementById('editTitle').value = n.title || '';
+  document.getElementById('editId').value    = n.id    || '';
+  document.getElementById('editUrl').value   = n.url   || '';
+  editingIndex = i;
+  switchTab('manage');
+  document.getElementById('editAlias').focus();
+}
+function clearForm() {
+  ['editAlias','editTitle','editId','editUrl'].forEach(id => document.getElementById(id).value='');
+  editingIndex = -1;
+}
+function persist() { localStorage.setItem('boe_norms_v4', JSON.stringify(localNorms)); }
+
+function renderManageList() {
+  const list  = document.getElementById('localNormsList');
+  const count = document.getElementById('normCount');
+  count.textContent = localNorms.length;
+  list.innerHTML = '';
+  localNorms.forEach((n, i) => {
+    const row = document.createElement('div');
+    row.className = 'norm-list-item';
+    const idBadge = n.id
+      ? `<span class="norm-id-badge">${n.id}</span>`
+      : (n.url ? `<span class="norm-id-badge badge-warning">URL externa</span>` : `<span class="norm-id-badge badge-warning">⚠ Sin ID</span>`);
+    row.innerHTML = `
+      <span class="norm-alias">${escHTML(n.alias)}</span>
+      <span class="norm-title-text">${escHTML(n.title||'')}</span>
+      ${idBadge}
+      <button class="btn-sm" onclick="editNorm(${i})">Editar</button>
+      <button class="btn-sm danger" onclick="deleteNorm(${i})">Borrar</button>`;
+    list.appendChild(row);
+  });
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(localNorms, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'normas-boe.json';
+  a.click();
+}
+function importData(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try { localNorms = JSON.parse(e.target.result); persist(); renderManageList(); showToast('✔ Importación completada'); }
+    catch { alert('Error: el archivo no es un JSON válido.'); }
+  };
+  r.readAsText(f);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HISTORIAL
+// ═══════════════════════════════════════════════════════════
+function addToHistory(q) {
+  if (searchHistory[0]?.q === q) return;
+  searchHistory.unshift({ q, d: new Date().toLocaleDateString('es-ES') });
+  if (searchHistory.length > 30) searchHistory.pop();
+  localStorage.setItem('boe_history_v4', JSON.stringify(searchHistory));
+  renderHistory();
+}
+function renderHistory() {
+  const ul = document.getElementById('historyList');
+  ul.innerHTML = '';
+  if (searchHistory.length === 0) {
+    ul.innerHTML = '<li style="color:var(--muted); font-style:italic; cursor:default;">Sin búsquedas recientes</li>';
+    return;
+  }
+  searchHistory.forEach(h => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${escHTML(h.q)}</span><span class="hist-date">${h.d}</span>`;
+    li.onclick = () => { document.getElementById('mainInput').value = h.q; performSearch(); };
+    ul.appendChild(li);
+  });
+}
+function clearHistory() {
+  if (confirm('¿Borrar todo el historial?')) {
+    searchHistory = [];
+    localStorage.setItem('boe_history_v4', '[]');
+    renderHistory();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAVEGACIÓN POR PESTAÑAS
+// ═══════════════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const idx = {results:0, manage:1, history:2, help:3, extractor:4}[name] ?? 0;
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.getElementById('pane-'+name).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EXTRACTOR DE CITAS
+// ═══════════════════════════════════════════════════════════
+let extractorFragments = [];
+
+function addFragment() {
+  const textarea = document.getElementById('extractorText');
+  const start = textarea.selectionStart;
+  const end   = textarea.selectionEnd;
+  const text  = textarea.value.substring(start, end).trim();
+
+  if (!text) {
+    showToast('⚠️ Selecciona primero un fragmento en el área de texto');
+    return;
+  }
+
+  // Limpiar saltos de línea internos → espacio
+  const clean = text.replace(/[\r\n]+/g, ' ').replace(/\s{2,}/g, ' ');
+  extractorFragments.push(clean);
+  renderFragList();
+  renderCitaPreview();
+  showToast(`✔ Fragmento ${extractorFragments.length} añadido`);
+}
+
+function removeFragment(idx) {
+  extractorFragments.splice(idx, 1);
+  renderFragList();
+  renderCitaPreview();
+}
+
+function clearFragments() {
+  if (extractorFragments.length === 0) return;
+  if (!confirm('¿Borrar todos los fragmentos?')) return;
+  extractorFragments = [];
+  renderFragList();
+  renderCitaPreview();
+}
+
+function renderFragList() {
+  const ul    = document.getElementById('fragList');
+  const empty = document.getElementById('fragEmpty');
+  const label = document.getElementById('fragCountLabel');
+
+  // Limpiar todo excepto el li vacío
+  [...ul.children].forEach(c => { if (c !== empty) c.remove(); });
+
+  if (extractorFragments.length === 0) {
+    empty.style.display = '';
+    label.textContent = '0 fragmentos';
+    return;
+  }
+
+  empty.style.display = 'none';
+  label.textContent = extractorFragments.length + ' fragmento' + (extractorFragments.length > 1 ? 's' : '');
+
+  extractorFragments.forEach((frag, i) => {
+    const li = document.createElement('li');
+    li.className = 'frag-item';
+    li.innerHTML = `
+      <span class="frag-num">${i+1}.</span>
+      <span class="frag-text">"${escHTML(frag)}"</span>
+      <button class="frag-del" title="Eliminar fragmento" onclick="removeFragment(${i})">✕</button>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+function buildCitaPlain() {
+  if (extractorFragments.length === 0) return '';
+  const titulo = document.getElementById('citaTitulo').value.trim();
+  const parts  = extractorFragments.map(f => `"${f}"`);
+  const joined = parts.join('...');
+  return titulo ? `${joined} (${titulo})` : joined;
+}
+
+function renderCitaPreview() {
+  const preview = document.getElementById('citaPreview');
+  if (extractorFragments.length === 0) {
+    preview.innerHTML = '<span style="color:var(--muted); font-style:normal; font-size:.88rem;">La cita aparecerá aquí cuando añadas fragmentos…</span>';
+    return;
+  }
+  const titulo = document.getElementById('citaTitulo').value.trim();
+  const parts  = extractorFragments.map(f => `<em>"${escHTML(f)}"</em>`);
+  const joined = parts.join('<span class="cita-separator">...</span>');
+  const titlePart = titulo ? ` <span class="cita-title">(${escHTML(titulo)})</span>` : '';
+  preview.innerHTML = joined + titlePart;
+}
+
+async function copyCita() {
+  const plain = buildCitaPlain();
+  if (!plain) { showToast('⚠️ Añade al menos un fragmento antes de copiar'); return; }
+
+  const titulo   = document.getElementById('citaTitulo').value.trim();
+  const parts    = extractorFragments.map(f => `"<em>${escHTML(f)}</em>"`);
+  const joined   = parts.join('<span>...</span>');
+  const htmlStr  = joined + (titulo ? ` <span>(${escHTML(titulo)})</span>` : '');
+
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html':  new Blob([htmlStr], { type:'text/html' }),
+      'text/plain': new Blob([plain],   { type:'text/plain' })
+    })]);
+  } catch {
+    try { await navigator.clipboard.writeText(plain); }
+    catch { showToast('❌ No se pudo copiar al portapapeles'); return; }
+  }
+  showToast('✔ Cita copiada al portapapeles');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  UTILIDADES
+// ═══════════════════════════════════════════════════════════
+function escHTML(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderManageList();
+  renderHistory();
+  const inp = document.getElementById('mainInput');
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') performSearch(); });
+  inp.focus();
+});
 </script>
-
 </body>
 </html>
