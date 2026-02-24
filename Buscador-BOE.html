@@ -589,8 +589,8 @@
     <button class="tab-btn active" onclick="switchTab('results')">Resultados</button>
     <button class="tab-btn" onclick="switchTab('manage')">Normas</button>
     <button class="tab-btn" onclick="switchTab('history')">Historial</button>
-    <button class="tab-btn" onclick="switchTab('help')">❓ Manual</button>
     <button class="tab-btn" onclick="switchTab('extractor')">✂️ Extractor</button>
+    <button class="tab-btn" onclick="switchTab('help')">❓ Manual</button>
   </div>
 
   <!-- RESULTADOS -->
@@ -629,48 +629,90 @@
 
   <!-- MANUAL DE USO -->
   <div id="pane-help" class="tab-pane">
+
     <div class="help-section">
-      <h3>📖 Cómo buscar</h3>
+      <h3>📖 1. Cómo buscar normas</h3>
       <table class="help-table">
         <thead><tr><th>Ejemplo de búsqueda</th><th>Qué hace</th></tr></thead>
         <tbody>
           <tr><td>CE art 15</td><td>Muestra el artículo 15 de la Constitución Española</td></tr>
-          <tr><td>LPRL art 15-20</td><td>Muestra los artículos 15 al 20 de la LPRL (rango)</td></tr>
-          <tr><td>LPRL art 15 al 20</td><td>Equivalente: rango con «al»</td></tr>
+          <tr><td>LPRL art 15-20</td><td>Rango de artículos 15 al 20 de la LPRL</td></tr>
+          <tr><td>LPRL art 15 al 20</td><td>Equivalente al anterior usando «al»</td></tr>
           <tr><td>ET cap II</td><td>Capítulo II del Estatuto de los Trabajadores</td></tr>
           <tr><td>Código Civil tit IV</td><td>Título IV del Código Civil</td></tr>
           <tr><td>LEC sec 2</td><td>Sección 2 de la LEC</td></tr>
-          <tr><td>CE</td><td>Muestra la norma sin referencia interna (inicio)</td></tr>
+          <tr><td>CE</td><td>Abre la norma completa sin referencia interna</td></tr>
         </tbody>
       </table>
       <div class="help-callout">
         <strong>💡 Abreviaciones reconocidas</strong>
-        art / art. / artículo · cap / cap. / capítulo · tit / tit. / título · sec / sec. / sección<br>
-        Los números romanos funcionan en capítulos y títulos: cap III, tit VI
+        art / art. / artículo &nbsp;·&nbsp; cap / cap. / capítulo &nbsp;·&nbsp; tit / tit. / título &nbsp;·&nbsp; sec / sección<br>
+        Los números romanos funcionan en capítulos y títulos: <em>cap III</em>, <em>tit VI</em>
       </div>
     </div>
 
     <div class="help-section">
-      <h3>💬 Cómo citar y entrecomillar</h3>
-      <ol style="padding-left:20px; line-height:2; font-size:.95rem;">
-        <li>Abre el texto con <strong>«Ver texto aquí»</strong></li>
-        <li>Selecciona con el ratón el fragmento exacto que quieres citar</li>
-        <li>Pulsa <strong>💬 Entrecomillar</strong> — se copia al portapapeles como:<br>
-          <em style="font-size:.88rem;">&quot;El empresario deberá garantizar…&quot; (art. 14 LPRL).</em>
-        </li>
-        <li>Si visualizas un rango de artículos, el sistema detecta automáticamente a qué artículo pertenece el texto seleccionado</li>
-        <li>Con <strong>📋 Copiar texto</strong> obtienes el fragmento completo sin formato de cita</li>
+      <h3>📄 2. Visor de texto (modal)</h3>
+      <ol style="padding-left:20px; line-height:2.1; font-size:.93rem;">
+        <li>En los resultados de búsqueda, pulsa <strong>📄 Ver texto aquí</strong> para abrir el visor.</li>
+        <li>El texto se carga directamente desde el BOE en versión consolidada.</li>
+        <li>Selecciona con el ratón el fragmento exacto que quieres citar.</li>
+        <li>Pulsa <strong>➕ Añadir fragmento</strong> — el trozo queda guardado en el panel azul inferior.</li>
+        <li>Repite los pasos 3-4 para todos los fragmentos que necesites, aunque no sean contiguos.</li>
+        <li>Cuando hayas terminado, pulsa <strong>📋 Copiar cita</strong> en el panel azul.</li>
+        <li>Se copia al portapapeles como: <em>"Trozo 1"..."Trozo 2" (art. 14 LPRL)</em></li>
       </ol>
       <div class="help-callout">
-        <strong>⚠️ Importante sobre el visor</strong>
-        El texto se carga desde el BOE mediante un proxy público. Si la carga falla, usa el botón <em>ABRIR EN BOE</em> para ir a la web oficial. El contenido mostrado corresponde al texto vigente consolidado publicado en el BOE.
+        <strong>📋 Copiar todo</strong> — copia el texto completo del fragmento visible sin formato de cita.<br>
+        <strong>🗑 Limpiar</strong> — borra todos los fragmentos acumulados sin cerrar el visor.<br>
+        Los fragmentos se reinician automáticamente al abrir un nuevo documento.
       </div>
     </div>
 
     <div class="help-section">
-      <h3>🔧 Gestionar normas</h3>
-      <p style="font-size:.93rem; line-height:1.7;">En la pestaña <strong>Normas</strong> puedes añadir, editar o eliminar normas. Para normas de derecho de la UE que no tienen ID BOE (como el RGPD), introduce la URL externa y la aplicación abrirá esa URL en una nueva pestaña. Puedes exportar e importar tu lista completa en formato JSON.</p>
+      <h3>✂️ 3. Extractor de citas (pestaña propia)</h3>
+      <ol style="padding-left:20px; line-height:2.1; font-size:.93rem;">
+        <li>Ve a la pestaña <strong>✂️ Extractor</strong>.</li>
+        <li>Pega en el área de texto cualquier texto jurídico (artículo, sentencia, doctrina…).</li>
+        <li>Selecciona con el ratón el primer fragmento que quieras citar.</li>
+        <li>Pulsa <strong>➕ Añadir fragmento seleccionado</strong> — aparece en la lista numerada.</li>
+        <li>Repite para todos los fragmentos necesarios.</li>
+        <li>Escribe el <strong>Título del texto</strong> (aparecerá entre paréntesis al final de la cita).</li>
+        <li>La vista previa muestra la cita en tiempo real.</li>
+        <li>Pulsa <strong>📋 Copiar cita al portapapeles</strong>.</li>
+      </ol>
+      <div class="help-callout">
+        <strong>Formato resultante:</strong><br>
+        <em>"Primer fragmento seleccionado"..."Segundo fragmento"..."Tercero" (Título del texto)</em><br><br>
+        El portapapeles contiene dos versiones simultáneas: <strong>texto con cursiva</strong> (para Word / Google Docs) y <strong>texto plano</strong> (para el resto de aplicaciones).
+      </div>
     </div>
+
+    <div class="help-section">
+      <h3>🗂 4. Gestionar normas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">En la pestaña <strong>Normas</strong> puedes añadir, editar o eliminar normas de tu biblioteca:</p>
+      <ul style="padding-left:20px; font-size:.93rem; line-height:2;">
+        <li><strong>Alias</strong>: abreviación que usarás en el buscador (ej. <em>ET</em>, <em>LPRL</em>).</li>
+        <li><strong>Título completo</strong>: nombre oficial de la norma.</li>
+        <li><strong>ID BOE</strong>: identificador de la norma en el BOE (ej. <em>BOE-A-1978-31229</em>). Déjalo vacío para normas de la UE sin ID BOE.</li>
+        <li><strong>URL externa</strong>: para normas sin ID BOE (ej. RGPD en EUR-Lex). Se abrirá en una nueva pestaña.</li>
+      </ul>
+      <div class="help-callout">
+        <strong>Exportar / Importar JSON</strong> — guarda o restaura toda tu biblioteca de normas. Útil para hacer copias de seguridad o compartir la configuración entre dispositivos.
+      </div>
+    </div>
+
+    <div class="help-section">
+      <h3>🕐 5. Historial de búsquedas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">La pestaña <strong>Historial</strong> guarda las últimas 30 búsquedas. Haz clic en cualquiera para repetirla instantáneamente. Usa <strong>Borrar historial</strong> para vaciar la lista.</p>
+    </div>
+
+    <div class="help-section">
+      <h3>⚠️ 6. Notas técnicas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">El texto se carga desde el BOE mediante un proxy público (texto consolidado con <code>tn=1</code>). El sistema prueba automáticamente tres proxies distintos si el primero falla.</p>
+      <p style="font-size:.93rem; line-height:1.8; margin-top:8px;">El BOE usa distintos esquemas de anclas internos según la antigüedad de la norma (<code>a21</code>, <code>art21</code>, etc.). El visor los detecta automáticamente. Si una norma muy antigua no carga correctamente, usa el botón <strong>↗ Abrir en BOE</strong> para acceder a la web oficial.</p>
+    </div>
+
   </div>
   <!-- EXTRACTOR DE CITAS -->
   <div id="pane-extractor" class="tab-pane">
@@ -896,7 +938,7 @@ function performSearch() {
   results.forEach(norm => {
     const card = document.createElement('div');
     card.className = 'result-card';
-    const boeUrl = norm.id ? `https://www.boe.es/buscar/act.php?id=${norm.id}${parsed.anchorId}` : '';
+    const boeUrl = norm.id ? `https://www.boe.es/buscar/act.php?id=${norm.id}&tn=1${parsed.anchorId}` : '';
     const extUrl = norm.url || '';
 
     let actionsHTML = '';
@@ -929,41 +971,94 @@ function encodeAnchor(v) { return v ? encodeURIComponent(v) : ''; }
 
 /**
  * Determina si un elemento DOM es un "ancla" de nivel de artículo/capítulo/título/sección
+ * Cubre los distintos esquemas que usa el BOE según la norma:
+ *   a21, art21, articulo21  → artículos (CC, CCom, normas antiguas)
+ *   cii, tiv, s2            → capítulos, títulos, secciones
  */
 function isAnchorEl(el) {
   if (!el) return false;
   const id = (el.id || el.getAttribute('name') || '').toLowerCase();
-  // Patrones BOE: a15, cii, ti, s2, etc.
-  return /^a\d+$/.test(id) || /^c([ivxlcdm]+|\d+)$/.test(id) || /^t([ivxlcdm]+|\d+)$/.test(id) || /^s\d+$/.test(id);
+  return /^a\d+$/.test(id)          // a21        (ET, LPRL, LEC…)
+      || /^art\d+$/.test(id)        // art21      (CC, CCom…)
+      || /^articulo\d+$/.test(id)   // articulo21 (variante rara)
+      || /^c([ivxlcdm]+|\d+)$/.test(id)
+      || /^t([ivxlcdm]+|\d+)$/.test(id)
+      || /^s\d+$/.test(id);
+}
+
+/**
+ * Genera las variantes de un ID de ancla para distintos esquemas BOE.
+ * Ej.: "a21" → ["a21","art21","articulo21","a021"] y viceversa.
+ */
+function anchorVariants(rawId) {
+  const id = (rawId||'').replace('#','').toLowerCase();
+  if (!id) return [];
+
+  const variants = new Set([id, id.toUpperCase()]);
+
+  // Si empieza por "a" + dígitos  (a21  → art21, articulo21, a021)
+  const mA = id.match(/^a(\d+)$/);
+  if (mA) {
+    const n = mA[1];
+    variants.add('art' + n);
+    variants.add('ART' + n);
+    variants.add('articulo' + n);
+    variants.add('artículo' + n);
+    // con cero inicial
+    if (n.length === 1) { variants.add('a0' + n); variants.add('art0' + n); }
+    return [...variants];
+  }
+
+  // Si empieza por "art" + dígitos  (art21 → a21, articulo21)
+  const mArt = id.match(/^art(\d+)$/);
+  if (mArt) {
+    const n = mArt[1];
+    variants.add('a' + n);
+    variants.add('articulo' + n);
+    variants.add('ART' + n);
+    return [...variants];
+  }
+
+  // Capítulos / títulos en romano: cii → CII, c2, etc.
+  const mRom = id.match(/^([ctsCTS])([ivxlcdmIVXLCDM]+)$/);
+  if (mRom) {
+    variants.add(mRom[1].toLowerCase() + mRom[2].toUpperCase());
+    variants.add(mRom[1].toUpperCase() + mRom[2].toLowerCase());
+    variants.add(mRom[1].toUpperCase() + mRom[2].toUpperCase());
+  }
+
+  return [...variants];
+}
+
+/**
+ * Busca un elemento por múltiples variantes de ancla (id o name).
+ */
+function findAnchorEl(doc, rawId) {
+  for (const v of anchorVariants(rawId)) {
+    const el = doc.getElementById(v) || doc.querySelector(`[name="${v}"]`);
+    if (el) return el;
+  }
+  return null;
 }
 
 /**
  * Extrae el fragmento de contenido del documento BOE
  */
 function extractFragment(doc, startAnchorId, endAnchorId) {
-  const clean = id => (id||'').replace('#','').toLowerCase();
-  const sid = clean(startAnchorId);
-  const eid = clean(endAnchorId);
-
-  // Encontrar elemento de inicio (por id o name)
-  let startEl = (sid ? doc.getElementById(sid) : null) || (sid ? doc.querySelector(`[name="${sid}"]`) : null);
-
-  // Si no lo encontramos directamente, intenta variantes (algunos BOE usan mayúsculas en romanos)
-  if (!startEl && sid) {
-    startEl = doc.getElementById(sid.toUpperCase()) || doc.querySelector(`[name="${sid.toUpperCase()}"]`);
-  }
+  const startEl = findAnchorEl(doc, startAnchorId);
   if (!startEl) return null;
+
+  // ID normalizado del elemento encontrado (para comparación en rango)
+  const foundStartId = (startEl.id || startEl.getAttribute('name') || '').toLowerCase();
 
   const wrap = document.createElement('div');
   wrap.className = 'boe-fragment';
 
-  if (!eid) {
+  if (!endAnchorId || endAnchorId === startAnchorId) {
     // ── Elemento único ──
-    // Si el elemento es un div con contenido rico, usar tal cual
     if (startEl.tagName === 'DIV' && startEl.querySelectorAll('p,h4,h3,h2').length > 0) {
       wrap.appendChild(startEl.cloneNode(true));
     } else {
-      // Elemento + hermanos siguientes hasta próxima ancla
       wrap.appendChild(startEl.cloneNode(true));
       let sib = startEl.nextElementSibling;
       let safety = 0;
@@ -975,9 +1070,9 @@ function extractFragment(doc, startAnchorId, endAnchorId) {
     }
   } else {
     // ── Rango ──
-    let endEl = doc.getElementById(eid) || doc.querySelector(`[name="${eid}"]`) || doc.getElementById(eid.toUpperCase());
+    const endEl = findAnchorEl(doc, endAnchorId);
+    const foundEndId = endEl ? (endEl.id || endEl.getAttribute('name') || '').toLowerCase() : '';
 
-    // Recorremos desde startEl hasta endEl (inclusive) + contenido de endEl
     let cur = startEl;
     let safety = 0;
     let passedEnd = false;
@@ -987,12 +1082,11 @@ function extractFragment(doc, startAnchorId, endAnchorId) {
       const curId = (cur.id || cur.getAttribute('name') || '').toLowerCase();
 
       if (passedEnd) {
-        // Después del endEl: recoger sólo hasta próxima ancla (contenido del último art del rango)
         if (isAnchorEl(cur)) break;
         wrap.appendChild(cur.cloneNode(true));
       } else {
         wrap.appendChild(cur.cloneNode(true));
-        if (curId === eid) { passedEnd = true; }
+        if (foundEndId && curId === foundEndId) { passedEnd = true; }
       }
       cur = cur.nextElementSibling;
     }
@@ -1055,7 +1149,8 @@ async function openViewer(normId, anchorIdEnc, anchorIdEndEnc, labelEnc, alias, 
     return;
   }
 
-  const boeUrl = `https://www.boe.es/buscar/act.php?id=${normId}`;
+  const boeUrl     = `https://www.boe.es/buscar/act.php?id=${normId}&tn=1`;
+  const boeUrlAnch = boeUrl + (anchorId || '');
 
   try {
     const html = await fetchWithProxy(boeUrl);
@@ -1072,7 +1167,7 @@ async function openViewer(normId, anchorIdEnc, anchorIdEndEnc, labelEnc, alias, 
         <div class="viewer-error">
           <h3>Elemento no encontrado</h3>
           <p>No se encontró el identificador <code>${anchorId}</code> en este documento.</p>
-          <p style="margin-top:10px;color:var(--muted);font-size:.9rem;">El BOE puede usar un esquema de anclas diferente para esta norma. Prueba a <a href="${boeUrl}${anchorId}" target="_blank">abrirla directamente</a>.</p>
+          <p style="margin-top:10px;color:var(--muted);font-size:.9rem;">El BOE puede usar un esquema de anclas diferente para esta norma. Prueba a <a href="${boeUrlAnch}" target="_blank">abrirla directamente</a>.</p>
         </div>`;
       return;
     }
@@ -1097,7 +1192,7 @@ async function openViewer(normId, anchorIdEnc, anchorIdEndEnc, labelEnc, alias, 
         <h3>Error al cargar el texto</h3>
         <p>${escHTML(err.message)}</p>
         <p style="margin-top:14px;">
-          <a class="btn-boe" href="${boeUrl}${anchorId}" target="_blank" rel="noopener" style="display:inline-block;">↗ Abrir en el BOE</a>
+          <a class="btn-boe" href="${boeUrlAnch}" target="_blank" rel="noopener" style="display:inline-block;">↗ Abrir en el BOE</a>
         </p>
       </div>`;
   }
@@ -1356,7 +1451,7 @@ function clearHistory() {
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  const idx = {results:0, manage:1, history:2, help:3, extractor:4}[name] ?? 0;
+  const idx = {results:0, manage:1, history:2, extractor:3, help:4}[name] ?? 0;
   document.querySelectorAll('.tab-btn')[idx].classList.add('active');
   document.getElementById('pane-'+name).classList.add('active');
 }
