@@ -558,6 +558,58 @@
     transition: background .15s;
   }
   .btn-clear-frags:hover { background: #fdf0ee; }
+
+  /* ── Mejoras: autocompletado, herramientas del visor, revisión ── */
+  .search-wrap { position: relative; }
+  .suggest-box { position: absolute; left: 20px; right: 20px; top: calc(100% - 12px); background: #fff; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 28px rgba(26,39,68,.2); z-index: 60; max-height: 330px; overflow: auto; }
+  .suggest-item { padding: 9px 14px; cursor: pointer; display: flex; gap: 12px; align-items: baseline; border-bottom: 1px solid var(--border); }
+  .suggest-item:last-child { border-bottom: none; }
+  .suggest-item.active, .suggest-item:hover { background: #eef4ff; }
+  .suggest-alias { font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .suggest-title { color: var(--muted); font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .did-you-mean { margin-top: 10px; font-size: .95rem; }
+  .viewer-tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 8px 18px; border-bottom: 1px solid var(--border); background: #f6f8fc; }
+  .btn-vt { background: #fff; border: 1px solid var(--border); color: var(--navy); border-radius: 4px; padding: 6px 12px; font-size: .84rem; font-weight: 600; cursor: pointer; }
+  .btn-vt:hover:not(:disabled) { background: #eef4ff; border-color: var(--blue); }
+  .btn-vt:disabled { opacity: .4; cursor: default; }
+  #normSearch { flex: 1; min-width: 200px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: .88rem; }
+  #viewerIndex { max-height: 38vh; overflow: auto; border-bottom: 1px solid var(--border); background: #fff; }
+  .vi-row { padding: 6px 10px; cursor: pointer; border-bottom: 1px solid #eef0f5; font-size: .88rem; line-height: 1.4; }
+  .vi-row:hover { background: #eef4ff; }
+  .vi-head { font-weight: 700; color: var(--navy); }
+  .vi-snip { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  #viewerBody mark { background: #ffe97a; padding: 0 1px; }
+  #viewerBody .hl-apartado { background: #fff7d6; border-left: 3px solid var(--accent); padding-left: 8px; }
+  .badge-ok { background: #e6f4ea; border-color: #34a853; color: #1e6b34; }
+  .verify-report { margin-top: 14px; font-size: .9rem; }
+  .verify-progress { color: var(--muted); font-style: italic; margin-bottom: 6px; }
+  .verify-summary { font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .verify-list { padding-left: 18px; line-height: 1.7; }
+
+  /* ── Texto consolidado del BOE (API de datos abiertos) ── */
+  .viewer-source { display: block; margin-top: 3px; font-size: .74rem; color: #2e7d4f; }
+  #viewerBody p.articulo { font-weight: 700; color: var(--navy); margin-top: 6px; text-align: left; }
+  #viewerBody p.titulo_num, #viewerBody p.capitulo_num, #viewerBody p.seccion, #viewerBody p.centro_redonda,
+  #viewerBody p.titulo_tit, #viewerBody p.capitulo_tit, #viewerBody p.anexo { text-align: center; color: var(--navy); font-weight: 700; margin-bottom: .25em; }
+  #viewerBody p.titulo_tit, #viewerBody p.capitulo_tit { font-weight: 500; margin-bottom: .9em; }
+  #viewerBody p.nota_pie, #viewerBody p.nota_pie_2 { font-size: .8rem; color: var(--muted); text-align: left; margin-bottom: .4em; }
+  #viewerBody p.firma_rey, #viewerBody p.firma_ministro { text-align: right; font-style: italic; }
+  #viewerBody blockquote { border-left: 3px solid var(--border); margin: .6em 0 .9em; padding-left: 14px; color: #333; }
+  #viewerBody table { border-collapse: collapse; margin: .8em 0; font-size: .86rem; max-width: 100%; display: block; overflow-x: auto; }
+  #viewerBody td, #viewerBody th { border: 1px solid var(--border); padding: 4px 8px; vertical-align: top; }
+  #viewerBody .boe-ref { color: inherit; }
+  .boe-block + .boe-block { margin-top: 8px; }
+  .boe-vig { user-select: none; -webkit-user-select: none; font-size: .76rem; color: #2e7d4f; border-top: 1px dashed var(--border); padding-top: 6px; margin: 2px 0 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+  .boe-vig.old { color: var(--accent); }
+  .boe-vig label { color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .boe-vig select { font-size: .76rem; padding: 2px 4px; border: 1px solid var(--border); border-radius: 4px; background: #fff; font-family: inherit; }
+  .result-card.online { border-left-color: var(--gold); }
+  .result-card .r-meta { display: inline-block; margin-left: 8px; font-size: .78rem; color: var(--muted); }
+  .result-card .r-flag { display: inline-block; margin-left: 8px; font-size: .72rem; font-weight: 700; color: var(--accent); border: 1px solid var(--accent); border-radius: 10px; padding: 0 8px; }
+  .r-saved { font-size: .82rem; color: #1e6b34; align-self: center; }
+  .online-section { margin-top: 18px; }
+  .online-h { font-family: 'Lexend', sans-serif; color: var(--navy); font-size: 1rem; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .online-more { margin: 6px 0 4px; text-align: center; }
 </style>
 </head>
 <body>
@@ -572,8 +624,8 @@
       </div>
     </div>
     <div class="header-pills">
-      <span class="header-pill">36 normas</span>
-      <span class="header-pill">Texto consolidado</span>
+      <span class="header-pill" id="pillCount">normas</span>
+      <span class="header-pill">Texto consolidado · API BOE</span>
       <span class="header-pill">Citas académicas</span>
     </div>
   </div>
@@ -581,8 +633,9 @@
 
 <div class="container">
   <div class="search-wrap">
-    <input type="text" id="mainInput" placeholder="Ej: CE art 15  ·  LPRL cap II  ·  ET art 15-20  ·  Código Civil tit IV">
+    <input type="text" id="mainInput" autocomplete="off" placeholder="Ej: estatuto trabajadores art 15  ·  LPRL DA 3  ·  CE art 14-16  ·  Código Civil tit IV">
     <button class="btn-primary" onclick="performSearch()">BUSCAR</button>
+    <div id="suggestBox" class="suggest-box" hidden></div>
   </div>
 
   <div class="tabs-bar">
@@ -603,16 +656,21 @@
     <div class="manage-form">
       <h3>Añadir / Editar norma</h3>
       <div class="form-row"><label>Alias de búsqueda</label><input type="text" id="editAlias" placeholder="Ej: CE, LPRL, ET"></div>
+      <div class="form-row"><label>Otros nombres (opcional, separados por comas)</label><input type="text" id="editAka" placeholder="Ej: estatuto trabajadores, rdl 2/2015"></div>
       <div class="form-row"><label>Título completo</label><input type="text" id="editTitle" placeholder="Ej: Constitución Española"></div>
-      <div class="form-row"><label>ID BOE</label><input type="text" id="editId" placeholder="Ej: BOE-A-1978-31229 (dejar vacío si es norma UE)"></div>
+      <div class="form-row"><label>Enlace permanente ELI del BOE (recomendado)</label><input type="text" id="editEli" placeholder="Pega la URL de la norma en el BOE, p. ej. https://www.boe.es/eli/es/l/2000/01/07/1/con"></div>
+      <div class="form-row"><label>ID BOE (opcional; se completa solo con «Revisar biblioteca»)</label><input type="text" id="editId" placeholder="Ej: BOE-A-1978-31229"></div>
       <div class="form-row"><label>URL externa (opcional, para normas UE sin ID BOE)</label><input type="text" id="editUrl" placeholder="Ej: https://eur-lex.europa.eu/..."></div>
       <div class="form-actions">
         <button class="btn-primary" onclick="saveNorm()">GUARDAR</button>
         <button class="btn-sm" onclick="clearForm()">Limpiar</button>
+        <button class="btn-sm" id="btnVerify" onclick="verifyLibrary()">🔍 Revisar biblioteca</button>
+        <button class="btn-sm" onclick="restoreFactory()">♻️ Actualizar normas de fábrica</button>
         <button class="btn-sm" onclick="exportData()">Exportar JSON</button>
         <button class="btn-sm" onclick="document.getElementById('fileInput').click()">Importar JSON</button>
         <input type="file" id="fileInput" style="display:none" onchange="importData(this)" accept=".json">
       </div>
+      <div id="verifyReport" class="verify-report"></div>
     </div>
     <h3 style="font-family:'Lexend',sans-serif; color:var(--navy); margin-bottom:12px;">Normas registradas (<span id="normCount">0</span>)</h3>
     <div id="localNormsList"></div>
@@ -631,46 +689,77 @@
   <div id="pane-help" class="tab-pane">
 
     <div class="help-section">
-      <h3>📖 1. Cómo buscar normas</h3>
+      <h3>🔎 1. Cómo buscar normas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">Escribe el nombre de la norma (alias, nombre habitual o parte del título) y, si quieres, una referencia interna. No importan las mayúsculas ni las tildes, ni el orden de las palabras.</p>
       <table class="help-table">
         <thead><tr><th>Ejemplo de búsqueda</th><th>Qué hace</th></tr></thead>
         <tbody>
-          <tr><td>CE art 15</td><td>Muestra el artículo 15 de la Constitución Española</td></tr>
-          <tr><td>LPRL art 15-20</td><td>Rango de artículos 15 al 20 de la LPRL</td></tr>
-          <tr><td>LPRL art 15 al 20</td><td>Equivalente al anterior usando «al»</td></tr>
-          <tr><td>ET cap II</td><td>Capítulo II del Estatuto de los Trabajadores</td></tr>
-          <tr><td>Código Civil tit IV</td><td>Título IV del Código Civil</td></tr>
-          <tr><td>LEC sec 2</td><td>Sección 2 de la LEC</td></tr>
-          <tr><td>CE</td><td>Abre la norma completa sin referencia interna</td></tr>
+          <tr><td>ET art 15</td><td>Artículo 15 del Estatuto de los Trabajadores</td></tr>
+          <tr><td>estatuto trabajadores art 15</td><td>Lo mismo, sin recordar el alias</td></tr>
+          <tr><td>constitucion art 15</td><td>Funciona sin tildes y con el nombre completo</td></tr>
+          <tr><td>ley 31/95 art 15</td><td>Número de ley en formato corto (31/95) o largo (31/1995)</td></tr>
+          <tr><td>ET art.15 · ET art15</td><td>También sin espacio tras «art»</td></tr>
+          <tr><td>ET art 15 bis</td><td>Artículos con sufijo: bis, ter, quater…</td></tr>
+          <tr><td>ET art 15.2</td><td>Abre el artículo 15 y resalta el apartado 2</td></tr>
+          <tr><td>LPRL art 15, 17 y 20</td><td>Varios artículos no consecutivos</td></tr>
+          <tr><td>LPRL art 15-20 · art 15 al 20</td><td>Rango de artículos</td></tr>
+          <tr><td>LPRL disposición adicional 3 · LPRL DA 3</td><td>Disposiciones adicionales (DA), transitorias (DT), finales (DF) y derogatorias (DD); también «única» o en letra («tercera»)</td></tr>
+          <tr><td>ET cap II · Código Civil tit IV · LEC sec 2</td><td>Capítulo, título o sección completos, con todos sus artículos</td></tr>
+          <tr><td>LOPJ preámbulo</td><td>Preámbulo o exposición de motivos</td></tr>
+          <tr><td>iva</td><td>Busca por nombre: la Ley del IVA aparece la primera, y después el Reglamento</td></tr>
+          <tr><td>CE</td><td>Sin referencia: abre la norma con su índice</td></tr>
+          <tr><td>ley 39/2015 art 21</td><td>Norma que <em>no</em> está en tu biblioteca: se busca en todo el BOE y, si hay una sola, se abre el artículo</td></tr>
+          <tr><td>ley hipotecaria</td><td>Búsqueda en línea por palabras del título (si no está en tu biblioteca)</td></tr>
         </tbody>
       </table>
       <div class="help-callout">
-        <strong>💡 Abreviaciones reconocidas</strong>
-        art / art. / artículo &nbsp;·&nbsp; cap / cap. / capítulo &nbsp;·&nbsp; tit / tit. / título &nbsp;·&nbsp; sec / sección<br>
-        Los números romanos funcionan en capítulos y títulos: <em>cap III</em>, <em>tit VI</em>
+        <strong>💡 Abreviaturas reconocidas</strong>
+        art / art. / artículo · cap / capítulo · tit / título · sec / sección · libro · disp. / disposición · DA, DT, DF, DD<br>
+        Números romanos o arábigos: <em>cap III</em>, <em>tit 6</em>.
+      </div>
+      <div class="help-callout">
+        <strong>🌐 Cualquier norma del BOE</strong>
+        Si lo que buscas no está en tu biblioteca, la app lo busca automáticamente en toda la colección de legislación consolidada del BOE (por número oficial, como <em>39/2015</em>, o por palabras del título). Cuando sí hay resultados en tu biblioteca, aparece el botón <strong>🌐 Buscar en todo el BOE</strong>. Cada resultado en línea tiene <strong>⭐ Guardar en mi biblioteca</strong> para darle un alias.
+      </div>
+      <div class="help-callout">
+        <strong>⚡ Un solo resultado</strong>
+        Si la búsqueda encuentra una única norma y has indicado una referencia (por ejemplo, <em>ET art 15</em>), el visor se abre directamente sin tener que pulsar nada.
       </div>
     </div>
 
     <div class="help-section">
-      <h3>📄 2. Visor de texto (modal)</h3>
+      <h3>💡 2. Sugerencias y erratas</h3>
+      <ul style="padding-left:20px; font-size:.93rem; line-height:2;">
+        <li>Mientras escribes aparece una lista con las normas que coinciden. Usa <strong>↑ ↓</strong> y <strong>Intro</strong>, o haz clic, para elegir una; se conserva la referencia que ya hubieras escrito.</li>
+        <li><strong>Esc</strong> cierra la lista. La tecla <strong>/</strong> lleva el cursor al buscador desde cualquier parte.</li>
+        <li>Si no hay resultados, la app propone «¿Quisiste decir…?» con normas de nombre parecido (útil con erratas).</li>
+        <li>Los resultados salen ordenados: primero la coincidencia exacta de alias, después las demás.</li>
+      </ul>
+    </div>
+
+    <div class="help-section">
+      <h3>📄 3. Visor de texto</h3>
       <ol style="padding-left:20px; line-height:2.1; font-size:.93rem;">
-        <li>En los resultados de búsqueda, pulsa <strong>📄 Ver texto aquí</strong> para abrir el visor.</li>
-        <li>El texto se carga directamente desde el BOE en versión consolidada.</li>
-        <li>Selecciona con el ratón el fragmento exacto que quieres citar.</li>
-        <li>Pulsa <strong>➕ Añadir fragmento</strong> — el trozo queda guardado en el panel azul inferior.</li>
-        <li>Repite los pasos 3-4 para todos los fragmentos que necesites, aunque no sean contiguos.</li>
-        <li>Cuando hayas terminado, pulsa <strong>📋 Copiar cita</strong> en el panel azul.</li>
-        <li>Se copia al portapapeles como: <em>"Trozo 1"..."Trozo 2" (art. 14 LPRL)</em></li>
+        <li>En los resultados, pulsa <strong>📄 Ver texto aquí</strong> (o <strong>📑 Ver índice y texto</strong> si no indicaste referencia).</li>
+        <li>El texto se carga del BOE en versión consolidada (redacción vigente hoy) y se queda guardado en memoria mientras la página esté abierta: volver a abrir la misma norma es inmediato.</li>
+        <li>Al pie de cada artículo verás desde cuándo está vigente su redacción. Si el precepto se ha modificado, el desplegable <strong>Redacciones</strong> muestra las versiones anteriores (útil para hechos ocurridos antes de una reforma).</li>
+        <li>Selecciona con el ratón el fragmento que quieras citar y pulsa <strong>➕ Añadir fragmento</strong>; repítelo cuantas veces necesites.</li>
+        <li>Pulsa <strong>📋 Copiar cita</strong> en el panel azul inferior. Resultado: <em>"Trozo 1"..."Trozo 2" (art. 14 LPRL)</em>. Si el fragmento está en una disposición, la cita dice, por ejemplo, <em>(disp. adic. tercera ET)</em>.</li>
       </ol>
       <div class="help-callout">
-        <strong>📋 Copiar todo</strong> — copia el texto completo del fragmento visible sin formato de cita.<br>
-        <strong>🗑 Limpiar</strong> — borra todos los fragmentos acumulados sin cerrar el visor.<br>
-        Los fragmentos se reinician automáticamente al abrir un nuevo documento.
+        <strong>Moverte por la norma</strong>
+        <strong style="display:inline">◀ Anterior / Siguiente ▶</strong> pasan al artículo o disposición contiguos.<br>
+        <strong style="display:inline">📑 Índice</strong> muestra todos los títulos, capítulos, artículos y disposiciones; pulsa uno para leerlo. Si eliges un capítulo o título, ves todos sus artículos.<br>
+        <strong style="display:inline">Buscar en esta norma</strong>: escribe una o varias palabras (por ejemplo, <em>periodo de prueba</em>). Aparecen los artículos que contienen todas, con un trozo de texto; al abrir uno, las palabras salen resaltadas.<br>
+        <strong style="display:inline">🔗 Enlace</strong> copia el enlace permanente de la norma en el BOE.
+      </div>
+      <div class="help-callout">
+        <strong>📋 Copiar todo</strong> copia el texto visible sin formato de cita. <strong>🗑 Limpiar</strong> borra los fragmentos acumulados. Los fragmentos se reinician al abrir otra norma. <strong>Esc</strong> cierra el visor.
       </div>
     </div>
 
     <div class="help-section">
-      <h3>✂️ 3. Extractor de citas (pestaña propia)</h3>
+      <h3>✂️ 4. Extractor de citas (pestaña propia)</h3>
       <ol style="padding-left:20px; line-height:2.1; font-size:.93rem;">
         <li>Ve a la pestaña <strong>✂️ Extractor</strong>.</li>
         <li>Pega en el área de texto cualquier texto jurídico (artículo, sentencia, doctrina…).</li>
@@ -688,29 +777,56 @@
       </div>
     </div>
 
+    
     <div class="help-section">
-      <h3>🗂 4. Gestionar normas</h3>
-      <p style="font-size:.93rem; line-height:1.8;">En la pestaña <strong>Normas</strong> puedes añadir, editar o eliminar normas de tu biblioteca:</p>
+      <h3>🗂 5. Gestionar normas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">En la pestaña <strong>Normas</strong> puedes añadir, editar o borrar normas de tu biblioteca:</p>
       <ul style="padding-left:20px; font-size:.93rem; line-height:2;">
-        <li><strong>Alias</strong>: abreviación que usarás en el buscador (ej. <em>ET</em>, <em>LPRL</em>).</li>
-        <li><strong>Título completo</strong>: nombre oficial de la norma.</li>
-        <li><strong>ID BOE</strong>: identificador de la norma en el BOE (ej. <em>BOE-A-1978-31229</em>). Déjalo vacío para normas de la UE sin ID BOE.</li>
-        <li><strong>URL externa</strong>: para normas sin ID BOE (ej. RGPD en EUR-Lex). Se abrirá en una nueva pestaña.</li>
+        <li><strong>Alias</strong>: abreviatura que usarás al buscar (ET, LPRL…). <strong>Otros nombres</strong>: sinónimos que también la encontrarán (separados por comas).</li>
+        <li><strong>Enlace ELI</strong> (recomendado): en la página de cualquier norma del BOE aparece «Permalink ELI». Pega esa URL completa y la app extrae lo necesario. Es el dato que usa para abrir la norma, y no depende de ningún identificador memorizado.</li>
+        <li><strong>ID BOE</strong>: opcional. Se completa solo con «Revisar biblioteca».</li>
+        <li><strong>URL externa</strong>: para normas sin página en el BOE (por ejemplo, el RGPD en EUR-Lex).</li>
       </ul>
       <div class="help-callout">
-        <strong>Exportar / Importar JSON</strong> — guarda o restaura toda tu biblioteca de normas. Útil para hacer copias de seguridad o compartir la configuración entre dispositivos.
+        <strong>🔍 Revisar biblioteca</strong>
+        Comprueba en la API del BOE cada norma que tenga ELI (o ID): verifica que existe en la colección consolidada, completa o corrige el ID y marca la norma con ✔ y la fecha. Las que no coinciden salen con ⚠ y se listan en el informe. Necesita conexión; si el BOE no responde ese momento, quedan «sin conexión» y puedes repetirlo.
+      </div>
+      <div class="help-callout">
+        <strong>♻️ Actualizar normas de fábrica</strong>
+        Vuelve a cargar las normas incluidas en la aplicación con sus datos corregidos. Las que hayas añadido tú se conservan. Esto se hace solo la primera vez que abres una versión nueva.<br><br>
+        <strong>Exportar / Importar JSON</strong> — copia de seguridad o traslado de tu biblioteca entre dispositivos.
       </div>
     </div>
 
     <div class="help-section">
-      <h3>🕐 5. Historial de búsquedas</h3>
+      <h3>🕐 6. Historial de búsquedas</h3>
       <p style="font-size:.93rem; line-height:1.8;">La pestaña <strong>Historial</strong> guarda las últimas 30 búsquedas. Haz clic en cualquiera para repetirla instantáneamente. Usa <strong>Borrar historial</strong> para vaciar la lista.</p>
     </div>
 
+    
     <div class="help-section">
-      <h3>⚠️ 6. Notas técnicas</h3>
-      <p style="font-size:.93rem; line-height:1.8;">El texto se carga desde el BOE mediante un proxy público (texto consolidado con <code>tn=1</code>). El sistema prueba automáticamente tres proxies distintos si el primero falla.</p>
-      <p style="font-size:.93rem; line-height:1.8; margin-top:8px;">El BOE usa distintos esquemas de anclas internos según la antigüedad de la norma (<code>a21</code>, <code>art21</code>, etc.). El visor los detecta automáticamente. Si una norma muy antigua no carga correctamente, usa el botón <strong>↗ Abrir en BOE</strong> para acceder a la web oficial.</p>
+      <h3>⚠️ 7. Notas técnicas</h3>
+      <p style="font-size:.93rem; line-height:1.8;">El texto se obtiene de la <strong>API oficial de Datos Abiertos del BOE</strong> (legislación consolidada), que permite la lectura directa desde el navegador. No hacen falta proxies ni programas adicionales: basta con tener conexión a internet. Se descarga primero el índice de la norma (muy rápido) y después solo los artículos que vas a leer; el texto completo se descarga una única vez cuando buscas dentro de la norma o abres un capítulo o título muy extenso.</p>
+      <p style="font-size:.93rem; line-height:1.8; margin-top:8px;">Si una norma no está en la colección consolidada de la API, la app intenta leer su página del BOE por una vía alternativa (proxies públicos). Si tampoco es posible, el visor lo indica y ofrece <strong>↗ Abrir en el BOE</strong> y <strong>↻ Reintentar</strong>. Las páginas web del BOE no pueden incrustarse dentro de otra aplicación (el propio BOE lo impide), por eso el visor muestra el texto obtenido de la API.</p>
+      <p style="font-size:.93rem; line-height:1.8; margin-top:8px;">Los artículos, capítulos y disposiciones se localizan por su <em>texto</em> («Artículo 15», «Disposición adicional tercera»…), no por los identificadores internos del BOE, que varían según la antigüedad de la norma. Si en una norma un capítulo se repite en varios títulos, se muestra la primera coincidencia; el índice te permite elegir cualquier otra.</p>
+      <p style="font-size:.93rem; line-height:1.8; margin-top:8px;">El texto consolidado del BOE tiene carácter informativo: la versión con valor oficial es la publicada en el diario. La cita copiada no incluye la fecha de consulta; añádela si tu formato lo exige.</p>
+    </div>
+
+    <div class="help-section">
+      <h3>🆕 8. Novedades de esta versión</h3>
+      <ul style="padding-left:20px; font-size:.93rem; line-height:2;">
+        <li><strong>Nuevo:</strong> el visor carga el texto desde la API oficial de Datos Abiertos del BOE, de forma directa y fiable (ya no depende de proxies públicos).</li>
+        <li><strong>Nuevo:</strong> búsqueda en línea en toda la legislación consolidada del BOE y botón para guardar cualquier norma en tu biblioteca.</li>
+        <li><strong>Nuevo:</strong> fecha de vigencia de cada artículo y acceso a sus redacciones anteriores.</li>
+        <li><strong>Nuevo:</strong> «Revisar biblioteca» consulta la API del BOE para validar cada ELI y completar el ID oficial.</li>
+        <li>Búsqueda tolerante a tildes, orden de palabras, números de ley cortos y erratas, con resultados ordenados.</li>
+        <li>Referencias ampliadas: <em>art.15</em>, <em>bis/ter</em>, apartados, listas, disposiciones (DA/DT/DF/DD), libros y preámbulo.</li>
+        <li>Autocompletado, «¿Quisiste decir…?» y apertura automática del visor cuando hay un único resultado.</li>
+        <li>Visor con índice, buscador interno, navegación entre artículos, resaltado y enlace permanente.</li>
+        <li>Biblioteca basada en enlaces ELI, con revisión automática contra el BOE y migración sin perder las normas que añadiste.</li>
+        <li>Descarga más rápida y estable (conexiones en paralelo) y caché en memoria.</li>
+        <li>Nuevas normas: jurisdicción social y contencioso-administrativa, propiedad industrial e intelectual y PGC de pymes. Corregida la Ley de Empleo.</li>
+      </ul>
     </div>
 
   </div>
@@ -768,7 +884,15 @@
         <button class="btn-close-viewer" onclick="closeViewer()" title="Cerrar">&times;</button>
       </div>
     </div>
-    <div class="viewer-hint">Selecciona texto y pulsa <strong>➕ Añadir fragmento</strong> tantas veces como quieras · Luego pulsa <strong>📋 Copiar cita</strong> en el panel inferior.</div>
+    <div class="viewer-tools">
+      <button class="btn-vt" id="btnPrev" onclick="navBlock(-1)" title="Artículo anterior">◀ Anterior</button>
+      <button class="btn-vt" id="btnNext" onclick="navBlock(1)" title="Artículo siguiente">Siguiente ▶</button>
+      <button class="btn-vt" onclick="toggleIndex()" title="Índice de la norma">📑 Índice</button>
+      <input type="text" id="normSearch" placeholder="Buscar en esta norma (palabras en cualquier orden)…" autocomplete="off">
+      <button class="btn-vt" onclick="copyEli()" title="Copia el enlace permanente de la norma">🔗 Enlace</button>
+    </div>
+    <div id="viewerIndex" hidden><div id="viewerIndexList"></div></div>
+    <div class="viewer-hint">Selecciona texto y pulsa <strong>➕ Añadir fragmento</strong> tantas veces como quieras · Luego pulsa <strong>📋 Copiar cita</strong> en el panel inferior.<span id="viewerSource" class="viewer-source"></span></div>
 
     <!-- Panel acumulador de fragmentos (visible sólo cuando hay ≥1 fragmento) -->
     <div id="viewerFragsPanel">
@@ -789,626 +913,1196 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════
-//  DATOS INICIALES  (IDs BOE corregidos y verificados)
+//  UTILIDADES
 // ═══════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+
+/** Minúsculas, sin tildes ni ª/º; conserva . , ; - ( ) / para poder interpretar referencias. */
+function nrm(s) {
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[ªº°]/g, '').replace(/[^a-z0-9\/\s.,;()\-–]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+/** Como nrm pero sin signos: solo palabras y números tipo 31/1995. */
+function words(s) { return nrm(s).replace(/[.,;()\-–]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+// ═══════════════════════════════════════════════════════════
+//  DATOS INICIALES (cada norma lleva su enlace permanente ELI del BOE)
+//  El ID «BOE-A-…» solo se rellena si está contrastado; el botón
+//  «Revisar biblioteca» lo comprueba/completa leyendo el propio BOE.
+// ═══════════════════════════════════════════════════════════
+const FACTORY_VERSION = '2026-11-24';
+const N = (alias, title, eli, id = '', o = {}) => ({ alias, title, eli, id, url: o.url || '', aka: o.aka || [], chk: o.chk || '' });
 const INITIAL_NORMS = [
-  { alias:"CE",                    title:"Constitución Española",                                    id:"BOE-A-1978-31229",  url:"" },
-  { alias:"LPRL",                  title:"Ley 31/1995, de Prevención de Riesgos Laborales",          id:"BOE-A-1995-24292",  url:"" },
-  { alias:"LEC",                   title:"Ley 1/2000, de Enjuiciamiento Civil",                      id:"BOE-A-2000-323",    url:"" },
-  { alias:"LOPJ",                  title:"Ley Orgánica 6/1985, del Poder Judicial",                  id:"BOE-A-1985-12666",  url:"" },
-  { alias:"Ley Economía Sostenible", title:"Ley 2/2011, de Economía Sostenible",                     id:"BOE-A-2011-4839",   url:"" },
-  { alias:"PGC",                   title:"Plan General de Contabilidad",                             id:"BOE-A-2007-17430",  url:"" },
-  { alias:"Código Civil",          title:"Real Decreto de 24 de julio de 1889, Código Civil",        id:"BOE-A-1889-4763",   url:"" },
-  { alias:"Código de Comercio",    title:"Real Decreto de 22 de agosto de 1885, Código de Comercio", id:"BOE-A-1885-3146",   url:"" },
-  { alias:"LSSI",                  title:"Ley 34/2002, de Servicios de la Sociedad de la Información", id:"BOE-A-2002-13758", url:"" },
-  { alias:"Comercio Minorista",    title:"Ley 7/1996, de Ordenación del Comercio Minorista",         id:"BOE-A-1996-1539",   url:"" },
-  { alias:"Ley Sociedades Capital", title:"RDL 1/2010 — Texto Refundido Ley de Sociedades de Capital", id:"BOE-A-2010-10544", url:"" },
-  { alias:"Ley Cooperativas",      title:"Ley 27/1999, de Cooperativas",                             id:"BOE-A-1999-13888",  url:"" },
-  { alias:"Reglamento RM",         title:"Reglamento del Registro Mercantil",                        id:"BOE-A-1996-20930",  url:"" },
-  { alias:"Ley Crea y Crece",      title:"Ley 18/2022, de creación y crecimiento de empresas",       id:"BOE-A-2022-16096",  url:"" },
-  { alias:"Ley Sociedades Laborales", title:"Ley 44/2015, de Sociedades Laborales y Participadas",  id:"BOE-A-2015-11071",  url:"" },
-  { alias:"LGSS",                  title:"RDL 8/2015 — Ley General de la Seguridad Social",         id:"BOE-A-2015-11724",  url:"" },
-  { alias:"Ley Empleo",            title:"Ley 3/2023, de Empleo",                                    id:"BOE-A-2023-5365",   url:"" },
-  { alias:"ET",                    title:"RDL 2/2015 — Estatuto de los Trabajadores",               id:"BOE-A-2015-11430",  url:"" },
-  { alias:"RETA",                  title:"Ley 20/2007 — Estatuto del Trabajo Autónomo",             id:"BOE-A-2007-13148",  url:"" },
-  { alias:"ETT",                   title:"Ley 14/1994, de Empresas de Trabajo Temporal",             id:"BOE-A-1994-12601",  url:"" },
-  { alias:"Ley Impuesto Sociedades", title:"Ley 27/2014, del Impuesto sobre Sociedades",            id:"BOE-A-2014-12328",  url:"" },
-  { alias:"Reglamento IRPF",       title:"Real Decreto 439/2007 — Reglamento del IRPF",             id:"BOE-A-2007-6785",   url:"" },
-  { alias:"LIRPF",                 title:"Ley 35/2006, del IRPF",                                    id:"BOE-A-2006-21542",  url:"" },
-  { alias:"Reglamento IVA",        title:"Real Decreto 1624/1992 — Reglamento del IVA",             id:"BOE-A-1992-28740",  url:"" },
-  { alias:"LIVA",                  title:"Ley 37/1992, del IVA",                                     id:"BOE-A-1992-28738",  url:"" },
-  { alias:"LGT",                   title:"Ley 58/2003, General Tributaria",                          id:"BOE-A-2003-23432",  url:"" },
-  { alias:"Facturación",           title:"Real Decreto 1619/2012 — Reglamento de Facturación",      id:"BOE-A-2012-14669",  url:"" },
-  { alias:"LCSP",                  title:"Ley 9/2017, de Contratos del Sector Público",              id:"BOE-A-2017-12903",  url:"" },
-  { alias:"Ley Fomento Financiación", title:"Ley 5/2015, de Fomento de la Financiación Empresarial", id:"BOE-A-2015-4579",  url:"" },
-  { alias:"Ley Emprendedores",     title:"Ley 14/2013, de Apoyo a los Emprendedores",               id:"BOE-A-2013-10054",  url:"" },
-  { alias:"Ley Startups",          title:"Ley 28/2022, Fomento del Ecosistema de Empresas Emergentes", id:"BOE-A-2022-24139", url:"" },
-  { alias:"RGPD",                  title:"Reglamento (UE) 2016/679 — Protección de datos (RGPD)",  id:"",                  url:"https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX%3A32016R0679" },
-  { alias:"LOPDGDD",               title:"LO 3/2018, de Protección de Datos Personales",            id:"BOE-A-2018-16673",  url:"" },
-  { alias:"Ley Igualdad Trato",    title:"Ley 15/2022, integral para la igualdad de trato",         id:"BOE-A-2022-11950",  url:"" },
-  { alias:"RD Igualdad Retributiva", title:"RD 902/2020, de igualdad retributiva",                  id:"BOE-A-2020-12215",  url:"" },
-  { alias:"RD Planes Igualdad",    title:"RD 901/2020, de planes de igualdad",                      id:"BOE-A-2020-12214",  url:"" }
+  N('CE', 'Constitución Española', 'c/1978/12/27/(1)', 'BOE-A-1978-31229', { aka: ['constitucion', 'carta magna'], chk: 'Constitución' }),
+  N('LPRL', 'Ley 31/1995, de 8 de noviembre, de Prevención de Riesgos Laborales', 'l/1995/11/08/31', 'BOE-A-1995-24292', { aka: ['prevencion riesgos laborales'] }),
+  N('LEC', 'Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil', 'l/2000/01/07/1', 'BOE-A-2000-323'),
+  N('LOPJ', 'Ley Orgánica 6/1985, de 1 de julio, del Poder Judicial', 'lo/1985/07/01/6', 'BOE-A-1985-12666', { aka: ['poder judicial'] }),
+  N('LJS', 'Ley 36/2011, de 10 de octubre, reguladora de la jurisdicción social', 'l/2011/10/10/36', '', { aka: ['jurisdiccion social', 'procedimiento laboral'] }),
+  N('LJCA', 'Ley 29/1998, de 13 de julio, reguladora de la Jurisdicción Contencioso-administrativa', 'l/1998/07/13/29', 'BOE-A-1998-16718', { aka: ['contencioso administrativa', 'jurisdiccion contencioso administrativa'] }),
+  N('Ley Economía Sostenible', 'Ley 2/2011, de 4 de marzo, de Economía Sostenible', 'l/2011/03/04/2', 'BOE-A-2011-4117'),
+  N('Código Civil', 'Real Decreto de 24 de julio de 1889, por el que se publica el Código Civil', 'rd/1889/07/24/(1)', 'BOE-A-1889-4763', { aka: ['cc'], chk: 'Código Civil' }),
+  N('Código de Comercio', 'Real Decreto de 22 de agosto de 1885, por el que se publica el Código de Comercio', 'rd/1885/08/22/(1)', 'BOE-A-1885-6627', { aka: ['ccom'], chk: 'Código de Comercio' }),
+  N('LPI', 'Real Decreto Legislativo 1/1996, de 12 de abril, texto refundido de la Ley de Propiedad Intelectual', 'rdlg/1996/04/12/1', '', { aka: ['propiedad intelectual', 'trlpi', 'derechos de autor'] }),
+  N('Reglamento Registro PI', 'Real Decreto 611/2023, de 11 de julio, Reglamento del Registro de la Propiedad Intelectual', 'rd/2023/07/11/611', '', { aka: ['registro propiedad intelectual'] }),
+  N('LSSI', 'Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico', 'l/2002/07/11/34', 'BOE-A-2002-13758', { aka: ['lssice', 'comercio electronico'] }),
+  N('Comercio Minorista', 'Ley 7/1996, de 15 de enero, de Ordenación del Comercio Minorista', 'l/1996/01/15/7'),
+  N('Ley Sociedades Capital', 'Real Decreto Legislativo 1/2010, de 2 de julio, texto refundido de la Ley de Sociedades de Capital', 'rdlg/2010/07/02/1', 'BOE-A-2010-10544', { aka: ['lsc', 'sociedades de capital'] }),
+  N('Ley Cooperativas', 'Ley 27/1999, de 16 de julio, de Cooperativas', 'l/1999/07/16/27'),
+  N('Reglamento RM', 'Real Decreto 1784/1996, de 19 de julio, Reglamento del Registro Mercantil', 'rd/1996/07/19/1784', '', { aka: ['rrm', 'registro mercantil'] }),
+  N('Ley Crea y Crece', 'Ley 18/2022, de 28 de septiembre, de creación y crecimiento de empresas', 'l/2022/09/28/18'),
+  N('Ley Sociedades Laborales', 'Ley 44/2015, de 14 de octubre, de Sociedades Laborales y Participadas', 'l/2015/10/14/44', 'BOE-A-2015-11071'),
+  N('Ley Patentes', 'Ley 24/2015, de 24 de julio, de Patentes', 'l/2015/07/24/24', '', { aka: ['patentes'] }),
+  N('Reglamento Patentes', 'Real Decreto 316/2017, de 31 de marzo, Reglamento para la ejecución de la Ley 24/2015, de Patentes', 'rd/2017/03/31/316', 'BOE-A-2017-3550'),
+  N('Ley Marcas', 'Ley 17/2001, de 7 de diciembre, de Marcas', 'l/2001/12/07/17', 'BOE-A-2001-23093', { aka: ['marcas'] }),
+  N('Reglamento Marcas', 'Real Decreto 687/2002, de 12 de julio, Reglamento para la ejecución de la Ley 17/2001, de Marcas', 'rd/2002/07/12/687'),
+  N('Ley Diseño Industrial', 'Ley 20/2003, de 7 de julio, de Protección Jurídica del Diseño Industrial', 'l/2003/07/07/20', 'BOE-A-2003-13615', { aka: ['diseno industrial', 'disenos'] }),
+  N('Reglamento Diseño Industrial', 'Real Decreto 1937/2004, de 27 de septiembre, Reglamento de ejecución de la Ley 20/2003, de Protección Jurídica del Diseño Industrial', 'rd/2004/09/27/1937'),
+  N('PGC', 'Real Decreto 1514/2007, de 16 de noviembre, por el que se aprueba el Plan General de Contabilidad', 'rd/2007/11/16/1514', 'BOE-A-2007-19884', { aka: ['plan general contabilidad'] }),
+  N('PGC Pymes', 'Real Decreto 1515/2007, de 16 de noviembre, Plan General de Contabilidad de Pequeñas y Medianas Empresas y criterios contables para microempresas', 'rd/2007/11/16/1515', 'BOE-A-2007-19966', { aka: ['pgc pyme', 'plan general contabilidad pymes', 'microempresas'] }),
+  N('LGSS', 'Real Decreto Legislativo 8/2015, de 30 de octubre, texto refundido de la Ley General de la Seguridad Social', 'rdlg/2015/10/30/8', 'BOE-A-2015-11724', { aka: ['seguridad social'] }),
+  N('Ley Empleo', 'Ley 3/2023, de 28 de febrero, de Empleo', 'l/2023/02/28/3', 'BOE-A-2023-5365'),
+  N('ET', 'Real Decreto Legislativo 2/2015, de 23 de octubre, texto refundido de la Ley del Estatuto de los Trabajadores', 'rdlg/2015/10/23/2', 'BOE-A-2015-11430', { aka: ['estatuto trabajadores'] }),
+  N('RETA', 'Ley 20/2007, de 11 de julio, del Estatuto del trabajo autónomo', 'l/2007/07/11/20', '', { aka: ['leta', 'estatuto trabajo autonomo', 'autonomos'] }),
+  N('ETT', 'Ley 14/1994, de 1 de junio, por la que se regulan las empresas de trabajo temporal', 'l/1994/06/01/14', '', { aka: ['empresas trabajo temporal'] }),
+  N('Ley Impuesto Sociedades', 'Ley 27/2014, de 27 de noviembre, del Impuesto sobre Sociedades', 'l/2014/11/27/27', 'BOE-A-2014-12328', { aka: ['lis', 'is', 'impuesto sociedades'] }),
+  N('Reglamento IRPF', 'Real Decreto 439/2007, de 30 de marzo, Reglamento del Impuesto sobre la Renta de las Personas Físicas', 'rd/2007/03/30/439', '', { aka: ['rirpf'] }),
+  N('LIRPF', 'Ley 35/2006, de 28 de noviembre, del Impuesto sobre la Renta de las Personas Físicas', 'l/2006/11/28/35', '', { aka: ['irpf', 'ley irpf'] }),
+  N('Reglamento IVA', 'Real Decreto 1624/1992, de 29 de diciembre, Reglamento del Impuesto sobre el Valor Añadido', 'rd/1992/12/29/1624', '', { aka: ['riva'] }),
+  N('LIVA', 'Ley 37/1992, de 28 de diciembre, del Impuesto sobre el Valor Añadido', 'l/1992/12/28/37', '', { aka: ['iva', 'ley iva'] }),
+  N('LGT', 'Ley 58/2003, de 17 de diciembre, General Tributaria', 'l/2003/12/17/58', '', { aka: ['ley general tributaria'] }),
+  N('Facturación', 'Real Decreto 1619/2012, de 30 de noviembre, Reglamento por el que se regulan las obligaciones de facturación', 'rd/2012/11/30/1619', '', { aka: ['facturas', 'reglamento facturacion'] }),
+  N('LCSP', 'Ley 9/2017, de 8 de noviembre, de Contratos del Sector Público', 'l/2017/11/08/9', '', { aka: ['contratos sector publico', 'contratacion publica'] }),
+  N('Ley Fomento Financiación', 'Ley 5/2015, de 27 de abril, de fomento de la financiación empresarial', 'l/2015/04/27/5'),
+  N('Ley Emprendedores', 'Ley 14/2013, de 27 de septiembre, de apoyo a los emprendedores y su internacionalización', 'l/2013/09/27/14'),
+  N('Ley Startups', 'Ley 28/2022, de 21 de diciembre, de fomento del ecosistema de las empresas emergentes', 'l/2022/12/21/28', '', { aka: ['empresas emergentes'] }),
+  N('RGPD', 'Reglamento (UE) 2016/679 — Protección de datos (RGPD)', '', '', { url: 'https://eur-lex.europa.eu/eli/reg/2016/679/oj/spa', aka: ['gdpr', 'proteccion de datos'] }),
+  N('LOPDGDD', 'Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales', 'lo/2018/12/05/3', 'BOE-A-2018-16673', { aka: ['lopd', 'proteccion de datos'] }),
+  N('Ley Igualdad Trato', 'Ley 15/2022, de 12 de julio, integral para la igualdad de trato y la no discriminación', 'l/2022/07/12/15'),
+  N('RD Igualdad Retributiva', 'Real Decreto 902/2020, de 13 de octubre, de igualdad retributiva entre mujeres y hombres', 'rd/2020/10/13/902'),
+  N('RD Planes Igualdad', 'Real Decreto 901/2020, de 13 de octubre, por el que se regulan los planes de igualdad y su registro', 'rd/2020/10/13/901')
 ];
 
-// ═══════════════════════════════════════════════════════════
-//  ESTADO
-// ═══════════════════════════════════════════════════════════
-let localNorms = JSON.parse(localStorage.getItem('boe_norms_v4')) || null;
-if (!localNorms) { localNorms = INITIAL_NORMS; persist(); }
-
-let searchHistory = JSON.parse(localStorage.getItem('boe_history_v4')) || [];
-let editingIndex  = -1;
-let currentCtx    = { anchorText: '', alias: '', normId: '', normTitle: '', isRange: false, startNum: 0, endNum: 0 };
-
-// ═══════════════════════════════════════════════════════════
-//  PARSING DE BÚSQUEDA
-// ═══════════════════════════════════════════════════════════
-
-/**
- * Analiza el texto de búsqueda y extrae la referencia estructural
- * Retorna { anchorId, anchorIdEnd, label, type }
- */
-function parseQuery(raw) {
-  const t = raw.toLowerCase().trim();
-
-  // 1. Rango de artículos: "art 15-20" / "art 15 al 20" / "arts. 15 a 20"
-  const mRange = t.match(/arts?\.?\s+(\d+)\s*(?:-|al|a)\s*(\d+)/);
-  if (mRange) {
-    return { anchorId: '#a'+mRange[1], anchorIdEnd: '#a'+mRange[2], label: `Arts. ${mRange[1]} al ${mRange[2]}`, type:'a', startNum: +mRange[1], endNum: +mRange[2] };
-  }
-
-  // 2. Artículo único: "art 15" / "artículo 15" / "art. 15"
-  const mArt = t.match(/art[íi]?c?u?l?o?\.?\s+(\d+)/);
-  if (mArt) {
-    return { anchorId: '#a'+mArt[1], anchorIdEnd: null, label: 'Art. '+mArt[1], type:'a', startNum: +mArt[1], endNum: +mArt[1] };
-  }
-
-  // 3. Capítulo: "cap II" / "capítulo 3"
-  const mCap = t.match(/cap[íi]?t?u?l?o?\.?\s+([ivxlcdm]+|\d+)/i);
-  if (mCap) {
-    const ref = mCap[1].toLowerCase();
-    return { anchorId: '#c'+ref, anchorIdEnd: null, label: 'Cap. '+mCap[1].toUpperCase(), type:'c', startNum:0, endNum:0 };
-  }
-
-  // 4. Título: "tit IV" / "título 2"
-  const mTit = t.match(/t[íi]?t?u?l?o?\.?\s+([ivxlcdm]+|\d+)/i);
-  if (mTit) {
-    const ref = mTit[1].toLowerCase();
-    return { anchorId: '#t'+ref, anchorIdEnd: null, label: 'Tít. '+mTit[1].toUpperCase(), type:'t', startNum:0, endNum:0 };
-  }
-
-  // 5. Sección: "sec 2" / "sección 3"
-  const mSec = t.match(/sec(?:c?i?[oó]?n?)?\.?\s+(\d+)/i);
-  if (mSec) {
-    return { anchorId: '#s'+mSec[1], anchorIdEnd: null, label: 'Secc. '+mSec[1], type:'s', startNum:0, endNum:0 };
-  }
-
-  return { anchorId: '', anchorIdEnd: null, label: 'Inicio de la norma', type:'root', startNum:0, endNum:0 };
+/** Cadena que debe aparecer en el BOE para dar por buena la norma (p. ej. «31/1995»). */
+function chkOf(n) {
+  if (n.chk) return n.chk;
+  const m = (n.eli || '').match(/^(?:l|lo|rd|rdl|rdlg)\/(\d{4})\/\d\d\/\d\d\/(\d+)$/);
+  return m ? `${m[2]}/${m[1]}` : '';
+}
+function normalizeNorm(n) {
+  return { alias: String(n.alias || '').trim(), title: n.title || '', eli: n.eli || '', id: n.id || '', url: n.url || '',
+           aka: Array.isArray(n.aka) ? n.aka : [], chk: n.chk || '', verified: n.verified || null };
+}
+function normalizeEli(v) {
+  v = (v || '').trim();
+  const m = v.match(/eli\/es\/(.+)$/i);
+  if (m) v = m[1];
+  return v.replace(/[?#].*$/, '').replace(/\/(con|dof|spa)$/i, '').replace(/^\/+|\/+$/g, '');
 }
 
-/**
- * Extrae el alias/nombre de la norma del texto de búsqueda
- */
-function extractAlias(raw) {
-  const t = raw.trim();
-  // Intenta match exacto (case-insensitive)
-  let m = localNorms.find(n => n.alias.toLowerCase() === t.toLowerCase());
-  if (m) return m.alias;
-  // Match parcial: busca alias que aparezca en el texto de búsqueda
-  const candidates = localNorms
-    .filter(n => n.alias && t.toLowerCase().includes(n.alias.toLowerCase()))
-    .sort((a,b) => b.alias.length - a.alias.length);
-  if (candidates.length > 0) return candidates[0].alias;
-  // Match por título
-  const byTitle = localNorms
-    .filter(n => n.title && n.title.toLowerCase().includes(t.toLowerCase()))
-    .sort((a,b) => a.title.length - b.title.length);
-  if (byTitle.length > 0) return byTitle[0].alias;
+// ═══════════════════════════════════════════════════════════
+//  ESTADO Y BIBLIOTECA (con migración desde la versión anterior)
+// ═══════════════════════════════════════════════════════════
+const LS_KEY = 'boe_norms_v5', LS_OLD = 'boe_norms_v4', LS_VER = 'boe_factory_ver';
+
+/** Actualiza las normas de fábrica y conserva las que añadiste tú (y los IDs ya verificados). */
+function mergeFactory(current) {
+  const byAlias = new Map(current.filter(n => n && n.alias).map(n => [nrm(n.alias), n]));
+  const factoryAliases = new Set(INITIAL_NORMS.map(n => nrm(n.alias)));
+  const fresh = INITIAL_NORMS.map(f => {
+    const prev = byAlias.get(nrm(f.alias));
+    const n = normalizeNorm(f);
+    if (prev && prev.verified && prev.verified.ok && prev.id) { n.id = prev.id; n.verified = prev.verified; }
+    return n;
+  });
+  const own = current.filter(n => n && n.alias && !factoryAliases.has(nrm(n.alias))).map(normalizeNorm);
+  return [...fresh, ...own];
+}
+function loadNorms() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) {}
+  if (Array.isArray(saved) && localStorage.getItem(LS_VER) === FACTORY_VERSION) return saved.map(normalizeNorm);
+  let base = Array.isArray(saved) ? saved : null;
+  if (!base) { try { base = JSON.parse(localStorage.getItem(LS_OLD)); } catch (e) {} }
+  const merged = mergeFactory(Array.isArray(base) ? base : []);
+  try { localStorage.setItem(LS_KEY, JSON.stringify(merged)); localStorage.setItem(LS_VER, FACTORY_VERSION); } catch (e) {}
+  return merged;
+}
+function persist() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(localNorms)); localStorage.setItem(LS_VER, FACTORY_VERSION); } catch (e) {}
+}
+
+let localNorms = loadNorms();
+let searchHistory = [];
+try { searchHistory = JSON.parse(localStorage.getItem('boe_history_v4')) || []; } catch (e) {}
+let editingIndex = -1;
+let currentCtx = { alias: '', normTitle: '', citeRef: '' };
+let lastResults = [];
+
+// ═══════════════════════════════════════════════════════════
+//  INTERPRETACIÓN DE LA BÚSQUEDA
+// ═══════════════════════════════════════════════════════════
+const ORD = (() => {
+  const m = {}, u = ['primera', 'segunda', 'tercera', 'cuarta', 'quinta', 'sexta', 'septima', 'octava', 'novena'];
+  u.forEach((w, i) => m[w] = i + 1);
+  m.decima = 10; m.undecima = 11; m.duodecima = 12; m.decimoprimera = 11; m.decimosegunda = 12;
+  u.slice(2).forEach((w, i) => m['decimo' + w] = 13 + i);
+  m.vigesima = 20; u.forEach((w, i) => m['vigesimo' + w] = 21 + i); m.trigesima = 30;
+  return m;
+})();
+/** Número de un ordinal («3», «tercera», «tercero», «unica»→0). null si no es un ordinal válido. */
+function ordVal(w) {
+  if (/^\d+$/.test(w)) return +w;
+  if (w === 'unica' || w === 'unico') return 0;
+  if (ORD[w] != null) return ORD[w];
+  if (/o$/.test(w) && ORD[w.slice(0, -1) + 'a'] != null) return ORD[w.slice(0, -1) + 'a'];
+  return null;
+}
+const ROMAN_RE = /^m{0,3}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})$/;
+function romanVal(s) {
+  if (!s || !ROMAN_RE.test(s)) return null;
+  const v = { i: 1, v: 5, x: 10, l: 50, c: 100, d: 500, m: 1000 }; let t = 0;
+  for (let i = 0; i < s.length; i++) { const a = v[s[i]], b = v[s[i + 1]] || 0; t += a < b ? -a : a; }
   return t;
 }
+function structVal(w) {
+  if (w === 'preliminar') return 0;
+  if (/^\d+$/.test(w)) return +w;
+  const r = romanVal(w); if (r != null) return r;
+  return ordVal(w);
+}
+const SUF = '(bis|ter|quater|quinquies|sexies|septies|octies)';
+const fmtArt = it => `${it.n}${it.suf ? ' ' + it.suf : ''}${it.ap ? '.' + it.ap : ''}`;
+const DISP_SHORT = { adicional: 'adic.', transitoria: 'trans.', final: 'final', derogatoria: 'derog.' };
+const DISP_ABBR = { adicional: 'da', transitoria: 'dt', final: 'df', derogatoria: 'dd' };
+const ABBR_DISP = { da: 'adicional', dt: 'transitoria', df: 'final', dd: 'derogatoria' };
+
+/**
+ * Separa la referencia interna (artículos, disposiciones, capítulo…) del nombre de la norma.
+ * Devuelve { ref, rest, refText }.  ref.kind: none | art | disp | struct
+ */
+function parseRef(raw) {
+  let t = ' ' + nrm(raw) + ' ';
+  let ref = { kind: 'none', label: 'Inicio de la norma', cite: '' }, refText = '';
+  const cut = (a, b) => { refText = t.slice(a, b).trim(); t = t.slice(0, a) + ' ' + t.slice(b); };
+
+  // 1) Artículos: «art 15», «art.15», «arts. 15, 17 y 20», «art 15-20», «art 15 bis», «art 15.2»
+  const head = /\b(?:articulos?|arts?)\.?\s*(?=\d)/.exec(t);
+  if (head) {
+    const start = head.index, itemRe = new RegExp('^(\\d+)(?:\\.(\\d+))?\\s*' + SUF + '?');
+    const sepRe = /^\s*(,|;|\by\b|\be\b|-|–|\bal\b|\ba\b|\bhasta\b)\s*(?=\d)/;
+    let cursor = start + head[0].length, end = cursor, lastSep = null; const items = [];
+    for (;;) {
+      const im = itemRe.exec(t.slice(cursor)); if (!im) break;
+      const it = { n: +im[1], ap: im[2] ? +im[2] : null, suf: im[3] || '' };
+      if (lastSep === 'range') items[items.length - 1].to = it; else items.push({ from: it });
+      cursor += im[0].length; end = cursor;
+      const sm = sepRe.exec(t.slice(cursor)); if (!sm) break;
+      lastSep = /^(-|–|al|a|hasta)$/.test(sm[1]) ? 'range' : 'list'; cursor += sm[0].length;
+    }
+    if (items.length) {
+      const parts = items.map(i => i.to ? `${i.from.n}${i.from.suf ? ' ' + i.from.suf : ''} al ${i.to.n}${i.to.suf ? ' ' + i.to.suf : ''}` : fmtArt(i.from));
+      const single = items.length === 1 && !items[0].to;
+      const lab = parts.length > 1 ? parts.slice(0, -1).join(', ') + ' y ' + parts.slice(-1) : parts[0];
+      ref = { kind: 'art', items, apartado: single ? items[0].from.ap : null,
+              label: (single ? 'Art. ' : 'Arts. ') + lab, cite: (single ? 'art. ' : 'arts. ') + lab.replace(' al ', '-') };
+      cut(start, end);
+    }
+  }
+  // 2) Disposiciones: «disposición adicional 3ª», «DA 3», «DT única», «disp. final primera»
+  if (ref.kind === 'none') {
+    const cands = [];
+    for (const m of t.matchAll(/\b(?:disposicion(?:es)?|disp)\.?\s*(adicional|transitoria|final|derogatoria)\s+([a-z0-9]+)\b/g)) cands.push({ m, tipo: m[1], w: m[2] });
+    for (const m of t.matchAll(/\b(da|dt|df|dd)\s*\.?\s*([a-z0-9]+)\b/g)) cands.push({ m, tipo: ABBR_DISP[m[1]], w: m[2] });
+    for (const c of cands) {
+      const v = ordVal(c.w); if (v == null) continue;
+      const vTxt = v === 0 ? 'única' : v + 'ª';
+      ref = { kind: 'disp', tipo: c.tipo, val: v, label: `Disp. ${DISP_SHORT[c.tipo]} ${vTxt}`, cite: `disp. ${DISP_SHORT[c.tipo]} ${v === 0 ? 'única' : v + '.ª'}` };
+      cut(c.m.index, c.m.index + c.m[0].length); break;
+    }
+  }
+  // 3) Estructura: «cap II», «título IV», «sección 2», «libro 1», «preámbulo»
+  if (ref.kind === 'none') {
+    for (const m of t.matchAll(/\b(capitulo|cap|titulo|tit|seccion|sec|libro)\b\.?\s*([a-z0-9]+)\b/g)) {
+      const v = structVal(m[2]); if (v == null) continue;
+      const tp = { capitulo: 'c', cap: 'c', titulo: 't', tit: 't', seccion: 's', sec: 's', libro: 'l' }[m[1]];
+      const nm = { c: 'Cap.', t: 'Tít.', s: 'Secc.', l: 'Libro' }[tp];
+      const shown = /^\d+$/.test(m[2]) ? m[2] : (m[2] === 'preliminar' ? 'preliminar' : m[2].toUpperCase());
+      ref = { kind: 'struct', t: tp, val: v, label: `${nm} ${shown}`, cite: `${nm.toLowerCase()} ${shown}` };
+      cut(m.index, m.index + m[0].length); break;
+    }
+    if (ref.kind === 'none') {
+      const m = /\b(preambulo|exposicion de motivos)\b/.exec(t);
+      if (m) { ref = { kind: 'struct', t: 'p', val: 0, label: 'Preámbulo', cite: 'preámbulo' }; cut(m.index, m.index + m[0].length); }
+    }
+  }
+  return { ref, rest: t.replace(/\s+/g, ' ').trim(), refText };
+}
 
 // ═══════════════════════════════════════════════════════════
-//  BÚSQUEDA PRINCIPAL
+//  BÚSQUEDA DE NORMAS (tolerante, con puntuación)
 // ═══════════════════════════════════════════════════════════
-function performSearch() {
-  const raw = document.getElementById('mainInput').value.trim();
+const STOP = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'y', 'e', 'en', 'por', 'para', 'que', 'sobre', 'al', 'a', 'un', 'una']);
+const yearFull = y => { y = +y; return y < 100 ? (y >= 50 ? 1900 + y : 2000 + y) : y; };
+function qTokens(rest) { return words(rest).split(' ').filter(w => w && !STOP.has(w)); }
+function normKeys(n) {
+  const set = new Set();
+  const m = (n.eli || '').match(/^(?:l|lo|rd|rdl|rdlg)\/(\d{4})\/\d\d\/\d\d\/(\d+)$/);
+  if (m) set.add(`${m[2]}/${m[1]}`);
+  for (const x of (n.title || '').matchAll(/(\d+)\/(\d{4})/g)) set.add(`${x[1]}/${x[2]}`);
+  return set;
+}
+function scoreNorm(n, toks, restWords) {
+  const alias = words(n.alias), akas = (n.aka || []).map(words);
+  if (restWords && (alias === restWords || akas.includes(restWords))) return 1000;
+  const aliasList = alias.split(' ');
+  const aliasWords = new Set([...aliasList, ...akas.flatMap(a => a.split(' '))]);
+  const titleWords = words(n.title).split(' ');
+  const titleStr = ' ' + titleWords.join(' ') + ' ';
+  const keys = normKeys(n);
+  let total = 0;
+  for (const tk of toks) {
+    let s = 0; const nm = tk.match(/^(\d+)\/(\d{2}|\d{4})$/);
+    if (nm) { if (keys.has(`${nm[1]}/${yearFull(nm[2])}`)) s = 40; }
+    else if (aliasWords.has(tk)) s = 30;
+    else if (titleWords.includes(tk)) s = 20;
+    else if (tk.length >= 3 && [...aliasWords].some(w => w.startsWith(tk))) s = 12;
+    else if (tk.length >= 3 && titleWords.some(w => w.startsWith(tk))) s = 12;
+    else if (tk.length >= 4 && titleStr.includes(tk)) s = 6;
+    if (!s) return 0;
+    total += s;
+  }
+  if (aliasList.length && toks.every(t => aliasList.includes(t))) total += 50;
+  return total - titleWords.length * 0.01;
+}
+function rankNorms(rest) {
+  const toks = qTokens(rest); if (!toks.length) return [];
+  const rw = words(rest);
+  return localNorms.map(n => ({ n, score: scoreNorm(n, toks, rw) })).filter(r => r.score > 0).sort((a, b) => b.score - a.score);
+}
+function lev(a, b) {
+  const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[n];
+}
+/** «¿Quisiste decir…?»: normas cuyas palabras se parecen a lo escrito (erratas). */
+function fuzzyNorms(rest) {
+  const toks = qTokens(rest); if (!toks.length) return [];
+  const out = [];
+  for (const n of localNorms) {
+    const pool = new Set([...words(n.alias).split(' '), ...(n.aka || []).flatMap(a => words(a).split(' ')), ...words(n.title).split(' ')]);
+    let dist = 0, ok = true;
+    const keys = normKeys(n);
+    for (const tk of toks) {
+      const nm = tk.match(/^(\d+)\/(\d{2}|\d{4})$/);
+      if (nm) { if (!keys.has(`${nm[1]}/${yearFull(nm[2])}`)) { ok = false; break; } continue; }   // un número de ley no es una errata
+      if (tk.length < 3) { if (!pool.has(tk)) { ok = false; break; } continue; }
+      let best = 99; for (const w of pool) { if (Math.abs(w.length - tk.length) > 2) continue; best = Math.min(best, lev(tk, w)); }
+      if (best > (tk.length > 6 ? 2 : 1)) { ok = false; break; }
+      dist += best;
+    }
+    if (ok) out.push({ n, dist });
+  }
+  return out.sort((a, b) => a.dist - b.dist).slice(0, 3).map(x => x.n);
+}
+
+// ── enlaces ──
+function baseUrl(n) {
+  if (n.eli) return `https://www.boe.es/eli/es/${n.eli}/con`;
+  if (n.id) return `https://www.boe.es/buscar/act.php?id=${n.id}&tn=1`;
+  if (/^https?:\/\/(www\.)?boe\.es\//i.test(n.url || '')) return n.url;
+  return '';
+}
+function boeLinkWithRef(n, ref) {
+  const b = baseUrl(n); if (!b) return '';
+  if (ref.kind === 'art' && ref.items.length === 1 && !ref.items[0].to && !ref.items[0].from.suf) return b + '#a' + ref.items[0].from.n;
+  return b;
+}
+
+function resultCard(norm, ref, i, o = {}) {
+  const base = baseUrl(norm);
+  const card = document.createElement('div'); card.className = 'result-card' + (o.api ? ' online' : '');
+  const title = document.createElement('div'); title.className = 'r-title'; title.textContent = norm.title || norm.alias; card.appendChild(title);
+  const tag = document.createElement('span'); tag.className = 'r-id';
+  tag.textContent = norm.alias + (norm.id ? ' · ' + norm.id : (norm.eli ? ' · ELI ' + norm.eli : '')); card.appendChild(tag);
+  if (o.api) {
+    const x = o.api, meta = [x.rango && x.rango.texto, x.ambito && x.ambito.texto, x.fecha_publicacion && 'BOE ' + fmtFecha(x.fecha_publicacion)].filter(Boolean);
+    const m = document.createElement('span'); m.className = 'r-meta'; m.textContent = meta.join(' · '); card.appendChild(m);
+    if (x.estatus_derogacion === 'S' || x.vigencia_agotada === 'S') { const f = document.createElement('span'); f.className = 'r-flag'; f.textContent = x.estatus_derogacion === 'S' ? 'Derogada' : 'Vigencia agotada'; card.appendChild(f); }
+  }
+  const rf = document.createElement('div'); rf.className = 'r-ref';
+  rf.append('Referencia buscada: '); const st = document.createElement('strong'); st.textContent = ref.label; rf.appendChild(st); card.appendChild(rf);
+  const acts = document.createElement('div'); acts.className = 'result-actions';
+  if (base) {
+    const a = document.createElement('a'); a.className = 'btn-boe'; a.target = '_blank'; a.rel = 'noopener'; a.href = boeLinkWithRef(norm, ref); a.textContent = '↗ Abrir en BOE'; acts.appendChild(a);
+    const v = document.createElement('button'); v.className = 'btn-view'; v.textContent = ref.kind === 'none' ? '📑 Ver índice y texto' : '📄 Ver texto aquí';
+    v.onclick = () => openViewerFor(i); acts.appendChild(v);
+  }
+  if (norm.url) {
+    const a = document.createElement('a'); a.className = 'btn-externo'; a.target = '_blank'; a.rel = 'noopener'; a.href = norm.url; a.textContent = '↗ Abrir fuente externa'; acts.appendChild(a);
+  }
+  if (o.api) {
+    const mine = localNorms.find(n => (n.id && n.id === norm.id) || (n.eli && norm.eli && normalizeEli(n.eli) === norm.eli));
+    if (mine) { const s = document.createElement('span'); s.className = 'r-saved'; s.textContent = `✔ En tu biblioteca como «${mine.alias}»`; acts.appendChild(s); }
+    else { const s = document.createElement('button'); s.className = 'btn-sm'; s.textContent = '⭐ Guardar en mi biblioteca'; s.onclick = () => saveOnlineNorm(norm, s); acts.appendChild(s); }
+  }
+  if (!base && !norm.url) {
+    const s = document.createElement('span'); s.style.cssText = 'color:var(--muted);font-size:.85rem;font-style:italic;';
+    s.textContent = 'Sin enlace — añade el ELI o el ID en «Normas»'; acts.appendChild(s);
+  }
+  card.appendChild(acts);
+  return card;
+}
+
+function performSearch(opts = {}) {
+  const raw = $('mainInput').value.trim();
   if (!raw) return;
-
-  const parsed = parseQuery(raw);
-  const alias  = extractAlias(raw);
-
+  hideSuggest();
+  const { ref, rest } = parseRef(raw);
   addToHistory(raw);
   switchTab('results');
-
-  const results = localNorms.filter(n => {
-    const ai = n.alias.toLowerCase();
-    const ti = (n.title || '').toLowerCase();
-    const q  = alias.toLowerCase();
-    return ai === q || ai.includes(q) || ti.includes(q) || q.includes(ai);
-  });
-
-  const container = document.getElementById('resultsList');
+  onlineSeq++;
+  const container = $('resultsList');
   container.innerHTML = '';
 
-  if (results.length === 0) {
-    container.innerHTML = '<p class="no-results">No se encontraron normas para «'+escHTML(raw)+'».</p>';
+  const ranked = rankNorms(rest);
+  lastResults = ranked.slice(0, 12).map(r => ({ norm: r.n, ref }));
+
+  if (!rest) {
+    container.innerHTML = '<p class="no-results">Indica también la norma, por ejemplo: <strong>ET art 15</strong> o <strong>Constitución art 15</strong>.</p>';
+    return;
+  }
+  if (!lastResults.length) {
+    const p = document.createElement('p'); p.className = 'no-results';
+    p.textContent = `«${raw}» no está en tu biblioteca. Lo busco en todo el BOE…`;
+    container.appendChild(p);
+    const sug = fuzzyNorms(rest);
+    if (sug.length) {
+      const d = document.createElement('div'); d.className = 'did-you-mean';
+      d.append('¿Quisiste decir: ');
+      sug.forEach((n, i) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'btn-sm'; b.textContent = n.alias;
+        b.onclick = () => { $('mainInput').value = n.alias + (ref.kind !== 'none' ? ' ' + ref.cite : ''); performSearch(); };
+        d.appendChild(b); if (i < sug.length - 1) d.append(' ');
+      });
+      d.append(' ?'); container.appendChild(d);
+    }
+    runOnlineSearch(rest, ref, container, { auto: opts.auto !== false });
     return;
   }
 
-  results.forEach(norm => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    const boeUrl = norm.id ? `https://www.boe.es/buscar/act.php?id=${norm.id}&tn=1${parsed.anchorId}` : '';
-    const extUrl = norm.url || '';
+  lastResults.forEach((r, i) => container.appendChild(resultCard(r.norm, ref, i)));
 
-    let actionsHTML = '';
-    if (norm.id) {
-      actionsHTML += `<a class="btn-boe" href="${boeUrl}" target="_blank" rel="noopener">↗ Abrir en BOE</a>`;
-      actionsHTML += `<button class="btn-view" onclick="openViewer('${norm.id}','${encodeAnchor(parsed.anchorId)}','${encodeAnchor(parsed.anchorIdEnd)}','${encodeAnchor(parsed.label)}','${escAttr(norm.alias)}','${escAttr(norm.title)}')">📄 Ver texto aquí</button>`;
-    }
-    if (extUrl) {
-      actionsHTML += `<a class="btn-externo" href="${extUrl}" target="_blank" rel="noopener">↗ Abrir fuente externa</a>`;
-    }
-    if (!norm.id && !extUrl) {
-      actionsHTML += `<span style="color:var(--muted); font-size:.85rem; font-style:italic;">Sin ID BOE — añade URL en "Normas"</span>`;
-    }
+  // Buscar también fuera de la biblioteca
+  const more = document.createElement('div'); more.className = 'online-more';
+  const mb = document.createElement('button'); mb.type = 'button'; mb.className = 'btn-sm';
+  mb.textContent = `🌐 Buscar «${rest}» en todo el BOE`;
+  mb.onclick = () => { more.remove(); runOnlineSearch(rest, ref, container, { auto: false }); };
+  more.appendChild(mb); container.appendChild(more);
 
-    card.innerHTML = `
-      <div class="r-title">${escHTML(norm.title)}</div>
-      <span class="r-id">${norm.id || '(sin ID BOE)'}</span>
-      <div class="r-ref">Referencia buscada: <strong>${escHTML(parsed.label)}</strong></div>
-      <div class="result-actions">${actionsHTML}</div>
-    `;
-    container.appendChild(card);
+  // Un único resultado con referencia concreta: se abre el visor directamente
+  if (opts.auto !== false && lastResults.length === 1 && ref.kind !== 'none' && baseUrl(lastResults[0].norm)) openViewerFor(0);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BÚSQUEDA EN LÍNEA EN TODO EL BOE (API de legislación consolidada)
+// ═══════════════════════════════════════════════════════════
+let onlineSeq = 0;
+const TOK_EXPAND = { lo: ['ley', 'organica'], rd: ['real', 'decreto'], rdl: ['real', 'decreto', 'ley'], rdlg: ['real', 'decreto', 'legislativo'], rdleg: ['real', 'decreto', 'legislativo'], tr: ['texto', 'refundido'] };
+/** Convierte lo escrito en una consulta de la API: números oficiales (39/2015) y palabras del título. */
+function buildOnlineQuery(rest) {
+  const parts = [];
+  for (const tk of qTokens(rest)) {
+    const m = tk.match(/^(\d+)\/(\d{2}|\d{4})$/);
+    if (m) { parts.push(`numero_oficial:${m[1]}/${yearFull(m[2])}`); continue; }
+    (TOK_EXPAND[tk] || [tk]).forEach(w => { if (/^[a-z0-9]{2,}$/.test(w)) parts.push(`titulo:${w}`); });
+  }
+  return [...new Set(parts)].join(' and ');
+}
+const RANGO_ABBR = { 'Ley Orgánica': 'LO', 'Real Decreto Legislativo': 'RDLeg', 'Real Decreto-ley': 'RDL', 'Real Decreto': 'RD', 'Decreto Legislativo': 'DLeg', 'Decreto-ley': 'DL' };
+function shortAlias(x) {
+  const r = (x.rango && x.rango.texto) || '', num = x.numero_oficial || '';
+  if (/^constituci/i.test(r)) return 'CE';
+  if (num) return `${RANGO_ABBR[r] || r} ${num}`.trim();
+  return (x.titulo || x.identificador || '').split(/,| por (?:el|la|los|las) | sobre | de modificaci/)[0].replace(/\.$/, '').slice(0, 60).trim();
+}
+function normFromApi(x) {
+  const isEs = /\/eli\/es\//i.test(x.url_eli || '');
+  return normalizeNorm({ alias: shortAlias(x), title: (x.titulo || '').replace(/\.$/, ''), id: x.identificador, eli: isEs ? normalizeEli(x.url_eli) : '', aka: [] });
+}
+async function runOnlineSearch(rest, ref, container, o = {}) {
+  const my = onlineSeq;
+  const sec = document.createElement('div'); sec.className = 'online-section';
+  const h = document.createElement('h3'); h.className = 'online-h'; h.textContent = '🌐 En el BOE · legislación consolidada'; sec.appendChild(h);
+  const msg = document.createElement('div'); msg.className = 'loading-msg'; msg.textContent = `⏳ Buscando «${rest}» en el BOE…`; sec.appendChild(msg);
+  container.appendChild(sec);
+  const q = buildOnlineQuery(rest);
+  if (!q) { msg.textContent = 'Escribe alguna palabra del título o el número de la norma (p. ej. 39/2015).'; return; }
+  try {
+    let list = await apiSearch({ query_string: { query: q } }, 15);
+    if (my !== onlineSeq) return;
+    // Primero las normas estatales y vigentes, conservando el orden de relevancia del BOE
+    const pen = x => ((x.ambito && String(x.ambito.codigo) === '1') ? 0 : 1) + ((x.estatus_derogacion === 'S' || x.vigencia_agotada === 'S') ? 2 : 0);
+    list = list.map((x, k) => ({ x, k })).sort((a, b) => pen(a.x) - pen(b.x) || a.k - b.k).map(z => z.x).slice(0, 12);
+    msg.remove();
+    if (!list.length) {
+      const p = document.createElement('p'); p.className = 'no-results';
+      p.textContent = 'El BOE no devuelve normas consolidadas con esos términos. Prueba con el número (p. ej. «ley 39/2015») o con otras palabras del título.';
+      sec.appendChild(p); return;
+    }
+    let firstIdx = -1;
+    list.forEach(x => {
+      const norm = normFromApi(x), i = lastResults.push({ norm, ref, online: true }) - 1;
+      if (firstIdx < 0) firstIdx = i;
+      sec.appendChild(resultCard(norm, ref, i, { api: x }));
+    });
+    if (o.auto && list.length === 1 && ref.kind !== 'none') openViewerFor(firstIdx);
+  } catch (e) {
+    if (my !== onlineSeq) return;
+    msg.textContent = '';
+    const p = document.createElement('p'); p.className = 'no-results'; p.textContent = 'No se pudo consultar el BOE: ' + e.message;
+    msg.replaceWith(p);
+  }
+}
+function saveOnlineNorm(norm, btn) {
+  let alias = prompt('Alias con el que quieres buscar esta norma (p. ej. LPAC):', norm.alias);
+  if (alias == null) return;
+  alias = alias.trim(); if (!alias) return;
+  if (localNorms.some(n => nrm(n.alias) === nrm(alias))) { alert(`Ya tienes una norma con el alias «${alias}». Elige otro.`); return; }
+  const aka = alias !== norm.alias ? [norm.alias] : [];
+  localNorms.push(normalizeNorm({ ...norm, alias, aka }));
+  persist(); renderManageList();
+  if (btn) { const s = document.createElement('span'); s.className = 'r-saved'; s.textContent = `✔ En tu biblioteca como «${alias}»`; btn.replaceWith(s); }
+  showToast(`⭐ «${alias}» guardada en tu biblioteca`);
+}
+
+// ── autocompletado ──
+let sugIdx = -1, sugList = [];
+function hideSuggest() { const b = $('suggestBox'); if (b) { b.hidden = true; b.innerHTML = ''; } sugIdx = -1; sugList = []; }
+function updateSuggest() {
+  const v = $('mainInput').value;
+  const { rest, refText } = parseRef(v);
+  if (!rest || !qTokens(rest).length) { hideSuggest(); return; }
+  const list = rankNorms(rest).slice(0, 6);
+  if (!list.length || (list.length === 1 && words(list[0].n.alias) === words(rest))) { hideSuggest(); return; }
+  sugList = list.map(r => ({ n: r.n, refText })); sugIdx = -1;
+  const box = $('suggestBox'); box.innerHTML = '';
+  sugList.forEach((s, i) => {
+    const it = document.createElement('div'); it.className = 'suggest-item';
+    const a = document.createElement('span'); a.className = 'suggest-alias'; a.textContent = s.n.alias;
+    const t = document.createElement('span'); t.className = 'suggest-title'; t.textContent = s.n.title;
+    it.append(a, t);
+    it.addEventListener('mousedown', e => { e.preventDefault(); pickSuggest(i); });
+    box.appendChild(it);
   });
+  box.hidden = false;
 }
-
-function encodeAnchor(v) { return v ? encodeURIComponent(v) : ''; }
-
-// ═══════════════════════════════════════════════════════════
-//  EXTRACCIÓN DE CONTENIDO BOE
-// ═══════════════════════════════════════════════════════════
-
-/**
- * Determina si un elemento DOM es un "ancla" de nivel de artículo/capítulo/título/sección
- * Cubre los distintos esquemas que usa el BOE según la norma:
- *   a21, art21, articulo21  → artículos (CC, CCom, normas antiguas)
- *   cii, tiv, s2            → capítulos, títulos, secciones
- */
-function isAnchorEl(el) {
-  if (!el) return false;
-  const id = (el.id || el.getAttribute('name') || '').toLowerCase();
-  return /^a\d+$/.test(id)          // a21        (ET, LPRL, LEC…)
-      || /^art\d+$/.test(id)        // art21      (CC, CCom…)
-      || /^articulo\d+$/.test(id)   // articulo21 (variante rara)
-      || /^c([ivxlcdm]+|\d+)$/.test(id)
-      || /^t([ivxlcdm]+|\d+)$/.test(id)
-      || /^s\d+$/.test(id);
+function pickSuggest(i) {
+  const s = sugList[i]; if (!s) return;
+  $('mainInput').value = s.n.alias + (s.refText ? ' ' + s.refText : '') + ' ';
+  hideSuggest(); $('mainInput').focus();
 }
-
-/**
- * Genera las variantes de un ID de ancla para distintos esquemas BOE.
- * Ej.: "a21" → ["a21","art21","articulo21","a021"] y viceversa.
- */
-function anchorVariants(rawId) {
-  const id = (rawId||'').replace('#','').toLowerCase();
-  if (!id) return [];
-
-  const variants = new Set([id, id.toUpperCase()]);
-
-  // Si empieza por "a" + dígitos  (a21  → art21, articulo21, a021)
-  const mA = id.match(/^a(\d+)$/);
-  if (mA) {
-    const n = mA[1];
-    variants.add('art' + n);
-    variants.add('ART' + n);
-    variants.add('articulo' + n);
-    variants.add('artículo' + n);
-    // con cero inicial
-    if (n.length === 1) { variants.add('a0' + n); variants.add('art0' + n); }
-    return [...variants];
-  }
-
-  // Si empieza por "art" + dígitos  (art21 → a21, articulo21)
-  const mArt = id.match(/^art(\d+)$/);
-  if (mArt) {
-    const n = mArt[1];
-    variants.add('a' + n);
-    variants.add('articulo' + n);
-    variants.add('ART' + n);
-    return [...variants];
-  }
-
-  // Capítulos / títulos en romano: cii → CII, c2, etc.
-  const mRom = id.match(/^([ctsCTS])([ivxlcdmIVXLCDM]+)$/);
-  if (mRom) {
-    variants.add(mRom[1].toLowerCase() + mRom[2].toUpperCase());
-    variants.add(mRom[1].toUpperCase() + mRom[2].toLowerCase());
-    variants.add(mRom[1].toUpperCase() + mRom[2].toUpperCase());
-  }
-
-  return [...variants];
-}
-
-/**
- * Busca un elemento por múltiples variantes de ancla (id o name).
- */
-function findAnchorEl(doc, rawId) {
-  for (const v of anchorVariants(rawId)) {
-    const el = doc.getElementById(v) || doc.querySelector(`[name="${v}"]`);
-    if (el) return el;
-  }
-  return null;
-}
-
-/**
- * Extrae el fragmento de contenido del documento BOE
- */
-function extractFragment(doc, startAnchorId, endAnchorId) {
-  const startEl = findAnchorEl(doc, startAnchorId);
-  if (!startEl) return null;
-
-  // ID normalizado del elemento encontrado (para comparación en rango)
-  const foundStartId = (startEl.id || startEl.getAttribute('name') || '').toLowerCase();
-
-  const wrap = document.createElement('div');
-  wrap.className = 'boe-fragment';
-
-  if (!endAnchorId || endAnchorId === startAnchorId) {
-    // ── Elemento único ──
-    if (startEl.tagName === 'DIV' && startEl.querySelectorAll('p,h4,h3,h2').length > 0) {
-      wrap.appendChild(startEl.cloneNode(true));
-    } else {
-      wrap.appendChild(startEl.cloneNode(true));
-      let sib = startEl.nextElementSibling;
-      let safety = 0;
-      while (sib && !isAnchorEl(sib) && safety < 200) {
-        wrap.appendChild(sib.cloneNode(true));
-        sib = sib.nextElementSibling;
-        safety++;
-      }
-    }
-  } else {
-    // ── Rango ──
-    const endEl = findAnchorEl(doc, endAnchorId);
-    const foundEndId = endEl ? (endEl.id || endEl.getAttribute('name') || '').toLowerCase() : '';
-
-    let cur = startEl;
-    let safety = 0;
-    let passedEnd = false;
-
-    while (cur && safety < 500) {
-      safety++;
-      const curId = (cur.id || cur.getAttribute('name') || '').toLowerCase();
-
-      if (passedEnd) {
-        if (isAnchorEl(cur)) break;
-        wrap.appendChild(cur.cloneNode(true));
-      } else {
-        wrap.appendChild(cur.cloneNode(true));
-        if (foundEndId && curId === foundEndId) { passedEnd = true; }
-      }
-      cur = cur.nextElementSibling;
-    }
-  }
-
-  return wrap;
+function moveSuggest(d) {
+  const items = [...document.querySelectorAll('#suggestBox .suggest-item')]; if (!items.length) return;
+  sugIdx = (sugIdx + d + items.length) % items.length;
+  items.forEach((el, i) => el.classList.toggle('active', i === sugIdx));
 }
 
 // ═══════════════════════════════════════════════════════════
-//  PROXIES Y CARGA DEL BOE
+//  CONEXIÓN CON EL BOE
+//  1) API oficial de Datos Abiertos del BOE (legislación consolidada).
+//     Envía la cabecera «Access-Control-Allow-Origin: *», así que el navegador
+//     puede leerla directamente, sin proxies y sin servidor intermedio.
+//  2) Respaldo: página HTML de la norma a través de proxies públicos
+//     (solo si la API no tiene la norma o no responde).
+//  Nota: las páginas www.boe.es/eli/... y /buscar/act.php NO se pueden incrustar
+//  en un <iframe> (el BOE envía X-Frame-Options: SAMEORIGIN), ni leer con
+//  JavaScript (no envían CORS). Por eso el visor usa la API.
 // ═══════════════════════════════════════════════════════════
+const BOE_API = 'https://www.boe.es/datosabiertos/api/legislacion-consolidada';
+const BOE_ID_RE = /^BOE-[A-Z]-\d{4}-\d+$/i;
+const todayKey = () => { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); };
+const fmtFecha = f => { f = String(f || ''); return /^\d{8}$/.test(f) ? `${f.slice(6, 8)}/${f.slice(4, 6)}/${f.slice(0, 4)}` : f; };
+
+/** GET a la API del BOE (la cabecera Accept es obligatoria: sin ella la API devuelve 400). */
+async function apiGet(path, accept = 'application/xml', timeoutMs = 30000) {
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(BOE_API + path, { headers: { Accept: accept }, signal: ctrl.signal });
+    if (r.status === 404) throw Object.assign(new Error('El BOE no tiene esta norma en su colección de legislación consolidada.'), { notFound: true });
+    if (!r.ok) throw new Error(`El BOE respondió con un error (HTTP ${r.status}).`);
+    return await r.text();
+  } catch (e) {
+    if (e.notFound || /^El BOE/.test(e.message)) throw e;
+    if (e.name === 'AbortError') throw new Error('El BOE ha tardado demasiado en responder. Inténtalo de nuevo.');
+    throw Object.assign(new Error('No hay conexión con el BOE. Comprueba tu conexión a internet.'), { offline: true });
+  } finally { clearTimeout(timer); }
+}
+/** Analiza el XML de la API y comprueba el código de estado que va dentro de la respuesta. */
+function parseApiXml(txt) {
+  const d = new DOMParser().parseFromString(txt, 'application/xml');
+  if (d.getElementsByTagName('parsererror').length) throw new Error('La respuesta del BOE no es válida.');
+  const st = d.querySelector('response > status');
+  const code = st && st.querySelector('code') ? st.querySelector('code').textContent.trim() : '200';
+  if (code !== '200') {
+    const t = st && st.querySelector('text') ? st.querySelector('text').textContent.trim() : '';
+    throw Object.assign(new Error('BOE: ' + (t || 'error ' + code)), { notFound: code === '404' });
+  }
+  return d;
+}
+/** Búsqueda en la colección de legislación consolidada. `query` = { query_string: { query: '…' }, range: {…} } */
+async function apiSearch(query, limit = 10) {
+  const txt = await apiGet(`?query=${encodeURIComponent(JSON.stringify({ query }))}&limit=${limit}`, 'application/json', 25000);
+  let j; try { j = JSON.parse(txt); } catch { throw new Error('La respuesta del BOE no es válida.'); }
+  if (j.status && String(j.status.code) !== '200') throw new Error('BOE: ' + (j.status.text || 'error en la búsqueda'));
+  return Array.isArray(j.data) ? j.data : [];
+}
+
+/** Busca en el BOE la norma que corresponde a un ELI (por su fecha de disposición). */
+const eliCache = new Map();
+async function lookupByEli(eli) {
+  eli = normalizeEli(eli);
+  if (eliCache.has(eli)) return eliCache.get(eli);
+  const m = eli.match(/\/(\d{4})\/(\d{2})\/(\d{2})\//); if (!m) return null;
+  const same = x => normalizeEli(x.url_eli || '').toLowerCase() === eli.toLowerCase();
+  let hit = (await apiSearch({ query_string: { query: `fecha_disposicion:${m[1]}${m[2]}${m[3]}` } }, 500)).find(same);
+  if (!hit) {
+    const k = eli.match(/^(?:l|lo|rd|rdl|rdlg)\/(\d{4})\/\d\d\/\d\d\/(\d+)$/);
+    if (k) hit = (await apiSearch({ query_string: { query: `numero_oficial:${k[2]}/${k[1]}` } }, 20)).find(same);
+  }
+  eliCache.set(eli, hit || null);
+  return hit || null;
+}
+/** ID oficial «BOE-A-…» de una norma; si solo tiene ELI, lo averigua y lo guarda en la biblioteca. */
+async function resolveBoeId(norm) {
+  if (BOE_ID_RE.test(norm.id || '')) return norm.id.toUpperCase();
+  if (!norm.eli) throw Object.assign(new Error('Esta norma no tiene ELI ni ID del BOE. Añádelos en la pestaña «Normas».'), { notFound: true });
+  const hit = await lookupByEli(norm.eli);
+  if (!hit) throw Object.assign(new Error(`No encuentro en el BOE una norma consolidada con el ELI «${norm.eli}». Revisa el enlace en «Normas».`), { notFound: true });
+  norm.id = hit.identificador;
+  const own = localNorms.find(n => n.eli && normalizeEli(n.eli) === normalizeEli(norm.eli));
+  if (own && own.id !== hit.identificador) { own.id = hit.identificador; persist(); renderManageList(); }
+  return hit.identificador;
+}
+
+// ── Respaldo: HTML de la página del BOE a través de proxies públicos ──
 const PROXIES = [
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`
 ];
+async function fetchText(url, timeoutMs = 20000) {
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  const makers = [u => u, ...PROXIES];
+  const tries = makers.map(async mk => {
+    const r = await fetch(mk(url), { signal: ctrl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const t = await r.text();
+    if (t.length < 500) throw new Error('respuesta vacía');
+    return t;
+  });
+  try { return await Promise.any(tries); }
+  catch (e) { throw new Error('No se pudo descargar la página del BOE a través de los proxies públicos.'); }
+  finally { clearTimeout(timer); ctrl.abort(); }
+}
 
-async function fetchWithProxy(url) {
-  let lastError;
-  for (const proxyFn of PROXIES) {
-    try {
-      const resp = await fetch(proxyFn(url), { signal: AbortSignal.timeout(12000) });
-      if (resp.ok) {
-        const text = await resp.text();
-        if (text.length > 500) return text; // sanity check
-      }
-    } catch(e) { lastError = e; }
+// ═══════════════════════════════════════════════════════════
+//  ESTRUCTURA DE LA NORMA (artículos, disposiciones, capítulos…)
+// ═══════════════════════════════════════════════════════════
+const HEAD_RE = /^(articulo\s+\d|disposicion\s+(adicional|transitoria|final|derogatoria)\s+\S|capitulo\s+\S|titulo\s+\S|seccion\s+\S|libro\s+\S|preambulo|exposicion de motivos|anexo\b)/;
+const RANK = { l: 0, t: 1, d: 1, x: 1, p: 1, c: 2, s: 3, a: 9, o: 9 };
+
+function parseHeading(text) {
+  const t = nrm(text); let m;
+  if ((m = t.match(new RegExp('^articulo\\s+(\\d+)\\s*' + SUF + '?\\b')))) return { type: 'a', key: 'a:' + m[1] + (m[2] || ''), num: +m[1], suffix: m[2] || '' };
+  if ((m = t.match(/^disposicion\s+(adicional|transitoria|final|derogatoria)\s+([a-z0-9]+)/))) {
+    const v = ordVal(m[2]); if (v != null) return { type: 'd', key: DISP_ABBR[m[1]] + ':' + v };
   }
-  throw new Error('No se pudo cargar mediante ningún proxy. ' + (lastError?.message||''));
+  if ((m = t.match(/^capitulo\s+([a-z0-9]+)/)) && structVal(m[1]) != null) return { type: 'c', key: 'c:' + structVal(m[1]) };
+  if ((m = t.match(/^titulo\s+([a-z0-9]+)/)) && structVal(m[1]) != null) return { type: 't', key: 't:' + structVal(m[1]) };
+  if ((m = t.match(/^seccion\s+([a-z0-9]+)/)) && structVal(m[1]) != null) return { type: 's', key: 's:' + structVal(m[1]) };
+  if ((m = t.match(/^libro\s+([a-z0-9]+)/)) && structVal(m[1]) != null) return { type: 'l', key: 'l:' + structVal(m[1]) };
+  if (/^(preambulo|exposicion de motivos)/.test(t)) return { type: 'p', key: 'p:0' };
+  if (/^anexo\b/.test(t)) return { type: 'x', key: 'x:' + t.slice(0, 20) };
+  return null;
+}
+
+/** Quita lo que no debe llegar al visor: scripts, manejadores on*, estilos, enlaces, imágenes. */
+function sanitizeNode(root) {
+  root.querySelectorAll('script,style,iframe,link,meta,noscript,object,embed,img,form').forEach(e => e.remove());
+  root.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(a => { if (/^on/i.test(a.name) || a.name === 'style') el.removeAttribute(a.name); });
+    if (el.tagName === 'A') { el.removeAttribute('href'); el.style.color = 'inherit'; }
+  });
+}
+
+/**
+ * Detecta los encabezados por su TEXTO (no depende de los identificadores internos del BOE)
+ * y asigna a cada uno su contenido: el propio elemento y los hermanos siguientes hasta el próximo encabezado.
+ */
+function buildBlocks(doc) {
+  const root = doc.body || doc.documentElement;
+  const cands = [];
+  root.querySelectorAll('h1,h2,h3,h4,h5,h6,p,div,span,center,b,strong').forEach(el => {
+    if (el.closest('nav,li,a,table')) return;
+    const txt = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!txt || txt.length > 300 || !HEAD_RE.test(nrm(txt))) return;
+    if ([...el.children].some(ch => HEAD_RE.test(nrm(ch.textContent || '')))) return;   // lo representa el hijo
+    cands.push({ el, txt });
+  });
+  const under = new Map(); const mark = new Set(cands.map(c => c.el));
+  cands.forEach(c => { for (let p = c.el.parentElement; p && p !== root; p = p.parentElement) under.set(p, (under.get(p) || 0) + 1); });
+  const isBoundary = el => mark.has(el) || under.has(el);
+  const blocks = [];
+  cands.forEach(c => {
+    const info = parseHeading(c.txt); if (!info) return;
+    let unit = c.el;
+    while (unit.parentElement && unit.parentElement !== root && under.get(unit.parentElement) === 1 && unit.parentElement.firstElementChild === unit) unit = unit.parentElement;
+    const nodes = [unit];
+    for (let s = unit.nextElementSibling, k = 0; s && !isBoundary(s) && k < 600; s = s.nextElementSibling, k++) nodes.push(s);
+    blocks.push({ i: blocks.length, ...info, rank: RANK[info.type], label: c.txt.slice(0, 140), nodes });
+  });
+  return blocks;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CARGA DE LA NORMA
+//  · Índice (rápido, unos KB) → estructura, navegación e índice del visor.
+//  · Artículos sueltos → se piden de uno en uno a la API (rápido).
+//  · Texto completo → solo cuando hace falta (buscar dentro de la norma,
+//    capítulos o títulos muy largos). Queda en memoria.
+// ═══════════════════════════════════════════════════════════
+const docCache = new Map();
+
+/** Clave de caché estable para una norma. */
+function docKey(norm) { return (BOE_ID_RE.test(norm.id || '') ? norm.id.toUpperCase() : '') || normalizeEli(norm.eli) || baseUrl(norm); }
+
+async function loadDocument(norm) {
+  const key = docKey(norm);
+  if (docCache.has(key)) return docCache.get(key);
+  let entry = null, apiErr = null;
+  try { entry = await loadFromApi(norm); }
+  catch (e) { apiErr = e; }
+  if (!entry) {
+    // Respaldo: sin conexión no tiene sentido probar los proxies
+    if (apiErr && apiErr.offline) throw apiErr;
+    try { entry = await loadFromHtml(baseUrl(norm)); }
+    catch (e2) { throw new Error((apiErr ? apiErr.message + ' ' : '') + 'Tampoco se pudo leer la página del BOE por la vía alternativa.'); }
+  }
+  docCache.set(key, entry);
+  if (norm.id) docCache.set(norm.id.toUpperCase(), entry);
+  while (docCache.size > 12) docCache.delete(docCache.keys().next().value);
+  return entry;
+}
+
+/** Vía principal: API oficial (índice de bloques). */
+async function loadFromApi(norm) {
+  const id = await resolveBoeId(norm);
+  const xml = parseApiXml(await apiGet(`/id/${encodeURIComponent(id)}/texto/indice`));
+  const blocks = [];
+  for (const el of xml.getElementsByTagName('bloque')) {
+    const kid = tag => { const c = [...el.children].find(x => x.localName === tag); return c ? c.textContent.replace(/\s+/g, ' ').trim() : ''; };
+    const b = makeBlock(kid('id'), kid('titulo'));
+    if (b) { b.i = blocks.length; blocks.push(b); }
+  }
+  if (!blocks.length) throw new Error('El BOE no devuelve el índice de esta norma.');
+  return { src: 'api', id, blocks, full: false, fullPromise: null };
+}
+function makeBlock(apiId, titulo) {
+  if (!apiId || apiId === 'firma') return null;
+  let info = titulo ? parseHeading(titulo) : null, label = titulo;
+  if (!info && /^preambulo/i.test(apiId)) { info = { type: 'p', key: 'p:0' }; label = label || 'Preámbulo'; }
+  if (!info) { info = { type: 'o', key: 'o:' + apiId }; label = label || 'Texto'; }
+  return { ...info, rank: RANK[info.type], label: label.slice(0, 160), apiId, nodes: null, versions: null, vIdx: -1, loading: null };
+}
+
+/** Vía de respaldo: HTML de la página del BOE (proxies). Los bloques llegan ya con su contenido. */
+async function loadFromHtml(base) {
+  const html = await fetchText(base);
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const blocks = buildBlocks(doc);
+  if (!blocks.length) throw new Error('Descargué la página, pero no reconozco su estructura (artículos o capítulos).');
+  return { src: 'html', blocks, full: true };
+}
+
+// ── Contenido de los bloques ──
+const XML_OK_TAGS = new Set(['p', 'em', 'strong', 'b', 'i', 'u', 'sup', 'sub', 'blockquote', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'br', 'span', 'div', 'ul', 'ol', 'li', 'code', 'pre', 'caption', 'colgroup', 'col', 'hr', 'dl', 'dt', 'dd']);
+/** Convierte un nodo XML de la API en HTML seguro (lista blanca de etiquetas; sin enlaces, imágenes ni estilos). */
+function xmlToHtml(node) {
+  if (node.nodeType === 3) return document.createTextNode(node.nodeValue);
+  if (node.nodeType !== 1) return null;
+  const tag = (node.localName || '').toLowerCase();
+  if (tag === 'img' || tag === 'script' || tag === 'style') return null;
+  const el = document.createElement(XML_OK_TAGS.has(tag) ? tag : 'span');
+  if (tag === 'a') el.className = 'boe-ref';
+  ['class', 'colspan', 'rowspan'].forEach(a => { const v = node.getAttribute(a); if (v) el.setAttribute(a, v); });
+  for (const c of node.childNodes) { const k = xmlToHtml(c); if (k) el.appendChild(k); }
+  return el;
+}
+const versionNodes = v => [...v.childNodes].map(xmlToHtml).filter(n => n && !(n.nodeType === 3 && !n.nodeValue.trim()));
+
+/** Rellena un bloque con la redacción vigente hoy (y guarda las demás redacciones). */
+function fillBlock(b, bloqueEl) {
+  const vs = bloqueEl ? [...bloqueEl.children].filter(c => c.localName === 'version') : [];
+  if (!vs.length) { b.nodes = []; b.versions = []; return; }
+  const today = todayKey(); let k = -1;
+  vs.forEach((v, j) => { const f = +(v.getAttribute('fecha_vigencia') || 0); if (!f || f <= today) k = j; });
+  if (k < 0) k = vs.length - 1;
+  b.versions = vs.map(v => ({ el: v, vig: v.getAttribute('fecha_vigencia') || '', pub: v.getAttribute('fecha_publicacion') || '', por: v.getAttribute('id_norma') || '' }));
+  b.vIdx = k; b.vNow = k;
+  b.nodes = versionNodes(vs[k]);
+  b.norm = null;
+  enrichLabel(b);
+}
+/** Mejora la etiqueta del índice con el epígrafe real: «Artículo 11. Contratos formativos.» */
+function enrichLabel(b) {
+  if (!b.nodes || !b.nodes.length) return;
+  const txt = n => (n.textContent || '').replace(/\s+/g, ' ').trim();
+  let t = '';
+  if (b.type === 'a' || b.type === 'd' || b.type === 'o') { const p = b.nodes.find(n => n.classList && n.classList.contains('articulo')); if (p) t = txt(p); }
+  else if ('tcslx'.includes(b.type)) t = b.nodes.slice(0, 3).map(txt).filter(Boolean).join('. ');
+  if (!t || t.length > 260) return;
+  const h = parseHeading(t);
+  if (b.type === 'o' || (h && h.key === b.key) || b.type === 'x') b.label = t.slice(0, 160);
+}
+
+function fetchBlock(entry, b) {
+  if (b.nodes) return Promise.resolve();
+  if (!b.loading) {
+    b.loading = apiGet(`/id/${encodeURIComponent(entry.id)}/texto/bloque/${encodeURIComponent(b.apiId)}`)
+      .then(t => { const x = parseApiXml(t); fillBlock(b, x.getElementsByTagName('bloque')[0] || null); })
+      .catch(e => { b.loading = null; throw e; });
+  }
+  return b.loading;
+}
+/** Texto completo de la norma (una sola descarga; se reutiliza). */
+function loadFullText(entry) {
+  if (entry.full) return Promise.resolve();
+  if (!entry.fullPromise) {
+    entry.fullPromise = apiGet(`/id/${encodeURIComponent(entry.id)}/texto`, 'application/xml', 120000).then(t => {
+      const x = parseApiXml(t), map = new Map();
+      for (const el of x.getElementsByTagName('bloque')) { const id = el.getAttribute('id'); if (id && !map.has(id)) map.set(id, el); }
+      entry.blocks.forEach(b => { if (!b.nodes) fillBlock(b, map.get(b.apiId) || null); });
+      entry.full = true;
+    }).catch(e => { entry.fullPromise = null; throw e; });
+  }
+  return entry.fullPromise;
+}
+/** Garantiza que los bloques indicados tengan contenido. */
+async function ensureContent(entry, idxs) {
+  if (!entry || entry.src !== 'api') return;
+  const need = idxs.filter(i => entry.blocks[i] && !entry.blocks[i].nodes);
+  if (!need.length) return;
+  if (entry.full || entry.fullPromise || need.length > 40) return loadFullText(entry);
+  const q = [...need];
+  const worker = async () => { while (q.length) await fetchBlock(entry, entry.blocks[q.shift()]); };
+  await Promise.all(Array.from({ length: Math.min(6, q.length) }, worker));
+}
+
+/** Bloques que corresponden a una referencia. */
+function locate(ref, blocks) {
+  const out = [];
+  const firstArt = it => blocks.findIndex(b => b.type === 'a' && b.num === it.n && b.suffix === (it.suf || ''));
+  if (ref.kind === 'art') {
+    for (const it of ref.items) {
+      if (!it.to) { const k = firstArt(it.from); if (k >= 0) out.push(k); continue; }
+      const a = firstArt(it.from); if (a < 0) continue;
+      let b = blocks.findIndex((x, j) => j >= a && x.type === 'a' && x.num === it.to.n && (!it.to.suf || x.suffix === it.to.suf));
+      if (b < 0) continue;
+      while (!it.to.suf && blocks[b + 1] && blocks[b + 1].type === 'a' && blocks[b + 1].num === it.to.n) b++;
+      for (let j = a; j <= b && j < a + 400; j++) out.push(j);
+    }
+  } else if (ref.kind === 'disp') {
+    const k = blocks.findIndex(b => b.type === 'd' && b.key === DISP_ABBR[ref.tipo] + ':' + ref.val); if (k >= 0) out.push(k);
+  } else if (ref.kind === 'struct') {
+    const k = blocks.findIndex(b => b.type === ref.t && b.key === ref.t + ':' + ref.val);
+    if (k >= 0) out.push(...structRange(blocks, k));
+  }
+  return [...new Set(out)].sort((a, b) => a - b);
+}
+/** Un capítulo/título/sección abarca hasta el siguiente encabezado de su mismo nivel o superior. */
+function structRange(blocks, k) {
+  const r = blocks[k].rank, out = [k];
+  for (let j = k + 1; j < blocks.length && out.length < 400; j++) { if (blocks[j].rank <= r) break; out.push(j); }
+  return out;
 }
 
 // ═══════════════════════════════════════════════════════════
 //  VISOR MODAL
 // ═══════════════════════════════════════════════════════════
-async function openViewer(normId, anchorIdEnc, anchorIdEndEnc, labelEnc, alias, normTitle) {
-  const anchorId    = anchorIdEnc    ? decodeURIComponent(anchorIdEnc)    : '';
-  const anchorIdEnd = anchorIdEndEnc ? decodeURIComponent(anchorIdEndEnc) : '';
-  const label       = labelEnc       ? decodeURIComponent(labelEnc)       : 'Inicio';
+let V = null;   // { norm, base, entry, blocks, shown: [], ref, seq }
+let viewerSeq = 0;
 
-  const isRange = !!(anchorIdEnd && anchorIdEnd !== anchorId);
-  const startNum = parseInt((anchorId||'').replace('#a','')) || 0;
-  const endNum   = parseInt((anchorIdEnd||'').replace('#a','')) || startNum;
+function openViewerFor(i) { const r = lastResults[i]; if (r) openViewer(r.norm, r.ref); }
 
-  currentCtx = { anchorText: label, alias, normId, normTitle, isRange, startNum, endNum, anchorId };
-
-  const overlay = document.getElementById('viewerOverlay');
-  const body    = document.getElementById('viewerBody');
-  const titleEl = document.getElementById('viewerTitle');
-
-  overlay.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  titleEl.textContent = `${label} · ${alias} · ${normTitle}`;
-  body.innerHTML = '<div class="loading-msg">⏳ Cargando texto desde el BOE…</div>';
-
-  // Limpiar fragmentos del visor al abrir un nuevo documento
+async function openViewer(norm, ref) {
+  const base = baseUrl(norm); if (!base) return;
+  const my = ++viewerSeq;
+  currentCtx = { alias: norm.alias, normTitle: norm.title, citeRef: ref.cite || '' };
+  const overlay = $('viewerOverlay'), body = $('viewerBody');
+  overlay.style.display = 'block'; document.body.style.overflow = 'hidden';
+  $('viewerTitle').textContent = `${ref.label} · ${norm.alias} · ${norm.title}`;
+  $('viewerIndex').hidden = true; $('normSearch').value = '';
+  $('viewerSource').textContent = '';
+  body.innerHTML = '<div class="loading-msg">⏳ Conectando con el BOE…</div>';
   clearViewerFragments();
+  V = null; updateNav();
+  try {
+    const entry = await loadDocument(norm);
+    if (my !== viewerSeq) return;
+    V = { norm, base, entry, blocks: entry.blocks, shown: [], ref, seq: 0 };
+    $('viewerSource').textContent = entry.src === 'api'
+      ? `Fuente: BOE · Datos abiertos · texto consolidado${entry.id ? ' · ' + entry.id : ''}`
+      : 'Fuente: página del BOE (vía alternativa)';
+    if (ref.kind === 'none') { body.innerHTML = '<div class="loading-msg">Elige un artículo del índice, o escribe una palabra para buscar dentro de la norma.</div>'; openIndex(''); updateNav(); return; }
+    const idxs = locate(ref, entry.blocks);
+    if (!idxs.length) {
+      body.innerHTML = `<div class="viewer-error"><h3>No encuentro «${escHTML(ref.label)}» en esta norma</h3>
+        <p style="color:var(--muted)">Puede que no exista (artículo derogado o numeración distinta). Te dejo el índice para localizarlo.</p></div>`;
+      openIndex(''); updateNav(); return;
+    }
+    await showBlocks(idxs, { apartado: ref.apartado });
+  } catch (err) {
+    if (my !== viewerSeq) return;
+    showLoadError(norm, ref, err);
+  }
+}
 
-  if (!anchorId) {
-    body.innerHTML = '<div class="viewer-error"><p style="color:var(--muted)">No se especificó referencia interna. Usa el botón «Abrir en BOE» para acceder a la norma completa.</p></div>';
+function showLoadError(norm, ref, err) {
+  const base = baseUrl(norm), body = $('viewerBody');
+  body.innerHTML = `<div class="viewer-error"><h3>No se pudo mostrar el texto</h3><p>${escHTML(err && err.message || String(err))}</p>
+    <p id="viewerErrActions" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+      <a class="btn-boe" href="${escAttr(boeLinkWithRef(norm, ref) || base)}" target="_blank" rel="noopener" style="display:inline-block;">↗ Abrir en el BOE</a>
+    </p></div>`;
+  const retry = document.createElement('button'); retry.type = 'button'; retry.className = 'btn-view'; retry.textContent = '↻ Reintentar';
+  retry.onclick = () => { docCache.delete(docKey(norm)); openViewer(norm, ref); };
+  $('viewerErrActions').appendChild(retry);
+  updateNav();
+}
+
+async function showBlocks(idxs, opts = {}) {
+  if (!V) return;
+  const my = V, token = ++my.seq, body = $('viewerBody');
+  idxs = idxs.slice(0, 400);
+  if (idxs.some(i => !my.blocks[i].nodes)) {
+    const many = idxs.length > 40 && !my.entry.full;
+    body.innerHTML = `<div class="loading-msg">⏳ Cargando ${idxs.length > 1 ? idxs.length + ' bloques' : 'el texto'} desde el BOE…${many ? '<br><small>Descargando la norma completa; las normas largas pueden tardar unos segundos.</small>' : ''}</div>`;
+    try { await ensureContent(my.entry, idxs); }
+    catch (err) { if (V === my && token === my.seq) showLoadError(my.norm, my.ref, err); return; }
+    if (V !== my || token !== my.seq) return;
+  }
+  body.innerHTML = '';
+  const wrap = document.createElement('div'); wrap.className = 'boe-fragment';
+  idxs.forEach(i => {
+    const b = my.blocks[i], sec = document.createElement('div'); sec.className = 'boe-block';
+    (b.nodes || []).forEach(nd => sec.appendChild(nd.cloneNode(true)));
+    wrap.appendChild(sec);
+  });
+  sanitizeNode(wrap); body.appendChild(wrap);
+  // Pie con la fecha de la redacción vigente y acceso a redacciones anteriores (después de sanitizar)
+  [...wrap.children].forEach((sec, k) => { const cap = versionCaption(my.blocks[idxs[k]], sec, opts); if (cap) sec.appendChild(cap); });
+  if (!wrap.textContent.trim()) wrap.innerHTML = '<p class="loading-msg">Este bloque no tiene texto en la versión consolidada (puede estar derogado o sin contenido).</p>';
+  my.shown = idxs;
+  const first = my.blocks[idxs[0]];
+  if (opts.title !== false) $('viewerTitle').textContent = `${first.label.slice(0, 80)} · ${my.norm.alias}`;
+  if (opts.apartado) markApartado(wrap, opts.apartado);
+  if (opts.term) highlightIn(wrap, opts.term);
+  body.scrollTop = 0;
+  updateNav();
+  const mark1 = wrap.querySelector('mark, .hl-apartado'); if (mark1 && mark1.scrollIntoView) mark1.scrollIntoView({ block: 'center' });
+  // Precarga silenciosa del artículo anterior y del siguiente
+  if (my.entry.src === 'api' && !my.entry.full) {
+    const t = navTargets(), a = idxs[0], z = idxs[idxs.length - 1];
+    const prev = [...t].reverse().find(x => x.i < a), next = t.find(x => x.i > z);
+    ensureContent(my.entry, [prev, next].filter(Boolean).map(x => x.i)).catch(() => {});
+  }
+}
+
+/** «Redacción vigente desde …» + selector de redacciones anteriores del mismo bloque. */
+function versionCaption(b, sec, opts = {}) {
+  if (!b || !b.versions || !b.versions.length) return null;
+  const cap = document.createElement('div'); cap.className = 'boe-vig';
+  const info = document.createElement('span');
+  const setInfo = () => {
+    const v = b.versions[b.vIdx], now = b.vIdx === b.vNow;
+    const fut = +v.vig > todayKey();
+    info.textContent = (now ? (fut ? '⏳ Redacción que entra en vigor el ' : '✔ Redacción vigente desde el ') : '🕘 Redacción histórica, en vigor desde el ') + fmtFecha(v.vig)
+      + (v.por && b.versions.length > 1 && b.vIdx > 0 ? ` · modificada por ${v.por}` : '');
+    cap.classList.toggle('old', !now);
+  };
+  setInfo(); cap.appendChild(info);
+  if (b.versions.length > 1) {
+    const sel = document.createElement('select'); sel.title = 'Ver otras redacciones de este precepto';
+    b.versions.forEach((v, j) => {
+      const o = document.createElement('option'); o.value = j;
+      o.textContent = `${j === b.vNow ? 'Vigente · ' : ''}desde ${fmtFecha(v.vig)}${j === 0 ? ' (original)' : ''}`;
+      sel.appendChild(o);
+    });
+    sel.value = String(b.vIdx);
+    sel.addEventListener('change', () => {
+      b.vIdx = +sel.value;
+      [...sec.childNodes].forEach(n => { if (n !== cap) n.remove(); });
+      // reconstruye el contenido con la redacción elegida
+      const holder = document.createElement('div');
+      versionNodes(b.versions[b.vIdx].el).forEach(n => holder.appendChild(n));
+      sanitizeNode(holder);
+      [...holder.childNodes].forEach(n => sec.insertBefore(n, cap));
+      if (opts.term) highlightIn(sec, opts.term);
+      setInfo();
+      showToast(b.vIdx === b.vNow ? '✔ Redacción vigente' : '🕘 Mostrando una redacción anterior');
+    });
+    const lab = document.createElement('label'); lab.textContent = `Redacciones (${b.versions.length}):`;
+    lab.appendChild(sel); cap.appendChild(lab);
+  }
+  return cap;
+}
+function markApartado(wrap, n) {
+  const re = new RegExp('^\\s*' + n + '\\s*[.\\-)]');
+  for (const p of wrap.querySelectorAll('p,li,div')) { if (re.test(p.textContent || '') && !p.querySelector('p')) { p.classList.add('hl-apartado'); break; }
+  }
+}
+function highlightIn(el, term) {
+  let toks = words(term).split(' ').filter(t => t.length >= 2 && !STOP.has(t));
+  if (!toks.length) toks = words(term).split(' ').filter(t => t.length >= 2);
+  if (!toks.length) return;
+  const cls = { a: '[aàáâä]', e: '[eèéêë]', i: '[iìíîï]', o: '[oòóôö]', u: '[uùúûü]', n: '[nñ]' };
+  const re = new RegExp(toks.map(t => t.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&').replace(/[aeioun]/g, c => cls[c])).join('|'), 'gi');
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(nd => {
+    const s = nd.nodeValue; re.lastIndex = 0; if (!re.test(s)) return;
+    re.lastIndex = 0; const frag = document.createDocumentFragment(); let last = 0, m;
+    while ((m = re.exec(s))) { if (m.index > last) frag.append(s.slice(last, m.index)); const mk = document.createElement('mark'); mk.textContent = m[0]; frag.append(mk); last = m.index + m[0].length; if (m[0].length === 0) re.lastIndex++; }
+    frag.append(s.slice(last)); nd.parentNode.replaceChild(frag, nd);
+  });
+}
+
+// ── navegación e índice ──
+function navTargets() { return V ? V.blocks.filter(b => b.type === 'a' || b.type === 'd' || b.type === 'o') : []; }
+function navBlock(dir) {
+  if (!V || !V.shown.length) return;
+  const t = navTargets(); let next = null;
+  if (dir > 0) { const from = V.shown[V.shown.length - 1]; next = t.find(b => b.i > from); }
+  else { const from = V.shown[0]; for (let k = t.length - 1; k >= 0; k--) if (t[k].i < from) { next = t[k]; break; } }
+  if (next) showBlocks([next.i]);
+}
+function updateNav() {
+  const ok = !!(V && V.shown.length), t = V ? navTargets() : [];
+  const prev = $('btnPrev'), next = $('btnNext');
+  prev.disabled = !ok || !t.some(b => b.i < V.shown[0]);
+  next.disabled = !ok || !t.some(b => b.i > V.shown[V.shown.length - 1]);
+}
+function toggleIndex() { const p = $('viewerIndex'); if (p.hidden) openIndex($('normSearch').value); else p.hidden = true; }
+const INDENT = { l: 0, t: 0, d: 0, x: 0, p: 0, c: 1, s: 2, a: 3, o: 2 };
+function openIndex(term) {
+  if (!V) return;
+  const panel = $('viewerIndex'), list = $('viewerIndexList'); panel.hidden = false; list.innerHTML = '';
+  const q = words(term || ''), toks = q.split(' ').filter(Boolean);
+  const add = (b, snippet) => {
+    const row = document.createElement('div'); row.className = 'vi-row'; row.style.paddingLeft = (8 + INDENT[b.type] * 16) + 'px';
+    const l = document.createElement('span'); l.className = 'vi-label' + (b.type === 'a' ? '' : ' vi-head'); l.textContent = b.label; row.appendChild(l);
+    if (snippet) { const s = document.createElement('span'); s.className = 'vi-snip'; s.textContent = snippet; row.appendChild(s); }
+    row.onclick = () => { panel.hidden = true; showBlocks(b.rank < 9 && b.type !== 'd' && b.type !== 'p' ? structRange(V.blocks, b.i) : [b.i], { term }); };
+    list.appendChild(row);
+  };
+  if (!toks.length) {
+    const lim = 2500;
+    V.blocks.slice(0, lim).forEach(b => add(b));
+    if (V.blocks.length > lim) list.append(`… y ${V.blocks.length - lim} más. Usa el buscador para acotar.`);
     return;
   }
-
-  const boeUrl     = `https://www.boe.es/buscar/act.php?id=${normId}&tn=1`;
-  const boeUrlAnch = boeUrl + (anchorId || '');
-
-  try {
-    const html = await fetchWithProxy(boeUrl);
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-
-    // Limpiar basura del HTML remoto
-    doc.querySelectorAll('script,style,iframe,link,meta,noscript,nav,header,footer,.nav,.footer,.header').forEach(e => e.remove());
-
-    const fragment = extractFragment(doc, anchorId, anchorIdEnd || null);
-
-    if (!fragment || fragment.innerHTML.trim() === '') {
-      body.innerHTML = `
-        <div class="viewer-error">
-          <h3>Elemento no encontrado</h3>
-          <p>No se encontró el identificador <code>${anchorId}</code> en este documento.</p>
-          <p style="margin-top:10px;color:var(--muted);font-size:.9rem;">El BOE puede usar un esquema de anclas diferente para esta norma. Prueba a <a href="${boeUrlAnch}" target="_blank">abrirla directamente</a>.</p>
-        </div>`;
-      return;
-    }
-
-    // Limpiar enlaces y atributos problemáticos
-    fragment.querySelectorAll('a').forEach(a => { a.removeAttribute('href'); a.style.color='inherit'; });
-    fragment.querySelectorAll('[style]').forEach(e => {
-      // Mantener sólo estilos inofensivos
-      e.removeAttribute('style');
-    });
-    fragment.querySelectorAll('img').forEach(i => i.remove());
-
-    body.innerHTML = '';
-    body.appendChild(fragment);
-
-    // Hacer scroll al inicio del fragmento
-    body.scrollTop = 0;
-
-  } catch (err) {
-    body.innerHTML = `
-      <div class="viewer-error">
-        <h3>Error al cargar el texto</h3>
-        <p>${escHTML(err.message)}</p>
-        <p style="margin-top:14px;">
-          <a class="btn-boe" href="${boeUrlAnch}" target="_blank" rel="noopener" style="display:inline-block;">↗ Abrir en el BOE</a>
-        </p>
-      </div>`;
+  // Para buscar dentro de la norma hace falta su texto completo: se descarga una vez y queda en memoria
+  if (V.entry && V.entry.src === 'api' && !V.entry.full) {
+    const my = V;
+    list.innerHTML = '<div class="loading-msg">⏳ Descargando el texto completo de la norma para buscar en él…<br><small>Solo la primera vez; las normas largas pueden tardar unos segundos.</small></div>';
+    loadFullText(my.entry).then(() => { if (V === my && words($('normSearch').value) === q) openIndex($('normSearch').value); })
+      .catch(e => { if (V === my) list.textContent = 'No se pudo descargar el texto completo: ' + e.message; });
+    return;
   }
+  let n = 0;
+  for (const b of V.blocks) {
+    if (!b.nodes) continue;
+    if (b.rank < 9 && b.type !== 'd' && !toks.every(t => nrm(b.label).includes(t))) continue;
+    if (!b.norm) b.norm = nrm(b.nodes.map(x => x.textContent || '').join(' '));
+    if (!toks.every(t => b.norm.includes(t))) continue;
+    const raw = b.nodes.map(x => x.textContent || '').join(' ').replace(/\s+/g, ' ');
+    const at = nrm(raw).indexOf(toks[0]); const sn = at >= 0 ? '…' + raw.slice(Math.max(0, at - 50), at + 90) + '…' : '';
+    add(b, sn); if (++n >= 80) { list.append('Mostrando las 80 primeras coincidencias; afina la búsqueda.'); break; }
+  }
+  if (!n) list.textContent = `Ningún artículo contiene «${term}».`;
 }
-
-function closeViewer() {
-  document.getElementById('viewerOverlay').style.display = 'none';
-  document.body.style.overflow = '';
+async function copyEli() {
+  if (!V) return;
+  try { await navigator.clipboard.writeText(V.base); showToast('✔ Enlace permanente copiado'); } catch { showToast('❌ No se pudo copiar'); }
 }
+function closeViewer() { viewerSeq++; $('viewerOverlay').style.display = 'none'; document.body.style.overflow = ''; }
 function overlayClick(e) { if (e.target.id === 'viewerOverlay') closeViewer(); }
-
-// ═══════════════════════════════════════════════════════════
-//  CITA / ENTRECOMILLAR
-// ═══════════════════════════════════════════════════════════
-
-/**
- * Intenta detectar el número de artículo al que pertenece el texto seleccionado
- * recorriendo el DOM hacia atrás desde el inicio de la selección.
- */
-function detectArticleNumber() {
-  const sel = window.getSelection();
-  if (!sel.rangeCount) return null;
-  const range = sel.getRangeAt(0);
-
-  // Obtener todos los nodos de texto del fragmento en orden
-  const body = document.getElementById('viewerBody');
-  const walker = document.createTreeWalker(body, NodeFilter.SHOW_ELEMENT);
-
-  let lastArticleNum = null;
-  const startNode = range.startContainer;
-
-  // Buscamos el nodo que contiene el inicio de la selección
-  // y recogemos el último "Artículo N" que hayamos pasado
-  let node = walker.nextNode();
-  let found = false;
-
-  while (node && !found) {
-    // ¿Contiene este nodo el inicio de la selección?
-    if (node.contains(startNode)) found = true;
-
-    const txt = node.textContent || '';
-    const m = txt.match(/Art[íi]culo\s+(\d+)/i);
-    if (m) lastArticleNum = m[1];
-
-    if (!found) node = walker.nextNode();
-  }
-
-  return lastArticleNum;
-}
 
 // ═══════════════════════════════════════════════════════════
 //  CITA MULTI-FRAGMENTO EN EL MODAL
 // ═══════════════════════════════════════════════════════════
-let viewerFragments = [];  // { text, artNum }
-
+/** Referencia («art. 15», «disp. adic. tercera») del encabezado que precede a la selección. */
+function detectCiteRef() {
+  const sel = window.getSelection(); if (!sel.rangeCount) return null;
+  const startNode = sel.getRangeAt(0).startContainer;
+  const walker = document.createTreeWalker($('viewerBody'), NodeFilter.SHOW_ELEMENT);
+  let last = null, node = walker.nextNode();
+  while (node) {
+    const own = (node.textContent || '').replace(/\s+/g, ' ').trim();
+    if (own.length < 300) {
+      const h = parseHeading(own);
+      if (h && h.type === 'a') last = `art. ${h.num}${h.suffix ? ' ' + h.suffix : ''}`;
+      else if (h && h.type === 'd') { const m = nrm(own).match(/^disposicion\s+(adicional|transitoria|final|derogatoria)\s+([a-z0-9]+)/); last = `disp. ${DISP_SHORT[m[1]]} ${m[2]}`; }
+    }
+    if (node.contains(startNode) && !node.firstElementChild) break;
+    node = walker.nextNode();
+  }
+  return last;
+}
+let viewerFragments = [];
 function addViewerFragment() {
   const sel = window.getSelection();
-  if (!sel || sel.toString().trim() === '') {
-    showToast('⚠️ Selecciona primero el texto que quieres añadir');
-    return;
-  }
-
-  const raw    = sel.toString().replace(/[\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
-  const artNum = detectArticleNumber();
-
-  viewerFragments.push({ text: raw, artNum });
-  renderViewerFrags();
-  sel.removeAllRanges();   // Quitar la selección visual tras añadir
-  showToast(`✔ Fragmento ${viewerFragments.length} añadido`);
+  if (!sel || sel.toString().trim() === '') { showToast('⚠️ Selecciona primero el texto que quieres añadir'); return; }
+  const raw = sel.toString().replace(/[\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+  viewerFragments.push({ text: raw, ref: detectCiteRef() });
+  renderViewerFrags(); sel.removeAllRanges(); showToast(`✔ Fragmento ${viewerFragments.length} añadido`);
 }
-
-function removeViewerFragment(idx) {
-  viewerFragments.splice(idx, 1);
-  renderViewerFrags();
-}
-
-function clearViewerFragments() {
-  viewerFragments = [];
-  renderViewerFrags();
-}
-
+function removeViewerFragment(idx) { viewerFragments.splice(idx, 1); renderViewerFrags(); }
+function clearViewerFragments() { viewerFragments = []; renderViewerFrags(); }
 function renderViewerFrags() {
-  const panel  = document.getElementById('viewerFragsPanel');
-  const badge  = document.getElementById('viewerFragsBadge');
-  const list   = document.getElementById('viewerFragsList');
-
-  badge.textContent = viewerFragments.length;
-  list.innerHTML    = '';
-
-  if (viewerFragments.length === 0) {
-    panel.classList.remove('has-frags');
-    return;
-  }
-
+  const panel = $('viewerFragsPanel'), list = $('viewerFragsList');
+  $('viewerFragsBadge').textContent = viewerFragments.length; list.innerHTML = '';
+  if (!viewerFragments.length) { panel.classList.remove('has-frags'); return; }
   panel.classList.add('has-frags');
   viewerFragments.forEach((f, i) => {
-    const li = document.createElement('li');
-    li.className = 'vfl-item';
-    li.innerHTML = `
-      <span class="vfl-num">${i+1}.</span>
-      <span class="vfl-text" title="${escHTML(f.text)}">"${escHTML(f.text)}"</span>
-      <button class="vfl-del" title="Eliminar" onclick="removeViewerFragment(${i})">✕</button>
-    `;
+    const li = document.createElement('li'); li.className = 'vfl-item';
+    li.innerHTML = `<span class="vfl-num">${i + 1}.</span><span class="vfl-text" title="${escHTML(f.text)}">"${escHTML(f.text)}"</span><button class="vfl-del" title="Eliminar" onclick="removeViewerFragment(${i})">✕</button>`;
     list.appendChild(li);
   });
 }
-
+function aliasForCite(a) { return /\s/.test(a) || a.length > 6 ? a : a.toUpperCase(); }
 async function copyViewerCita() {
-  if (viewerFragments.length === 0) {
-    showToast('⚠️ Añade al menos un fragmento');
-    return;
-  }
-
-  // Determinar referencia (artículo + alias) a partir del primer fragmento con artNum
-  const firstWithArt = viewerFragments.find(f => f.artNum);
-  const artNum = firstWithArt?.artNum
-    || (currentCtx.isRange ? `${currentCtx.startNum}-${currentCtx.endNum}` : currentCtx.startNum || 'X');
-  const citation = `(art. ${artNum} ${currentCtx.alias.toUpperCase()})`;
-
-  const parts   = viewerFragments.map(f => `"${f.text}"`);
-  const plain   = parts.join('...') + ' ' + citation;
-  const htmlStr = viewerFragments.map(f => `"<em>${escHTML(f.text)}</em>"`).join('<span>...</span>')
-                + ` <span>${escHTML(citation)}</span>`;
-
-  try {
-    await navigator.clipboard.write([new ClipboardItem({
-      'text/html':  new Blob([htmlStr], { type:'text/html' }),
-      'text/plain': new Blob([plain],   { type:'text/plain' })
-    })]);
-  } catch {
-    try { await navigator.clipboard.writeText(plain); }
-    catch { showToast('❌ No se pudo copiar al portapapeles'); return; }
-  }
-
+  if (!viewerFragments.length) { showToast('⚠️ Añade al menos un fragmento'); return; }
+  const ref = (viewerFragments.find(f => f.ref) || {}).ref || currentCtx.citeRef;
+  const citation = `(${ref ? ref + ' ' : ''}${aliasForCite(currentCtx.alias)})`;
+  const plain = viewerFragments.map(f => `"${f.text}"`).join('...') + ' ' + citation;
+  const htmlStr = viewerFragments.map(f => `"<em>${escHTML(f.text)}</em>"`).join('<span>...</span>') + ` <span>${escHTML(citation)}</span>`;
+  try { await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([htmlStr], { type: 'text/html' }), 'text/plain': new Blob([plain], { type: 'text/plain' }) })]); }
+  catch { try { await navigator.clipboard.writeText(plain); } catch { showToast('❌ No se pudo copiar al portapapeles'); return; } }
   showToast(`✔ Cita copiada ${citation}`);
 }
-
 async function copyAllText() {
-  const body = document.getElementById('viewerBody');
-  const text = body.innerText || '';
+  const caps = [...document.querySelectorAll('#viewerBody .boe-vig')];
+  caps.forEach(c => c.style.display = 'none');
+  const text = $('viewerBody').innerText || '';
+  caps.forEach(c => c.style.display = '');
   if (!text.trim()) { showToast('Sin texto para copiar'); return; }
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast('✔ Texto copiado al portapapeles');
-  } catch { showToast('❌ Error al copiar'); }
+  try { await navigator.clipboard.writeText(text); showToast('✔ Texto copiado al portapapeles'); } catch { showToast('❌ Error al copiar'); }
 }
 
 // ═══════════════════════════════════════════════════════════
-//  GESTIÓN DE NORMAS (CRUD)
+//  GESTIÓN DE NORMAS (CRUD) Y REVISIÓN DE LA BIBLIOTECA
 // ═══════════════════════════════════════════════════════════
 function saveNorm() {
-  const alias = document.getElementById('editAlias').value.trim();
-  const title = document.getElementById('editTitle').value.trim();
-  const id    = document.getElementById('editId').value.trim();
-  const url   = document.getElementById('editUrl').value.trim();
+  const alias = $('editAlias').value.trim(), title = $('editTitle').value.trim();
+  const id = $('editId').value.trim(), url = $('editUrl').value.trim();
+  const eli = normalizeEli($('editEli').value || (/boe\.es\/eli\//i.test(url) ? url : ''));
   if (!alias) { alert('El alias es obligatorio.'); return; }
-  const obj = { alias, title, id, url };
-  if (editingIndex >= 0) { localNorms[editingIndex] = obj; editingIndex = -1; }
-  else { localNorms.push(obj); }
-  persist();
-  clearForm();
-  renderManageList();
+  const aka = $('editAka').value.split(',').map(s => s.trim()).filter(Boolean);
+  const prev = editingIndex >= 0 ? localNorms[editingIndex] : {};
+  const obj = normalizeNorm({ alias, title, id, url: /boe\.es\/eli\//i.test(url) ? '' : url, eli, aka, chk: prev.chk, verified: null });
+  if (editingIndex >= 0) { localNorms[editingIndex] = obj; editingIndex = -1; } else { localNorms.push(obj); }
+  persist(); clearForm(); renderManageList();
 }
-function deleteNorm(i) {
-  if (confirm(`¿Borrar "${localNorms[i].alias}"?`)) { localNorms.splice(i,1); persist(); renderManageList(); }
-}
+function deleteNorm(i) { if (confirm(`¿Borrar "${localNorms[i].alias}"?`)) { localNorms.splice(i, 1); persist(); renderManageList(); } }
 function editNorm(i) {
   const n = localNorms[i];
-  document.getElementById('editAlias').value = n.alias || '';
-  document.getElementById('editTitle').value = n.title || '';
-  document.getElementById('editId').value    = n.id    || '';
-  document.getElementById('editUrl').value   = n.url   || '';
-  editingIndex = i;
-  switchTab('manage');
-  document.getElementById('editAlias').focus();
+  $('editAlias').value = n.alias || ''; $('editTitle').value = n.title || ''; $('editEli').value = n.eli || '';
+  $('editId').value = n.id || ''; $('editUrl').value = n.url || ''; $('editAka').value = (n.aka || []).join(', ');
+  editingIndex = i; switchTab('manage'); $('editAlias').focus();
 }
-function clearForm() {
-  ['editAlias','editTitle','editId','editUrl'].forEach(id => document.getElementById(id).value='');
-  editingIndex = -1;
+function clearForm() { ['editAlias', 'editTitle', 'editEli', 'editId', 'editUrl', 'editAka'].forEach(id => $(id).value = ''); editingIndex = -1; }
+function restoreFactory() {
+  if (!confirm('Se actualizarán las normas de fábrica (títulos, ELI, IDs). Las normas que añadiste tú se conservan. ¿Continuar?')) return;
+  localNorms = mergeFactory(localNorms); persist(); renderManageList(); showToast('✔ Biblioteca actualizada');
 }
-function persist() { localStorage.setItem('boe_norms_v4', JSON.stringify(localNorms)); }
-
 function renderManageList() {
-  const list  = document.getElementById('localNormsList');
-  const count = document.getElementById('normCount');
-  count.textContent = localNorms.length;
+  const list = $('localNormsList'); $('normCount').textContent = localNorms.length;
+  const pill = $('pillCount'); if (pill) pill.textContent = localNorms.length + ' normas';
   list.innerHTML = '';
   localNorms.forEach((n, i) => {
-    const row = document.createElement('div');
-    row.className = 'norm-list-item';
-    const idBadge = n.id
-      ? `<span class="norm-id-badge">${n.id}</span>`
-      : (n.url ? `<span class="norm-id-badge badge-warning">URL externa</span>` : `<span class="norm-id-badge badge-warning">⚠ Sin ID</span>`);
-    row.innerHTML = `
-      <span class="norm-alias">${escHTML(n.alias)}</span>
-      <span class="norm-title-text">${escHTML(n.title||'')}</span>
-      ${idBadge}
-      <button class="btn-sm" onclick="editNorm(${i})">Editar</button>
-      <button class="btn-sm danger" onclick="deleteNorm(${i})">Borrar</button>`;
-    list.appendChild(row);
+    const row = document.createElement('div'); row.className = 'norm-list-item';
+    const a = document.createElement('span'); a.className = 'norm-alias'; a.textContent = n.alias;
+    const t = document.createElement('span'); t.className = 'norm-title-text'; t.textContent = n.title || '';
+    const b = document.createElement('span'); b.className = 'norm-id-badge';
+    if (n.verified && n.verified.ok) { b.classList.add('badge-ok'); b.textContent = '✔ ' + (n.id || 'verificada'); b.title = 'Comprobada en el BOE el ' + n.verified.d; }
+    else if (n.verified && n.verified.ok === false) { b.classList.add('badge-warning'); b.textContent = '⚠ revisar'; b.title = 'No coincide con el BOE'; }
+    else if (n.id) b.textContent = n.id; else if (n.eli) b.textContent = 'ELI'; else if (n.url) { b.classList.add('badge-warning'); b.textContent = 'URL externa'; } else { b.classList.add('badge-warning'); b.textContent = '⚠ Sin enlace'; }
+    const e = document.createElement('button'); e.className = 'btn-sm'; e.textContent = 'Editar'; e.onclick = () => editNorm(i);
+    const d = document.createElement('button'); d.className = 'btn-sm danger'; d.textContent = 'Borrar'; d.onclick = () => deleteNorm(i);
+    row.append(a, t, b, e, d); list.appendChild(row);
   });
 }
-
+/** Comprueba cada norma contra la API del BOE (por su ELI o su ID) y completa su ID oficial. */
+async function verifyLibrary() {
+  const out = $('verifyReport'), btn = $('btnVerify');
+  const targets = localNorms.map((n, i) => ({ n, i })).filter(x => x.n.eli || BOE_ID_RE.test(x.n.id || ''));
+  if (!targets.length) { out.textContent = 'No hay normas con ELI o ID del BOE que revisar.'; return; }
+  btn.disabled = true; out.innerHTML = ''; const lines = [];
+  let done = 0, ok = 0, bad = 0, off = 0, fixed = 0; const queue = [...targets];
+  const upd = () => { out.firstChild && out.removeChild(out.firstChild); const p = document.createElement('div'); p.className = 'verify-progress'; p.textContent = `Revisando… ${done}/${targets.length}`; out.prepend(p); };
+  const worker = async () => {
+    while (queue.length) {
+      const { n } = queue.shift(); let line; const d = new Date().toLocaleDateString('es-ES');
+      try {
+        let hit = null;
+        if (n.eli) hit = await lookupByEli(n.eli);
+        else {
+          const j = JSON.parse(await apiGet(`/id/${encodeURIComponent(n.id)}/metadatos`, 'application/json'));
+          hit = Array.isArray(j.data) ? j.data[0] : j.data || null;
+        }
+        if (hit && hit.identificador) {
+          if (n.id && n.id.toUpperCase() !== hit.identificador) { line = `ID corregido: ${n.alias} (${n.id} → ${hit.identificador})`; fixed++; }
+          else line = `ok ${n.alias}`;
+          n.id = hit.identificador; n.verified = { ok: true, d }; ok++;
+          if (!n.title && hit.titulo) n.title = hit.titulo;
+          if (hit.estatus_derogacion === 'S' || hit.vigencia_agotada === 'S') lines.push(`ℹ ${n.alias}: el BOE la marca como ${hit.estatus_derogacion === 'S' ? 'derogada' : 'con vigencia agotada'}`);
+        } else {
+          n.verified = { ok: false, d }; bad++;
+          line = `⚠ ${n.alias}: el BOE no tiene ninguna norma consolidada con ${n.eli ? 'el ELI «' + n.eli + '»' : 'el ID ' + n.id}; revisa el enlace`;
+        }
+      } catch (e) {
+        if (e.notFound) { n.verified = { ok: false, d }; bad++; line = `⚠ ${n.alias}: ${e.message}`; }
+        else { line = `… ${n.alias}: sin conexión con el BOE ahora`; off++; }
+      }
+      lines.push(line); done++; upd();
+    }
+  };
+  await Promise.all([worker(), worker(), worker()]);
+  persist(); renderManageList();
+  const sum = document.createElement('div'); sum.className = 'verify-summary';
+  sum.textContent = `Revisión terminada: ${ok} correctas (${fixed} con ID corregido), ${bad} a revisar, ${off} sin conexión.`;
+  const ul = document.createElement('ul'); ul.className = 'verify-list';
+  lines.filter(l => !l.startsWith('ok ')).forEach(l => { const li = document.createElement('li'); li.textContent = l; ul.appendChild(li); });
+  out.innerHTML = ''; out.append(sum, ul); btn.disabled = false;
+}
 function exportData() {
-  const blob = new Blob([JSON.stringify(localNorms, null, 2)], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'normas-boe.json';
-  a.click();
+  const blob = new Blob([JSON.stringify(localNorms, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'normas-boe.json'; a.click();
 }
 function importData(input) {
   const f = input.files[0]; if (!f) return;
   const r = new FileReader();
   r.onload = e => {
-    try { localNorms = JSON.parse(e.target.result); persist(); renderManageList(); showToast('✔ Importación completada'); }
-    catch { alert('Error: el archivo no es un JSON válido.'); }
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('formato');
+      localNorms = data.filter(x => x && x.alias).map(normalizeNorm); persist(); renderManageList(); showToast('✔ Importación completada');
+    } catch { alert('Error: el archivo no es un JSON de normas válido.'); }
   };
   r.readAsText(f);
 }
@@ -1586,10 +2280,22 @@ function showToast(msg) {
 window.addEventListener('DOMContentLoaded', () => {
   renderManageList();
   renderHistory();
-  const inp = document.getElementById('mainInput');
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') performSearch(); });
+  const inp = $('mainInput');
+  inp.addEventListener('input', updateSuggest);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); moveSuggest(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveSuggest(-1); }
+    else if (e.key === 'Enter') { if (sugIdx >= 0) { e.preventDefault(); pickSuggest(sugIdx); } else performSearch(); }
+    else if (e.key === 'Escape') { hideSuggest(); }
+  });
+  inp.addEventListener('blur', () => setTimeout(hideSuggest, 150));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && $('viewerOverlay').style.display === 'block') closeViewer();
+    if (e.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); inp.focus(); }
+  });
+  let t; $('normSearch').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => openIndex($('normSearch').value), 250); });
   inp.focus();
 });
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5fc08e54ee1cfea',t:'MTc5NTU2MTI3OA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5fc08e54ee1cfea',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
